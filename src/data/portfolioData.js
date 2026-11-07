@@ -11,14 +11,6 @@ export const portfolioData = {
     avatar: myPhoto,
     academicStatus: "D3 Teknologi Informasi — Semester 5",
     level: "Lv. 24",
-    wallet: "¥2,433,070",
-    hud: {
-      hp: "999/999",
-      sp: "450/450",
-      persona: "ORPHEUS / RE-SPEC",
-      rig: "Axioo Pongo 725 // RTX 2050",
-      os: "Linux / Windows Dual-Boot",
-    },
   },
 
   // 2. Tentang Saya (About Me & Nilai Tambah Otentik)
@@ -71,37 +63,6 @@ export const portfolioData = {
     ],
   },
 
-  // 3. Showcase Lab Investigasi & Troubleshooting Khusus
-  troubleshootingCases: [
-    {
-      code: "CASE-01",
-      title: "WinDbg Kernel Dump & Thermal Throttle Diagnosis",
-      category: "OS & Hardware",
-      detail: "Menganalisis crash dump BSOD menggunakan WinDbg pada laptop Axioo Pongo 725. Mengidentifikasi lonjakan panas VRM dan konflik driver GPU, diselesaikan via DDU purge, repasting thermal putty, dan fine-tuning power limit.",
-      tag: "SOLVED",
-    },
-    {
-      code: "CASE-02",
-      title: "Industrial Gateway IIoT Data Pipeline (Ewon Flexy 205)",
-      category: "IIoT & Telemetry",
-      detail: "Menarik data telemetri kelistrikan (V, A, kW, kWh) dari Power Meter PM139 secara periodik tiap 15 detik ke MySQL server dengan perhitungan estimasi tarif listrik (Rp 1.444,7/kWh) dan emisi karbon (0,85 kg CO2/kWh).",
-      tag: "VERIFIED",
-    },
-    {
-      code: "CASE-03",
-      title: "DirectInput to XInput Controller Bridge (C#)",
-      category: "Hardware Remap",
-      detail: "Mengatasi stik PlayStation/generic rusak (tombol L2/R2) dengan membangun mapper mandiri di C#. Menyediakan kalibrasi deadzone, dynamic vibration, menu konfigurasi JSON terstruktur, dan auto-launch.",
-      tag: "DEPLOYED",
-    },
-    {
-      code: "CASE-04",
-      title: "Wi-Fi 5GHz Channel Width & Regulation Tuning",
-      category: "Network Interface",
-      detail: "Menyelesaikan isu adaptor laptop yang gagal mendeteksi sinyal hotspot HP 5GHz. Menguji variasi Channel Width (20MHz vs Auto) serta membuat skrip otomasi restart network adaptor di PowerShell.",
-      tag: "AUTOMATED",
-    },
-  ],
 
   // 4. Keahlian Riil & Persona Stat Gauges
   skills: [

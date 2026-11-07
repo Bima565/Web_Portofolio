@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from 'react'
 import { motion, AnimatePresence, useScroll, useSpring, useTransform } from 'motion/react'
 import Lenis from 'lenis'
 import TurbulentWaterCanvas from './components/TurbulentWaterCanvas'
+import CustomCursor from './components/CustomCursor'
 import {
   MessageCircle,
   Send,
@@ -87,6 +88,9 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen bg-[#020713] text-white overflow-x-hidden selection:bg-[#ff184c] selection:text-white p3r-water-bg p3r-scanlines">
+      {/* Lusion-style Fluid Magnetic Reticle Cursor */}
+      <CustomCursor />
+
       {/* Three.js 3D Floating Shards & Underwater Sparks (Persona 3 Reload Menu spec) */}
       <TurbulentWaterCanvas />
 
@@ -110,8 +114,8 @@ export default function App() {
       {/* ============================================================== */}
       {/* TOP HUD BAR / P3R CALENDAR, CLOCK & STAT GAUGES                */}
       {/* ============================================================== */}
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-[#020713]/85 border-b border-[#00d2ff]/30 px-3 md:px-8 py-2.5">
-        <div className="max-w-6xl mx-auto flex items-center justify-between gap-2">
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-[#020713]/85 border-b border-[#00d2ff]/30 px-4 sm:px-8 lg:px-12 py-2.5 w-full">
+        <div className="w-full flex items-center justify-between gap-4">
 
           {/* Left: SEES ID & Rig Badge */}
           <div className="flex items-center gap-2 sm:gap-3">
@@ -125,7 +129,7 @@ export default function App() {
                 SEES ARCHIVE // NIM: {profile.nim}
               </span>
               <span className="hidden lg:inline text-[9px] font-mono text-gray-400">
-                {profile.hud.rig}
+                {profile.hud?.rig || 'Axioo Pongo 725 // RTX 2050'}
               </span>
             </div>
             <span className="hidden sm:inline-block px-2.5 py-0.5 text-[10px] font-black italic bg-[#ff184c] text-white transform -skew-x-12 border border-white/60 shadow-[2px_2px_0px_#000000]">
@@ -186,7 +190,7 @@ export default function App() {
       {/* ============================================================== */}
       {/* MAIN CONTAINER                                                 */}
       {/* ============================================================== */}
-      <main className="max-w-6xl mx-auto px-4 md:px-8 py-8 md:py-14 flex flex-col gap-20 md:gap-32 relative z-10">
+      <main className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 py-8 md:py-14 flex flex-col gap-20 md:gap-32 relative z-10">
 
         {/* ============================================================== */}
         {/* 1. HERO SECTION (Ketentuan 3: Foto, Nama, Julukan, Ringkasan) */}
@@ -196,7 +200,7 @@ export default function App() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative flex flex-col lg:flex-row items-center gap-8 lg:gap-12 pt-2 md:pt-6"
+          className="relative w-full flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16 pt-2 md:pt-6"
         >
 
           {/* Background Watermark Section Tag */}
@@ -205,14 +209,14 @@ export default function App() {
           </div>
 
           {/* Left: Text & Identification */}
-          <div className="flex-1 flex flex-col gap-4 text-center lg:text-left z-10">
+          <div className="flex-1 w-full flex flex-col gap-4 text-left z-10 items-start">
 
             {/* Status Pills with Staggered Entrance */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-2"
+              className="flex flex-wrap items-center justify-start gap-2"
             >
               <span className="px-3 py-1 bg-[#0048d0] text-[#00d2ff] text-xs font-black italic tracking-wider transform -skew-x-12 border border-[#00d2ff]/60 shadow-[2px_2px_0px_#000000]">
                 {profile.academicStatus}
@@ -230,7 +234,7 @@ export default function App() {
               initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3, duration: 0.7 }}
-              className="text-4xl sm:text-6xl md:text-7xl font-black italic tracking-tighter uppercase leading-[0.92] text-white"
+              className="text-4xl sm:text-6xl md:text-7xl font-black italic tracking-tighter uppercase leading-[0.92] text-white text-left"
             >
               {profile.fullName}
             </motion.h1>
@@ -241,7 +245,7 @@ export default function App() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.4, duration: 0.5 }}
               whileHover={{ scale: 1.02 }}
-              className="relative inline-block self-center lg:self-start my-1"
+              className="relative inline-block self-start my-1"
             >
               <span className="block px-4 py-2 bg-[#00d2ff] text-[#020713] font-black italic text-sm md:text-lg tracking-wide transform -skew-x-12 shadow-[5px_5px_0px_#000000] border-2 border-white">
                 {profile.nickname}
@@ -253,7 +257,7 @@ export default function App() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 0.6 }}
-              className="text-gray-200 text-sm md:text-base leading-relaxed max-w-xl self-center lg:self-start font-medium border-l-4 border-[#00d2ff] pl-4 py-1.5 my-2 bg-gradient-to-r from-[#00d2ff]/15 via-[#0048d0]/10 to-transparent"
+              className="text-gray-200 text-sm md:text-base leading-relaxed max-w-2xl text-justify font-medium border-l-4 border-[#00d2ff] pl-4 py-2 my-2 bg-gradient-to-r from-[#00d2ff]/15 via-[#0048d0]/10 to-transparent"
             >
               {profile.bio}
             </motion.p>
@@ -263,19 +267,8 @@ export default function App() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.5 }}
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2"
+              className="flex flex-wrap items-center justify-start gap-4 pt-2"
             >
-              <motion.a
-                whileHover={{ scale: 1.05, skewX: -12 }}
-                whileTap={{ scale: 0.98 }}
-                href="#contact"
-                className="group relative px-7 py-3.5 bg-[#ff184c] text-white font-black italic text-sm md:text-base tracking-wider uppercase transform -skew-x-12 border-2 border-white shadow-[5px_5px_0px_#000000] hover:bg-white hover:text-[#020713] transition-all duration-150 flex items-center gap-2"
-              >
-                <span className="inline-block transform skew-x-12 flex items-center gap-2">
-                  <MessageCircle className="w-5 h-5 text-white group-hover:text-[#020713] animate-bounce" />
-                  Hubungi via WhatsApp
-                </span>
-              </motion.a>
 
               <motion.a
                 whileHover={{ scale: 1.05, skewX: -12 }}
@@ -304,7 +297,7 @@ export default function App() {
           </div>
 
           {/* Right: Floating Character / Profile Frame with Kinetic Pulse */}
-          <div className="relative flex-shrink-0 w-64 h-64 sm:w-76 sm:h-76 lg:w-84 lg:h-84 flex items-center justify-center">
+          <div className="relative flex-shrink-0 w-72 h-72 sm:w-84 sm:h-84 lg:w-96 lg:h-96 flex items-center justify-center self-center">
 
             {/* Dynamic Pulsing Aura */}
             <motion.div
@@ -492,82 +485,6 @@ export default function App() {
           </motion.div>
         </motion.section>
 
-
-        {/* ============================================================== */}
-        {/* 3. SHOWCASE LAB: HARDWARE & OS TROUBLESHOOTING (FITUR KHUSUS) */}
-        {/* ============================================================== */}
-        <motion.section
-          id="troubleshooting"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.15 }}
-          transition={{ duration: 0.6 }}
-          className="relative flex flex-col gap-6 scroll-mt-20"
-        >
-
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <motion.div
-                whileHover={{ scale: 1.03 }}
-                className="px-5 py-1.5 bg-[#071330] text-[#00d2ff] font-black italic text-lg md:text-xl tracking-wider uppercase transform -skew-x-12 border-l-4 border-[#ffcc00] shadow-[4px_4px_0px_#000000]"
-              >
-                <span className="inline-block transform skew-x-12">LAB INVESTIGASI // DIAGNOSTICS & SYSTEM</span>
-              </motion.div>
-              <div className="hidden sm:block flex-1 h-[2px] bg-gradient-to-r from-[#00d2ff]/40 to-transparent" />
-            </div>
-            <span className="text-xs font-mono text-[#ffcc00] tracking-widest hidden md:inline">
-              ROOT-CAUSE ANALYSIS
-            </span>
-          </div>
-
-          {/* Interactive Case Study Grid with Staggered Scroll Reveal */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {troubleshootingCases.map((c, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 35 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false }}
-                transition={{ delay: idx * 0.1, duration: 0.4 }}
-                whileHover={{ y: -8, scale: 1.02 }}
-                onClick={() => setActiveTrouble(idx)}
-                className={`p-4 bg-[#071330]/90 border-2 transition-all cursor-pointer shadow-[5px_5px_0px_#000000] flex flex-col justify-between ${
-                  activeTrouble === idx ? 'border-[#ff184c] bg-[#0b1736]' : 'border-[#00d2ff]/30'
-                }`}
-              >
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs font-black text-[#ff184c] italic">
-                      /{c.code}
-                    </span>
-                    <span className="px-2 py-0.5 text-[9px] font-mono font-bold bg-[#0048d0] text-white">
-                      {c.tag}
-                    </span>
-                  </div>
-
-                  <h3 className="font-black italic text-sm text-white leading-tight">
-                    {c.title}
-                  </h3>
-
-                  <span className="text-[10px] font-mono text-[#00d2ff]">
-                    CATEGORY: {c.category}
-                  </span>
-
-                  <p className="text-xs text-gray-300 leading-relaxed mt-1">
-                    {c.detail}
-                  </p>
-                </div>
-
-                <div className="pt-3 mt-3 border-t border-white/10 flex items-center justify-between text-[10px] font-mono text-gray-400">
-                  <span>SPECS VERIFIED</span>
-                  <span className="text-[#00d2ff] font-bold flex items-center gap-0.5">
-                    DETAILS <ChevronRight className="w-3 h-3" />
-                  </span>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
 
 
         {/* ============================================================== */}
@@ -1050,8 +967,8 @@ export default function App() {
       {/* ============================================================== */}
       {/* FOOTER / P3R CONTROLLER COMMAND GUIDE                         */}
       {/* ============================================================== */}
-      <footer className="border-t border-[#00d2ff]/30 bg-[#01040d] py-5 px-4 text-center font-mono text-xs text-gray-400">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+      <footer className="border-t border-[#00d2ff]/30 bg-[#01040d] py-5 px-4 sm:px-8 lg:px-12 xl:px-16 text-center font-mono text-xs text-gray-400 w-full">
+        <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-3">
           <span>TUGAS INDIVIDU PEMBUATAN LANDING PAGE PROFIL // D3 TEKNOLOGI INFORMASI</span>
           <div className="flex flex-wrap items-center justify-center gap-4 text-[11px] text-[#00d2ff] font-bold">
             <span className="hover:text-white transition-colors">(A) INSPECT</span>
