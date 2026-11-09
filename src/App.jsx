@@ -1,40 +1,40 @@
 import { useState, useMemo, useEffect } from 'react'
-import { motion, AnimatePresence, useScroll, useSpring, useTransform } from 'motion/react'
+import { motion, AnimatePresence, useScroll, useSpring } from 'motion/react'
 import Lenis from 'lenis'
 import TurbulentWaterCanvas from './components/TurbulentWaterCanvas'
 import CustomCursor from './components/CustomCursor'
 import {
   MessageCircle,
-  Send,
-  ExternalLink,
-  Mail,
-  Code2,
   Sparkles,
   CheckCircle2,
-  Terminal,
+  Scroll,
   ArrowUpRight,
   Clock,
   Shield,
   Zap,
   Cpu,
-  Wrench,
-  Activity,
-  Layers,
-  ChevronRight,
-  Flame,
   Award,
-  ChevronUp
+  ChevronUp,
+  Compass,
+  Star,
+  BookOpen,
+  Mail,
+  Feather,
+  MapPin,
+  Flame,
+  Wind,
+  Droplets,
+  Mountain,
 } from 'lucide-react'
 import { portfolioData } from './data/portfolioData'
 
 export default function App() {
-  const { profile, about, troubleshootingCases, skills, projects, certifications, contact } = portfolioData
+  const { profile, about, skills, projects, certifications, contact } = portfolioData
   const [selectedQuest, setSelectedQuest] = useState(projects[0])
   const [customMsg, setCustomMsg] = useState(contact.defaultMessage)
   const [skillFilter, setSkillFilter] = useState('ALL')
-  const [activeTrouble, setActiveTrouble] = useState(0)
 
-  // Scroll Progress Logic for Continuous Animation
+  // Smooth scroll progress bar
   const { scrollYProgress } = useScroll()
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 120,
@@ -42,10 +42,10 @@ export default function App() {
     restDelta: 0.001,
   })
 
-  // Lenis Inertia Smooth Scrolling (Turbulent.ca style)
+  // Lenis Smooth Inertia Scroll
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.15,
+      duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       wheelMultiplier: 1.05,
@@ -65,122 +65,103 @@ export default function App() {
     }
   }, [])
 
-  // Filter skills
+  // Skill categorization
   const filteredSkills = useMemo(() => {
     if (skillFilter === 'ALL') return skills
     if (skillFilter === 'FRONTEND') return skills.filter((s) => s.category.includes('Frontend'))
-    if (skillFilter === 'SYSTEM') return skills.filter((s) => s.category.includes('Diagnostics') || s.category.includes('System') || s.category.includes('Software'))
-    if (skillFilter === 'IOT_3D') return skills.filter((s) => s.category.includes('IoT') || s.category.includes('3D') || s.category.includes('Database') || s.category.includes('AI'))
+    if (skillFilter === 'SYSTEM') return skills.filter((s) => s.category.includes('Diagnostics') || s.category.includes('Software'))
+    if (skillFilter === 'IOT_3D') return skills.filter((s) => s.category.includes('IoT') || s.category.includes('3D') || s.category.includes('Database') || s.category.includes('AI') || s.category.includes('DevOps'))
     return skills
   }, [skills, skillFilter])
 
-  // Official Click-to-Chat WhatsApp URL
+  // Direct Click-to-Chat WhatsApp URL
   const whatsappUrl = useMemo(() => {
     const encoded = encodeURIComponent(customMsg || contact.defaultMessage)
     return `https://wa.me/${contact.whatsappNumber}?text=${encoded}`
   }, [contact.whatsappNumber, contact.defaultMessage, customMsg])
 
   const quickMessages = [
-    { label: 'Tanya Proyek Web / Dashboard', text: 'Halo Bima, saya ingin mendiskusikan kebutuhan pembuatan web application/dashboard interaktif.' },
-    { label: 'Peluang Magang & Kolaborasi', text: 'Halo Bima, saya tertarik berkolaborasi dalam proyek software & IoT bersama Anda.' },
-    { label: 'Diskusi Troubleshooting Sistem', text: 'Halo Bima, saya ingin konsultasi mengenai diagnosis performa sistem & hardware.' },
+    { label: 'Diskusi Aplikasi Web & Dashboard', text: 'Halo Bima, saya ingin mendiskusikan kebutuhan pembuatan web application atau dashboard interaktif.' },
+    { label: 'Peluang Kolaborasi Software & IoT', text: 'Halo Bima, saya tertarik berkolaborasi dalam proyek software engineering dan sistem IoT bersama Anda.' },
+    { label: 'Konsultasi Diagnostik Sistem', text: 'Halo Bima, saya ingin berkonsultasi mengenai diagnosis performa sistem dan pemeliharaan hardware.' },
   ]
 
+  // Element icon helper
+  const getElementBadge = (element) => {
+    switch (element) {
+      case 'Hydro':
+        return { icon: <Droplets className="w-3.5 h-3.5 text-sky-400" />, color: 'text-sky-300 bg-sky-950/70 border-sky-500/30' }
+      case 'Electro':
+        return { icon: <Zap className="w-3.5 h-3.5 text-purple-400" />, color: 'text-purple-300 bg-purple-950/70 border-purple-500/30' }
+      case 'Anemo':
+        return { icon: <Wind className="w-3.5 h-3.5 text-teal-400" />, color: 'text-teal-300 bg-teal-950/70 border-teal-500/30' }
+      case 'Geo':
+        return { icon: <Mountain className="w-3.5 h-3.5 text-amber-400" />, color: 'text-amber-300 bg-amber-950/70 border-amber-500/30' }
+      default:
+        return { icon: <Sparkles className="w-3.5 h-3.5 text-yellow-300" />, color: 'text-yellow-200 bg-yellow-950/70 border-yellow-500/30' }
+    }
+  }
+
   return (
-    <div className="relative min-h-screen bg-[#020713] text-white overflow-x-hidden selection:bg-[#ff184c] selection:text-white p3r-water-bg p3r-scanlines">
-      {/* Lusion-style Fluid Magnetic Reticle Cursor */}
+    <div className="relative min-h-screen frieren-landscape-bg text-[#f1f5f9] overflow-x-hidden selection:bg-[#d4af37] selection:text-[#081614]">
+      {/* Interactive Starlight Cursor */}
       <CustomCursor />
 
-      {/* Three.js 3D Floating Shards & Underwater Sparks (Persona 3 Reload Menu spec) */}
+      {/* 3D Falling Leaves, Frieren Blue Petals & Gentle Breeze Canvas */}
       <TurbulentWaterCanvas />
 
-      {/* TOP SCROLL PROGRESS BAR (P3R Kinetic Progress Tracker) */}
+      {/* Top Sunlight Reading Progress Bar */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#0048d0] via-[#00d2ff] to-[#ff184c] origin-left z-[60] shadow-[0_0_12px_#00d2ff]"
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#d4af37] via-[#38bdf8] to-[#fef08a] origin-left z-[60] shadow-[0_0_12px_rgba(212,175,55,0.7)]"
         style={{ scaleX }}
       />
 
-      {/* Background Animated Watermark Typography with Parallax Drift */}
-      <div className="fixed inset-0 pointer-events-none opacity-[0.035] flex items-center justify-center select-none overflow-hidden z-0">
-        <motion.span
-          className="text-[24vw] font-black italic tracking-tighter text-white transform -rotate-12 translate-y-8"
-          animate={{ x: [-25, 25, -25] }}
-          transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
-        >
-          PERSONA 3
-        </motion.span>
-      </div>
-
       {/* ============================================================== */}
-      {/* TOP HUD BAR / P3R CALENDAR, CLOCK & STAT GAUGES                */}
+      {/* 1. TOP ADVENTURER JOURNAL HEADER BAR                            */}
       {/* ============================================================== */}
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-[#020713]/85 border-b border-[#00d2ff]/30 px-4 sm:px-8 lg:px-12 py-2.5 w-full">
-        <div className="w-full flex items-center justify-between gap-4">
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-[#081614]/90 border-b border-[#d4af37]/25 px-4 sm:px-8 lg:px-12 py-3 w-full">
+        <div className="w-full max-w-7xl mx-auto flex items-center justify-between gap-4">
 
-          {/* Left: SEES ID & Rig Badge */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            <motion.div
-              className="w-3.5 h-3.5 bg-[#00d2ff] rotate-45 shadow-[0_0_12px_#00d2ff]"
-              animate={{ scale: [1, 1.25, 1], rotate: [45, 225, 45] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-            />
+          {/* Left: Wax Seal & Journal Title */}
+          <div className="flex items-center gap-3">
+            <div className="w-7 h-7 rounded-full guild-wax-seal flex items-center justify-center text-white text-[11px] font-serif font-bold shadow-md">
+              ✦
+            </div>
             <div className="flex flex-col">
-              <span className="font-mono text-[11px] md:text-xs tracking-widest text-[#00d2ff] font-bold">
-                SEES ARCHIVE // NIM: {profile.nim}
+              <span className="font-serif text-sm tracking-wide text-[#fef08a] font-bold">
+                JURNAL PETUALANG // BIMA PRAWIRA DHARMA
               </span>
-              <span className="hidden lg:inline text-[9px] font-mono text-gray-400">
-                {profile.hud?.rig || 'Axioo Pongo 725 // RTX 2050'}
+              <span className="text-[10px] font-mono text-emerald-300/80">
+                {profile.academicStatus} | {profile.classGroup}
               </span>
             </div>
-            <span className="hidden sm:inline-block px-2.5 py-0.5 text-[10px] font-black italic bg-[#ff184c] text-white transform -skew-x-12 border border-white/60 shadow-[2px_2px_0px_#000000]">
-              {profile.classGroup}
-            </span>
           </div>
 
-          {/* Right: Date, Moon Phase & HP/SP Bars */}
-          <div className="flex items-center gap-3">
-            {/* Live Gauges (HP/SP) */}
-            <div className="hidden md:flex items-center gap-2 font-mono text-[11px]">
-              <div className="flex items-center gap-1">
-                <span className="text-[#00d2ff] font-bold">HP</span>
-                <div className="w-16 h-2 bg-[#050e24] border border-[#00d2ff]/40 overflow-hidden relative">
-                  <motion.div
-                    className="h-full bg-gradient-to-r from-[#0048d0] to-[#00d2ff] w-full"
-                    animate={{ opacity: [0.8, 1, 0.8] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                </div>
-              </div>
-              <div className="flex items-center gap-1">
-                <span className="text-[#ffcc00] font-bold">SP</span>
-                <div className="w-12 h-2 bg-[#050e24] border border-[#ffcc00]/40 overflow-hidden relative">
-                  <motion.div
-                    className="h-full bg-gradient-to-r from-[#ff184c] to-[#ffcc00] w-full"
-                    animate={{ opacity: [0.8, 1, 0.8] }}
-                    transition={{ duration: 2.5, repeat: Infinity }}
-                  />
-                </div>
-              </div>
-            </div>
+          {/* Center Navigation Links */}
+          <nav className="hidden md:flex items-center gap-6 font-serif text-xs text-gray-300">
+            <a href="#hero" className="hover:text-[#fef08a] transition-colors">Profil</a>
+            <a href="#grimoire" className="hover:text-[#fef08a] transition-colors">Lembar Filosofi</a>
+            <a href="#skills" className="hover:text-[#fef08a] transition-colors">Grimoire Talenta</a>
+            <a href="#expeditions" className="hover:text-[#fef08a] transition-colors">Papan Komisi</a>
+            <a href="#credentials" className="hover:text-[#fef08a] transition-colors">Piagam Resmi</a>
+            <a href="#contact" className="hover:text-[#fef08a] transition-colors">Pos Burung Merpati</a>
+          </nav>
 
-            {/* Calendar & Moon Badge */}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="bg-[#071330] border-2 border-[#00d2ff]/60 px-3 py-1 text-right transform -skew-x-12 shadow-[3px_3px_0px_#000000] cursor-default"
+          {/* Right Status Badge */}
+          <div className="flex items-center gap-2.5">
+            <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#102b25] border border-[#d4af37]/40 text-xs font-serif text-[#fef08a]">
+              <Sparkles className="w-3.5 h-3.5 text-[#38bdf8]" />
+              {profile.guildRank}
+            </span>
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-[#d4af37] to-[#b89327] text-[#081614] font-serif font-bold text-xs tracking-wide hover:brightness-110 transition-all flex items-center gap-1.5 shadow"
             >
-              <div className="text-[9px] text-[#00d2ff] font-mono tracking-wider font-bold">
-                DATE // MOON PHASE
-              </div>
-              <div className="text-xs md:text-sm font-black italic tracking-wide text-white flex items-center gap-2">
-                <span>11/07 SAT</span>
-                <motion.span
-                  className="w-2.5 h-2.5 rounded-full bg-[#ffcc00] inline-block shadow-[0_0_8px_#ffcc00]"
-                  animate={{ opacity: [0.5, 1, 0.5], scale: [0.9, 1.15, 0.9] }}
-                  transition={{ duration: 2.2, repeat: Infinity }}
-                />
-                <span className="text-[10px] text-[#ffcc00] font-normal hidden sm:inline">FULL MOON</span>
-              </div>
-            </motion.div>
+              <MessageCircle className="w-3.5 h-3.5" />
+              <span className="hidden xs:inline">Hubungi</span>
+            </a>
           </div>
 
         </div>
@@ -188,615 +169,495 @@ export default function App() {
 
 
       {/* ============================================================== */}
-      {/* MAIN CONTAINER                                                 */}
+      {/* MAIN ADVENTURE CONTENT                                         */}
       {/* ============================================================== */}
-      <main className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 py-8 md:py-14 flex flex-col gap-20 md:gap-32 relative z-10">
+      <main className="w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 py-10 md:py-16 flex flex-col gap-24 md:gap-32 relative z-10">
 
         {/* ============================================================== */}
-        {/* 1. HERO SECTION (Ketentuan 3: Foto, Nama, Julukan, Ringkasan) */}
+        {/* 2. HERO: ADVENTURER PASSPORT & CREDENTIALS SHOWCASE             */}
         {/* ============================================================== */}
-        <motion.section
-          id="hero"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="relative w-full flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16 pt-2 md:pt-6"
-        >
+        <section id="hero" className="relative w-full flex flex-col items-center gap-8 pt-4">
 
-          {/* Background Watermark Section Tag */}
-          <div className="absolute -left-6 -top-10 text-7xl md:text-9xl font-black italic text-white/5 pointer-events-none select-none tracking-tighter">
-            PROTAGONIST
-          </div>
-
-          {/* Left: Text & Identification */}
-          <div className="flex-1 w-full flex flex-col gap-4 text-left z-10 items-start">
-
-            {/* Status Pills with Staggered Entrance */}
+          {/* Intro Heading Banner */}
+          <div className="text-center max-w-3xl flex flex-col items-center gap-3">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="flex flex-wrap items-center justify-start gap-2"
+              initial={{ opacity: 0, y: -15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#102a24]/80 border border-[#d4af37]/40 shadow-sm"
             >
-              <span className="px-3 py-1 bg-[#0048d0] text-[#00d2ff] text-xs font-black italic tracking-wider transform -skew-x-12 border border-[#00d2ff]/60 shadow-[2px_2px_0px_#000000]">
-                {profile.academicStatus}
+              <Wind className="w-4 h-4 text-[#38bdf8]" />
+              <span className="text-xs font-serif font-bold text-[#fef08a] tracking-wider uppercase">
+                First-Class Mage & Software Craftsman
               </span>
-              <span className="px-3 py-1 bg-[#ff184c] text-white text-xs font-mono font-bold tracking-wider transform -skew-x-12 border border-white/60 shadow-[2px_2px_0px_#000000]">
-                NIM: {profile.nim}
-              </span>
-              <span className="px-3 py-1 bg-[#071330] text-[#ffcc00] text-xs font-mono font-bold tracking-wider transform -skew-x-12 border border-[#ffcc00]/40 shadow-[2px_2px_0px_#000000]">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#183d34] text-emerald-300">
                 {profile.level}
               </span>
             </motion.div>
 
-            {/* Main Headline (Bold, Slanted, Kinetic) */}
             <motion.h1
-              initial={{ opacity: 0, x: -40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3, duration: 0.7 }}
-              className="text-4xl sm:text-6xl md:text-7xl font-black italic tracking-tighter uppercase leading-[0.92] text-white text-left"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15, duration: 0.7 }}
+              className="text-4xl sm:text-6xl md:text-7xl font-serif font-bold tracking-tight text-white leading-tight"
             >
               {profile.fullName}
             </motion.h1>
 
-            {/* Nickname / Title Ribbon */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.4, duration: 0.5 }}
-              whileHover={{ scale: 1.02 }}
-              className="relative inline-block self-start my-1"
-            >
-              <span className="block px-4 py-2 bg-[#00d2ff] text-[#020713] font-black italic text-sm md:text-lg tracking-wide transform -skew-x-12 shadow-[5px_5px_0px_#000000] border-2 border-white">
-                {profile.nickname}
-              </span>
-            </motion.div>
-
-            {/* Brief Summary (1-2 sentences requirement) */}
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.6 }}
-              className="text-gray-200 text-sm md:text-base leading-relaxed max-w-2xl text-justify font-medium border-l-4 border-[#00d2ff] pl-4 py-2 my-2 bg-gradient-to-r from-[#00d2ff]/15 via-[#0048d0]/10 to-transparent"
+              transition={{ delay: 0.3, duration: 0.6 }}
+              className="text-gray-300 text-sm md:text-lg font-serif italic max-w-2xl text-center"
             >
-              {profile.bio}
+              "Menenun logika, merangkai kode, dan menyelesaikan setiap tantangan teknis dengan tanggung jawab penuh."
             </motion.p>
-
-            {/* Quick Action CTA Links */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
-              className="flex flex-wrap items-center justify-start gap-4 pt-2"
-            >
-
-              <motion.a
-                whileHover={{ scale: 1.05, skewX: -12 }}
-                whileTap={{ scale: 0.98 }}
-                href="#troubleshooting"
-                className="px-6 py-3.5 bg-[#071330] text-[#00d2ff] font-black italic text-sm md:text-base tracking-wider uppercase transform -skew-x-12 border-2 border-[#00d2ff]/60 hover:bg-[#00d2ff] hover:text-[#020713] transition-all duration-150 flex items-center gap-2 shadow-[4px_4px_0px_#000000]"
-              >
-                <span className="inline-block transform skew-x-12 flex items-center gap-2">
-                  <Cpu className="w-4 h-4" />
-                  Lab Investigasi
-                </span>
-              </motion.a>
-
-              <motion.a
-                whileHover={{ scale: 1.05, skewX: -12 }}
-                whileTap={{ scale: 0.98 }}
-                href="#projects"
-                className="px-6 py-3.5 bg-[#030a1c] text-gray-300 font-black italic text-sm md:text-base tracking-wider uppercase transform -skew-x-12 border border-white/30 hover:border-white hover:text-white transition-all duration-150 flex items-center gap-2 shadow-[3px_3px_0px_#000000]"
-              >
-                <span className="inline-block transform skew-x-12 flex items-center gap-2">
-                  <Terminal className="w-4 h-4" />
-                  Quest Log
-                </span>
-              </motion.a>
-            </motion.div>
           </div>
 
-          {/* Right: Floating Character / Profile Frame with Kinetic Pulse */}
-          <div className="relative flex-shrink-0 w-72 h-72 sm:w-84 sm:h-84 lg:w-96 lg:h-96 flex items-center justify-center self-center">
+          {/* Grand Adventurer Passport Card (Landscape Journey Presentation) */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.35, duration: 0.7 }}
+            className="w-full max-w-4xl rounded-2xl grimoire-card border-2 border-[#d4af37]/45 p-6 sm:p-8 shadow-[0_16px_50px_rgba(0,0,0,0.6)] relative overflow-hidden"
+          >
+            {/* Corner Filigree Ornaments */}
+            <div className="absolute top-3 left-3 text-[#d4af37]/60 text-xs font-serif select-none pointer-events-none">✦ ───</div>
+            <div className="absolute top-3 right-3 text-[#d4af37]/60 text-xs font-serif select-none pointer-events-none">─── ✦</div>
+            <div className="absolute bottom-3 left-3 text-[#d4af37]/60 text-xs font-serif select-none pointer-events-none">✦ ───</div>
+            <div className="absolute bottom-3 right-3 text-[#d4af37]/60 text-xs font-serif select-none pointer-events-none">─── ✦</div>
 
-            {/* Dynamic Pulsing Aura */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-tr from-[#0048d0]/50 to-[#00d2ff]/40 rounded-full blur-3xl"
-              animate={{ scale: [0.85, 1.15, 0.85], opacity: [0.4, 0.75, 0.4] }}
-              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-            />
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-8 relative z-10">
 
-            {/* P3R Diagonal Frame with Breathing Motion */}
-            <motion.div
-              animate={{
-                y: [0, -10, 0],
-                rotate: [2, 1, 2],
-              }}
-              transition={{
-                duration: 6,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-              className="relative w-full h-full p-2.5 bg-gradient-to-b from-[#00d2ff] via-[#0048d0] to-[#020713] transform -skew-x-6 rotate-2 shadow-[10px_10px_0px_#000000] border-2 border-white"
-            >
-              <div className="w-full h-full bg-[#050e24] overflow-hidden relative flex items-center justify-center">
-                {/* Profile Avatar with Atlus Blue Tint Effect */}
-                <img
-                  src={profile.avatar}
-                  alt={profile.fullName}
-                  className="w-full h-full object-cover object-top filter contrast-125 brightness-105 hover:scale-105 transition-transform duration-300"
-                />
+              {/* Left Column: Portrait in Antique Guild Frame */}
+              <div className="flex flex-col items-center gap-3 flex-shrink-0">
+                <div className="relative w-48 h-56 sm:w-52 sm:h-64 rounded-xl p-2 bg-gradient-to-b from-[#d4af37] via-[#214a3f] to-[#0a1a17] shadow-xl">
+                  <div className="w-full h-full rounded-lg overflow-hidden relative bg-[#0d2621]">
+                    <img
+                      src={profile.avatar}
+                      alt={profile.fullName}
+                      className="w-full h-full object-cover object-top filter brightness-105 contrast-105 hover:scale-105 transition-transform duration-500"
+                    />
+                    {/* Soft vignette overlay to blend photo */}
+                    <div className="absolute inset-0 ring-1 ring-inset ring-[#d4af37]/40 pointer-events-none" />
+                  </div>
 
-                {/* Shimmer line across photo */}
-                <div className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 animate-shimmer pointer-events-none" />
+                  {/* Wax Seal Stamp on Portrait Corner */}
+                  <div className="absolute -bottom-3 -right-3 w-10 h-10 rounded-full guild-wax-seal flex items-center justify-center text-white text-xs font-serif font-bold shadow-lg">
+                    PAS
+                  </div>
+                </div>
 
-                {/* Corner Slanted Tag */}
-                <div className="absolute bottom-0 right-0 bg-[#ff184c] text-white text-[10px] font-black italic tracking-widest px-3 py-1 transform -skew-x-12 border-t-2 border-l-2 border-white shadow-[2px_2px_0px_#000000]">
-                  OPERATIVE // P3R SPEC
+                <div className="text-center font-serif">
+                  <span className="text-xs font-bold text-[#fef08a] block">ID REGISTRASI GUILD</span>
+                  <span className="text-[11px] font-mono text-gray-400">NIM: {profile.nim}</span>
                 </div>
               </div>
-            </motion.div>
-          </div>
-        </motion.section>
 
-
-        {/* ============================================================== */}
-        {/* 2. ABOUT ME SECTION (Velvet Room / Dialogue Box Style)        */}
-        {/* ============================================================== */}
-        <motion.section
-          id="about"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.2 }}
-          transition={{ duration: 0.6 }}
-          className="relative flex flex-col gap-6 scroll-mt-20"
-        >
-
-          {/* Section Header Banner with kinetic slide */}
-          <div className="flex items-center gap-3">
-            <motion.div
-              whileHover={{ scale: 1.03 }}
-              className="px-5 py-1.5 bg-[#0048d0] text-white font-black italic text-lg md:text-xl tracking-wider uppercase transform -skew-x-12 border-l-4 border-[#00d2ff] shadow-[4px_4px_0px_#000000]"
-            >
-              <span className="inline-block transform skew-x-12">TENTANG SAYA // VELVET ARCHIVE</span>
-            </motion.div>
-            <div className="flex-1 h-[2px] bg-gradient-to-r from-[#00d2ff]/60 to-transparent" />
-          </div>
-
-          {/* Dialogue Box Container */}
-          <motion.div
-            initial={{ scale: 0.97, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: false, amount: 0.2 }}
-            transition={{ duration: 0.5 }}
-            className="relative p-6 sm:p-8 bg-[#071330]/90 border-2 border-[#00d2ff]/70 p3r-clip-dialog backdrop-blur-md shadow-[8px_8px_0px_#000000] flex flex-col gap-6"
-          >
-
-            {/* Speaker Tag */}
-            <div className="flex items-center gap-2 -mb-2">
-              <span className="px-3.5 py-1 bg-[#00d2ff] text-[#020713] font-black italic text-xs tracking-widest uppercase transform -skew-x-12 border border-white">
-                TALK
-              </span>
-              <span className="text-white font-black italic tracking-wider text-base">
-                {profile.fullName}
-              </span>
-              <span className="text-xs font-mono text-[#ffcc00] hidden sm:inline">
-                [{profile.academicStatus}]
-              </span>
-            </div>
-
-            {/* Dialogue Text */}
-            <p className="text-gray-100 text-sm md:text-base leading-relaxed italic border-l-4 border-[#ff184c] pl-4 py-1 bg-white/[0.02]">
-              "{about.dialogue}"
-            </p>
-
-            {/* 4 Pillars of Work Ethic & Character (Staggered On Scroll) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
-              {about.pillars.map((pil, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: false }}
-                  transition={{ delay: idx * 0.1, duration: 0.4 }}
-                  whileHover={{ y: -6, borderColor: '#00d2ff', scale: 1.02 }}
-                  className="p-3.5 bg-[#020713]/85 border border-white/20 transform -skew-x-3 transition-colors shadow-[3px_3px_0px_#000000] flex flex-col gap-1.5"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="px-2 py-0.5 text-[9px] font-mono font-bold bg-[#0048d0] text-[#00d2ff]">
-                      {pil.badge}
+              {/* Right Column: Passport Registry Information */}
+              <div className="flex-1 w-full flex flex-col justify-between gap-5 text-left">
+                <div>
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#d4af37]/25 pb-3">
+                    <div>
+                      <span className="text-[10px] font-serif uppercase tracking-widest text-[#d4af37] block">GELAR RESMI PETUALANG</span>
+                      <h2 className="text-xl sm:text-2xl font-serif font-bold text-white">{profile.fullName}</h2>
+                    </div>
+                    <span className="px-3 py-1 rounded bg-[#102a24] text-[#fef08a] text-xs font-serif font-bold border border-[#d4af37]/40">
+                      {profile.guildRank}
                     </span>
-                    <Sparkles className="w-3.5 h-3.5 text-[#ffcc00]" />
                   </div>
-                  <h4 className="font-black italic text-xs sm:text-sm text-white">
-                    {pil.title}
-                  </h4>
-                  <p className="text-[11px] text-gray-300 leading-snug">
-                    {pil.desc}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
 
-            {/* Education & Interests Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
-              {/* Education Card */}
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.5 }}
-                className="p-4 bg-[#020713]/70 border border-[#00d2ff]/30 transform -skew-x-3"
-              >
-                <div className="flex items-center gap-2 mb-3 text-[#00d2ff]">
-                  <Code2 className="w-4 h-4" />
-                  <span className="font-black italic text-xs tracking-wider uppercase">Latar Belakang Pendidikan & Pengalaman</span>
+                  {/* Detail Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 my-4 text-xs font-serif">
+                    <div className="p-2.5 rounded-lg bg-[#0a1a17]/70 border border-[#d4af37]/25">
+                      <span className="text-gray-400 block text-[10px] font-mono">STATUS AKADEMIK:</span>
+                      <span className="text-white font-bold">{profile.academicStatus}</span>
+                      <span className="text-emerald-400 text-[10px] block font-mono">{profile.classGroup}</span>
+                    </div>
+
+                    <div className="p-2.5 rounded-lg bg-[#0a1a17]/70 border border-[#d4af37]/25">
+                      <span className="text-gray-400 block text-[10px] font-mono">ELEMENTAL VISION:</span>
+                      <span className="text-purple-300 font-bold">{profile.vision}</span>
+                      <span className="text-gray-400 text-[10px] block font-mono">Afinitas Logika Komputasi</span>
+                    </div>
+                  </div>
+
+                  <p className="text-gray-300 text-xs sm:text-sm leading-relaxed border-l-2 border-[#d4af37] pl-3 py-1 italic">
+                    "{profile.bio}"
+                  </p>
                 </div>
-                <div className="flex flex-col gap-3">
+
+                {/* Quick Action Navigation */}
+                <div className="flex flex-wrap items-center gap-3 pt-2">
+                  <a
+                    href="#expeditions"
+                    className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-[#d4af37] to-[#b89327] text-[#081614] font-serif font-bold text-xs tracking-wider hover:brightness-110 transition-all flex items-center gap-2 shadow-md"
+                  >
+                    <Scroll className="w-4 h-4 text-[#081614]" />
+                    Papan Misi & Ekspedisi
+                  </a>
+                  <a
+                    href="#contact"
+                    className="px-5 py-2.5 rounded-lg bg-[#0e2722] text-[#fef08a] font-serif font-bold text-xs tracking-wider border border-[#d4af37]/40 hover:bg-[#143630] transition-all flex items-center gap-2"
+                  >
+                    <Feather className="w-4 h-4 text-[#d4af37]" />
+                    Kirim Pesan Burung Pos
+                  </a>
+                </div>
+              </div>
+
+            </div>
+          </motion.div>
+
+        </section>
+
+
+        {/* ============================================================== */}
+        {/* 3. SECTION: THE OPEN GRIMOIRE TOME (FILOSOFI & REFLEKSI DIRI)   */}
+        {/* ============================================================== */}
+        <section id="grimoire" className="relative flex flex-col gap-6 scroll-mt-24">
+
+          {/* Section Header */}
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-[#102b25] border border-[#d4af37]/50 flex items-center justify-center text-[#d4af37]">
+              <BookOpen className="w-4 h-4" />
+            </div>
+            <h2 className="text-xl sm:text-2xl font-serif font-bold text-white tracking-wide">
+              LEMBAR PERJALANAN & FILOSOFI HIDUP
+            </h2>
+            <div className="flex-1 h-[1px] bg-gradient-to-r from-[#d4af37]/40 to-transparent" />
+          </div>
+
+          {/* Open Grimoire Layout: Two-Page Book Presentation */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+            {/* Left Page: Narrative & Study Chronicles */}
+            <div className="grimoire-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between gap-6 border border-[#d4af37]/35 shadow-lg relative">
+              <div className="absolute top-0 right-8 w-6 h-12 bg-[#b91c1c] shadow-md rounded-b flex items-end justify-center pb-1 text-white text-[9px] font-serif">
+                ★
+              </div>
+
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center gap-2 text-xs font-serif text-[#fef08a] font-bold border-b border-[#d4af37]/20 pb-2">
+                  <Feather className="w-4 h-4 text-[#d4af37]" />
+                  <span>CATATAN NARATIF PETUALANG</span>
+                </div>
+
+                <p className="text-gray-200 text-sm leading-relaxed italic border-l-2 border-[#d4af37] pl-4 py-1">
+                  "{about.dialogue}"
+                </p>
+
+                {/* Educational Timeline */}
+                <div className="flex flex-col gap-3.5 mt-2">
+                  <span className="text-[11px] font-serif text-[#d4af37] font-bold uppercase tracking-wider">
+                    Jejak Pendidikan & Pengalaman Industri
+                  </span>
                   {about.education.map((edu, idx) => (
-                    <div key={idx} className="flex flex-col gap-0.5 border-l-2 border-[#00d2ff]/40 pl-3">
-                      <span className="font-bold text-white text-xs sm:text-sm">{edu.degree}</span>
-                      <span className="text-[11px] text-[#00d2ff] font-mono">{edu.institution} ({edu.period})</span>
-                      <p className="text-xs text-gray-400 mt-1">{edu.detail}</p>
+                    <div key={idx} className="p-3 rounded-lg bg-[#091a18]/70 border border-[#d4af37]/20 flex flex-col gap-1">
+                      <div className="flex items-center justify-between text-xs font-serif font-bold">
+                        <span className="text-white">{edu.degree}</span>
+                        <span className="text-emerald-400 font-mono text-[10px]">{edu.period}</span>
+                      </div>
+                      <span className="text-[11px] text-[#38bdf8] font-mono">{edu.institution}</span>
+                      <p className="text-xs text-gray-300 mt-1">{edu.detail}</p>
                     </div>
                   ))}
                 </div>
-              </motion.div>
+              </div>
 
-              {/* Interests Card */}
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.5 }}
-                className="p-4 bg-[#020713]/70 border border-[#00d2ff]/30 transform -skew-x-3 flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-center gap-2 mb-3 text-[#ffcc00]">
-                    <Zap className="w-4 h-4" />
-                    <span className="font-black italic text-xs tracking-wider uppercase">Nilai Personal & Minat Eksplorasi</span>
-                  </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {about.interests.map((item, idx) => (
-                      <span
+              {/* Personal Interests */}
+              <div className="pt-4 border-t border-white/10 flex flex-col gap-2">
+                <span className="text-[11px] font-serif text-gray-400">MINAT DAN BIDANG EKSPLORASI:</span>
+                <div className="flex flex-wrap gap-1.5">
+                  {about.interests.map((item, idx) => (
+                    <span
+                      key={idx}
+                      className="px-2.5 py-1 text-xs font-serif rounded bg-[#0a1c19] text-[#fef08a] border border-[#d4af37]/25"
+                    >
+                      ✦ {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Right Page: The 4 Elemental Sigils of Character */}
+            <div className="grimoire-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between gap-5 border border-[#d4af37]/35 shadow-lg">
+              <div>
+                <div className="flex items-center gap-2 text-xs font-serif text-[#fef08a] font-bold border-b border-[#d4af37]/20 pb-2">
+                  <Shield className="w-4 h-4 text-[#d4af37]" />
+                  <span>EMPAT SELEMBAR SEGEL NILAI KERJA</span>
+                </div>
+                <p className="text-xs text-gray-300 mt-2 leading-relaxed">
+                  Prinsip fundamental yang senantiasa dipegang dalam setiap proses belajar, kerja tim, dan penyelesaian masalah teknis.
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mt-4">
+                  {about.pillars.map((pil, idx) => {
+                    const badge = getElementBadge(pil.element)
+                    return (
+                      <div
                         key={idx}
-                        className="px-2.5 py-1 text-xs font-semibold bg-[#071330] text-gray-200 border border-[#00d2ff]/25 hover:border-[#ff184c] hover:text-white transition-all transform -skew-x-3"
+                        className="p-4 rounded-xl bg-[#091a18]/80 border border-[#d4af37]/25 hover:border-[#d4af37] transition-all flex flex-col gap-2"
                       >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
+                        <div className="flex items-center justify-between">
+                          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#102b25] text-[#fef08a]">
+                            {pil.badge}
+                          </span>
+                          <span className={`inline-flex items-center gap-1 text-[11px] font-serif font-bold px-2 py-0.5 rounded-full border ${badge.color}`}>
+                            {badge.icon} {pil.element}
+                          </span>
+                        </div>
+                        <h3 className="font-serif font-bold text-sm text-white">
+                          {pil.title}
+                        </h3>
+                        <p className="text-xs text-gray-300 leading-relaxed">
+                          {pil.desc}
+                        </p>
+                      </div>
+                    )
+                  })}
                 </div>
+              </div>
 
-                <div className="pt-3 mt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-gray-400">
-                  <span>MINDSET: CONTINUOUS LEARNING</span>
-                  <span className="text-[#00d2ff] font-bold">READY TO COLLABORATE</span>
-                </div>
-              </motion.div>
+              <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs font-serif text-gray-400">
+                <span>DOKUMENTASI KEPRIBADIAN</span>
+                <span className="text-[#38bdf8] font-bold">TERUJI DALAM TIM</span>
+              </div>
             </div>
 
-            {/* Bottom guide prompt */}
-            <div className="flex items-center justify-between text-[11px] font-mono text-gray-400 border-t border-white/10 pt-3">
-              <span>SOCIAL LINK // STATUS: READY TO COMMUNICATE</span>
-              <span className="text-[#00d2ff] flex items-center gap-1 font-bold">
-                <Clock className="w-3.5 h-3.5" /> RESPON CEPAT VIA WHATSAPP
-              </span>
-            </div>
-          </motion.div>
-        </motion.section>
-
+          </div>
+        </section>
 
 
         {/* ============================================================== */}
-        {/* 4. SKILLS SECTION (Persona Stats & Affinity Style)           */}
+        {/* 4. SECTION: GRIMOIRE TALENTA & PENGUASAAN SIHIR TEKNIS         */}
         {/* ============================================================== */}
-        <motion.section
-          id="skills"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.15 }}
-          transition={{ duration: 0.6 }}
-          className="relative flex flex-col gap-6 scroll-mt-20"
-        >
+        <section id="skills" className="relative flex flex-col gap-6 scroll-mt-24">
 
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <motion.div
-                whileHover={{ scale: 1.03 }}
-                className="px-5 py-1.5 bg-[#0048d0] text-white font-black italic text-lg md:text-xl tracking-wider uppercase transform -skew-x-12 border-l-4 border-[#00d2ff] shadow-[4px_4px_0px_#000000]"
-              >
-                <span className="inline-block transform skew-x-12">KEAHLIAN // SKILL AFFINITIES</span>
-              </motion.div>
-              <div className="hidden sm:block flex-1 h-[2px] bg-gradient-to-r from-[#00d2ff]/40 to-transparent" />
+              <div className="w-8 h-8 rounded-full bg-[#102b25] border border-[#d4af37]/50 flex items-center justify-center text-[#d4af37]">
+                <Zap className="w-4 h-4" />
+              </div>
+              <h2 className="text-xl sm:text-2xl font-serif font-bold text-white tracking-wide">
+                GRIMOIRE TALENTA & PENGUASAAN TEKNIS
+              </h2>
+              <div className="hidden sm:block flex-1 h-[1px] bg-gradient-to-r from-[#d4af37]/40 to-transparent" />
             </div>
 
-            {/* Category Filter Pills */}
-            <div className="flex flex-wrap items-center gap-1.5 font-mono text-xs">
-              {['ALL', 'FRONTEND', 'SYSTEM', 'IOT_3D'].map((tab) => (
+            {/* Category Filter Bookmark Tabs */}
+            <div className="flex flex-wrap items-center gap-2 font-serif text-xs">
+              {[
+                { id: 'ALL', label: 'Semua Mantra' },
+                { id: 'FRONTEND', label: 'Sihir Frontend' },
+                { id: 'SYSTEM', label: 'Diagnostik & Sistem' },
+                { id: 'IOT_3D', label: 'IoT & Pipeline 3D' },
+              ].map((tab) => (
                 <button
-                  key={tab}
+                  key={tab.id}
                   type="button"
-                  onClick={() => setSkillFilter(tab)}
-                  className={`px-3 py-1 font-bold transform -skew-x-12 border transition-all ${
-                    skillFilter === tab
-                      ? 'bg-[#00d2ff] text-[#020713] border-white shadow-[2px_2px_0px_#000000]'
-                      : 'bg-[#071330] text-gray-300 border-[#00d2ff]/30 hover:border-[#00d2ff]'
+                  onClick={() => setSkillFilter(tab.id)}
+                  className={`px-3.5 py-1.5 rounded-lg font-bold transition-all ${
+                    skillFilter === tab.id
+                      ? 'bg-[#d4af37] text-[#081614] shadow-md'
+                      : 'bg-[#0f2622] text-gray-300 border border-[#d4af37]/30 hover:border-[#d4af37]'
                   }`}
                 >
-                  {tab}
+                  {tab.label}
                 </button>
               ))}
             </div>
           </div>
 
+          {/* Spell Slots Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <AnimatePresence>
-              {filteredSkills.map((skill, index) => (
-                <motion.div
-                  key={skill.name}
-                  layout
-                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                  whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                  viewport={{ once: false }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ delay: index * 0.06, duration: 0.35 }}
-                  whileHover={{ y: -6, borderColor: '#ff184c', scale: 1.02 }}
-                  className="relative p-4 bg-[#071330]/85 border-2 border-[#00d2ff]/40 transform -skew-x-3 transition-colors shadow-[5px_5px_0px_#000000] group flex flex-col justify-between"
-                >
-                  <div>
-                    {/* Stat Symbol & Title */}
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="w-6 h-6 flex items-center justify-center bg-[#0048d0] text-[#00d2ff] font-black text-xs italic border border-[#00d2ff] shadow-[1px_1px_0px_#000000]">
-                          {skill.stat}
+              {filteredSkills.map((skill, index) => {
+                const badge = getElementBadge(skill.element)
+                return (
+                  <motion.div
+                    key={skill.name}
+                    layout
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ delay: index * 0.05, duration: 0.3 }}
+                    className="grimoire-card rounded-xl p-5 border border-[#d4af37]/30 grimoire-card-hover flex flex-col justify-between"
+                  >
+                    <div>
+                      {/* Element Affinity & Spell Title */}
+                      <div className="flex items-center justify-between mb-2.5">
+                        <span className={`inline-flex items-center gap-1 text-[10px] font-serif font-bold px-2 py-0.5 rounded-full border ${badge.color}`}>
+                          {badge.icon} {skill.element}
                         </span>
-                        <span className="font-bold text-sm tracking-wide text-white group-hover:text-[#00d2ff] transition-colors">
-                          {skill.name}
+                        <span className="text-xs font-mono font-bold text-[#fef08a]">
+                          {skill.level}%
                         </span>
                       </div>
-                      <span className="text-xs font-mono font-bold text-[#ffcc00]">
-                        {skill.level}%
-                      </span>
+
+                      <h3 className="font-serif font-bold text-sm text-white mb-1.5 leading-snug">
+                        {skill.name}
+                      </h3>
+
+                      <p className="text-xs text-gray-300 leading-relaxed mb-4">
+                        {skill.desc}
+                      </p>
                     </div>
 
-                    <p className="text-[11px] text-gray-300 leading-snug mb-3">
-                      {skill.desc}
-                    </p>
-                  </div>
+                    <div>
+                      {/* Mana Gauge Bar */}
+                      <div className="w-full h-2 bg-[#091a18] rounded-full overflow-hidden border border-[#d4af37]/30 p-0.5">
+                        <motion.div
+                          className="h-full bg-gradient-to-r from-[#d4af37] via-[#38bdf8] to-[#fef08a] rounded-full"
+                          initial={{ width: 0 }}
+                          whileInView={{ width: `${skill.level}%` }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 1, ease: 'easeOut' }}
+                        />
+                      </div>
 
-                  <div>
-                    {/* Persona Gauge Bar with Dynamic Fill Animation */}
-                    <div className="w-full h-2.5 bg-[#020713] border border-white/30 p-0.5 relative overflow-hidden">
-                      <motion.div
-                        className="h-full bg-gradient-to-r from-[#0048d0] via-[#00d2ff] to-[#ff184c]"
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${skill.level}%` }}
-                        viewport={{ once: false }}
-                        transition={{ duration: 1, ease: 'easeOut', delay: index * 0.05 }}
-                      />
-                      <div className="absolute inset-0 w-1/2 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12 animate-shimmer" />
+                      <div className="flex justify-between items-center mt-2 text-[10px] font-mono text-gray-400">
+                        <span>KAT: {skill.category}</span>
+                        <span className="text-emerald-400 font-bold">TERUJI</span>
+                      </div>
                     </div>
-
-                    <div className="flex justify-between items-center mt-2 text-[10px] font-mono text-gray-400">
-                      <span>CAT: {skill.category}</span>
-                      <span className="text-[#00d2ff] font-bold">READY</span>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                )
+              })}
             </AnimatePresence>
           </div>
-        </motion.section>
+        </section>
 
 
         {/* ============================================================== */}
-        {/* 5. PROJECTS / QUEST LOG (Persona 3 Reload Request List)       */}
+        {/* 5. SECTION: PAPAN MISI & EKSPEDISI GUILD (PROYEK NYATA)         */}
         {/* ============================================================== */}
-        <motion.section
-          id="projects"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.15 }}
-          transition={{ duration: 0.6 }}
-          className="relative flex flex-col gap-6 scroll-mt-20"
-        >
+        <section id="expeditions" className="relative flex flex-col gap-6 scroll-mt-24">
 
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <motion.div
-                whileHover={{ scale: 1.03 }}
-                className="px-5 py-1.5 bg-[#0048d0] text-white font-black italic text-lg md:text-xl tracking-wider uppercase transform -skew-x-12 border-l-4 border-[#ff184c] shadow-[4px_4px_0px_#000000]"
-              >
-                <span className="inline-block transform skew-x-12">PORTOFOLIO // QUEST BOARD</span>
-              </motion.div>
-              <div className="hidden sm:block flex-1 h-[2px] bg-gradient-to-r from-[#00d2ff]/40 to-transparent" />
+              <div className="w-8 h-8 rounded-full bg-[#102b25] border border-[#d4af37]/50 flex items-center justify-center text-[#d4af37]">
+                <Scroll className="w-4 h-4" />
+              </div>
+              <h2 className="text-xl sm:text-2xl font-serif font-bold text-white tracking-wide">
+                PAPAN KOMISI & EKSPEDISI GUILD
+              </h2>
+              <div className="hidden sm:block flex-1 h-[1px] bg-gradient-to-r from-[#d4af37]/40 to-transparent" />
             </div>
-            <span className="text-xs font-mono text-[#00d2ff] tracking-widest">
-              REQUESTS: {projects.length} LOGGED
+            <span className="text-xs font-serif text-[#fef08a] tracking-wide hidden sm:inline">
+              ✦ {projects.length} Komisi Terselesaikan
             </span>
           </div>
 
-          {/* Interactive Quest Container */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-[#071330]/90 border-2 border-[#00d2ff]/50 p-4 sm:p-6 backdrop-blur-md shadow-[8px_8px_0px_#000000]">
-
-            {/* Left: Quest List Table */}
-            <div className="lg:col-span-7 flex flex-col gap-2">
-              <div className="grid grid-cols-12 text-[11px] font-mono text-gray-400 pb-2 border-b border-white/10 px-3">
-                <span className="col-span-2">NO.</span>
-                <span className="col-span-7">JUDUL PROYEK / QUEST</span>
-                <span className="col-span-3 text-right">STATUS</span>
-              </div>
-
-              <div className="flex flex-col gap-2 mt-1">
-                {projects.map((quest, idx) => {
-                  const isSelected = selectedQuest.id === quest.id
-                  return (
-                    <motion.button
-                      key={quest.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: false }}
-                      transition={{ delay: idx * 0.08, duration: 0.3 }}
-                      whileHover={{ x: 6 }}
-                      onClick={() => setSelectedQuest(quest)}
-                      className={`w-full text-left grid grid-cols-12 items-center px-3 py-3 transition-all duration-150 transform -skew-x-6 border-2 ${
-                        isSelected
-                          ? 'bg-white text-[#020713] font-black border-white shadow-[5px_5px_0px_#ff184c]'
-                          : 'bg-[#020713]/80 text-gray-200 border-[#00d2ff]/30 hover:border-[#00d2ff] hover:bg-[#0b1736]'
-                      }`}
-                    >
-                      <span className={`col-span-2 font-mono text-xs italic ${isSelected ? 'text-[#ff184c]' : 'text-[#00d2ff]'}`}>
-                        /{quest.id}
-                      </span>
-                      <span className="col-span-7 text-xs sm:text-sm font-bold truncate pr-2">
-                        {quest.title}
-                      </span>
-                      <div className="col-span-3 flex justify-end">
-                        <span
-                          className={`px-2.5 py-0.5 text-[10px] font-mono font-bold tracking-wider ${
-                            quest.status === 'Done'
-                              ? isSelected
-                                ? 'bg-[#020713] text-[#00d2ff]'
-                                : 'bg-[#00d2ff] text-[#020713]'
-                              : 'bg-[#ff184c] text-white'
-                          }`}
-                        >
-                          ✓ {quest.status}
-                        </span>
-                      </div>
-                    </motion.button>
-                  )
-                })}
-              </div>
-            </div>
-
-            {/* Right: Selected Quest Details (Inspect Card) */}
-            <div className="lg:col-span-5 p-5 bg-[#020713]/90 border-2 border-[#00d2ff]/60 flex flex-col justify-between shadow-[5px_5px_0px_#000000]">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={selectedQuest.id}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -15 }}
-                  transition={{ duration: 0.25 }}
-                  className="flex flex-col gap-3"
-                >
-                  <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                    <span className="text-xs font-mono text-[#00d2ff] font-bold">
-                      QUEST DETAILS // /{selectedQuest.id}
+          {/* Expedition Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {projects.map((quest) => (
+              <div
+                key={quest.id}
+                className="grimoire-card rounded-2xl p-6 border border-[#d4af37]/35 grimoire-card-hover flex flex-col justify-between gap-4 relative overflow-hidden"
+              >
+                {/* Top Badge: Rank & Seal */}
+                <div className="flex items-center justify-between border-b border-[#d4af37]/20 pb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="w-6 h-6 rounded-full bg-[#b91c1c] text-white flex items-center justify-center text-[10px] font-serif font-bold shadow">
+                      ✓
                     </span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 bg-[#0048d0] text-white font-bold">
-                      {selectedQuest.category}
+                    <span className="font-serif text-xs font-bold text-[#fef08a]">
+                      {quest.rank}
                     </span>
                   </div>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#102b25] text-[#38bdf8] border border-[#38bdf8]/30">
+                    {quest.category}
+                  </span>
+                </div>
 
-                  <h3 className="text-lg sm:text-xl font-black italic text-white leading-tight">
-                    {selectedQuest.title}
+                {/* Content */}
+                <div className="flex flex-col gap-2.5">
+                  <h3 className="text-lg font-serif font-bold text-white leading-snug">
+                    {quest.title}
                   </h3>
 
-                  <p className="text-gray-200 text-xs sm:text-sm leading-relaxed">
-                    {selectedQuest.description}
+                  <p className="text-xs text-gray-300 leading-relaxed">
+                    {quest.description}
                   </p>
 
-                  {/* Impact highlight */}
-                  <div className="p-2.5 bg-[#071330] border-l-2 border-[#ffcc00] text-[11px] text-gray-300">
-                    <span className="text-[#ffcc00] font-bold font-mono block">OUTCOME / IMPACT:</span>
-                    {selectedQuest.impact}
+                  {/* Impact Box */}
+                  <div className="p-3 rounded-lg bg-[#081715]/80 border-l-2 border-[#d4af37] text-xs text-gray-300 mt-1">
+                    <span className="text-[#fef08a] font-serif font-bold block text-[11px] mb-0.5">HASIL & DAMPAK EKSPEDISI:</span>
+                    {quest.impact}
+                  </div>
+                </div>
+
+                {/* Tech Badges & Action */}
+                <div className="pt-3 border-t border-white/10 flex flex-col gap-3">
+                  <div className="flex flex-wrap gap-1.5">
+                    {quest.tech.map((t, idx) => (
+                      <span
+                        key={idx}
+                        className="px-2 py-0.5 rounded text-[10px] font-mono bg-[#0c2420] text-[#38bdf8] border border-[#38bdf8]/25"
+                      >
+                        {t}
+                      </span>
+                    ))}
                   </div>
 
-                  {/* Tech Stacks */}
-                  <div className="mt-1">
-                    <span className="block text-[10px] font-mono text-gray-400 mb-1">
-                      TECH IMPLEMENTATION:
-                    </span>
-                    <div className="flex flex-wrap gap-1.5">
-                      {selectedQuest.tech.map((t, idx) => (
-                        <span
-                          key={idx}
-                          className="px-2 py-0.5 bg-[#071330] text-[#00d2ff] text-[11px] font-mono border border-[#00d2ff]/40"
-                        >
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-
-              {/* Action Button */}
-              <div className="pt-4 border-t border-white/10 mt-4 flex items-center justify-between">
-                <span className="text-[10px] font-mono text-gray-400 flex items-center gap-1">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#00d2ff]" /> VERIFIED WORK
-                </span>
-                <motion.a
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  href={selectedQuest.link}
-                  className="px-4 py-1.5 bg-[#00d2ff] text-[#020713] font-black italic text-xs tracking-wider uppercase transform -skew-x-12 hover:bg-[#ff184c] hover:text-white transition-colors flex items-center gap-1 shadow-[2px_2px_0px_#000000]"
-                >
-                  <span className="inline-block transform skew-x-12 flex items-center gap-1">
-                    Buka Proyek <ArrowUpRight className="w-3.5 h-3.5" />
-                  </span>
-                </motion.a>
+                  <a
+                    href="#contact"
+                    className="w-full py-2 rounded-lg bg-[#102a24] text-[#fef08a] font-serif font-bold text-xs tracking-wide border border-[#d4af37]/40 hover:bg-[#153830] transition-all flex items-center justify-center gap-1.5"
+                  >
+                    <span>Konsultasikan Proyek Ini</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-[#d4af37]" />
+                  </a>
+                </div>
               </div>
-            </div>
-
+            ))}
           </div>
-        </motion.section>
+
+        </section>
 
 
         {/* ============================================================== */}
-        {/* 6. CERTIFICATIONS (Ketentuan 3: Sertifikat Resmi BNSP & Cisco) */}
+        {/* 6. SECTION: PIAGAM & LISENSI RESMI (KREDENSIAL NEGARA & GLOBAL) */}
         {/* ============================================================== */}
-        <motion.section
-          id="certifications"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.2 }}
-          transition={{ duration: 0.6 }}
-          className="relative flex flex-col gap-6 scroll-mt-20"
-        >
+        <section id="credentials" className="relative flex flex-col gap-6 scroll-mt-24">
+
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <motion.div
-                whileHover={{ scale: 1.03 }}
-                className="px-5 py-1.5 bg-[#0048d0] text-white font-black italic text-lg md:text-xl tracking-wider uppercase transform -skew-x-12 border-l-4 border-[#ffcc00] shadow-[4px_4px_0px_#000000]"
-              >
-                <span className="inline-block transform skew-x-12">LISENSI & SERTIFIKASI // CERTIFIED</span>
-              </motion.div>
-              <div className="hidden sm:block flex-1 h-[2px] bg-gradient-to-r from-[#00d2ff]/40 to-transparent" />
+              <div className="w-8 h-8 rounded-full bg-[#102b25] border border-[#d4af37]/50 flex items-center justify-center text-[#d4af37]">
+                <Award className="w-4 h-4" />
+              </div>
+              <h2 className="text-xl sm:text-2xl font-serif font-bold text-white tracking-wide">
+                PIAGAM & LISENSI RESMI
+              </h2>
+              <div className="hidden sm:block flex-1 h-[1px] bg-gradient-to-r from-[#d4af37]/40 to-transparent" />
             </div>
-            <span className="text-xs font-mono text-[#ffcc00] tracking-widest hidden sm:inline">
-              OFFICIAL CREDENTIALS
+            <span className="text-xs font-serif text-[#fef08a] tracking-wide hidden sm:inline">
+              ✦ Standar Sertifikasi Kompetensi
             </span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {certifications.map((cert, idx) => (
-              <motion.div
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {certifications.map((cert) => (
+              <div
                 key={cert.code}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false }}
-                transition={{ delay: idx * 0.15, duration: 0.5 }}
-                whileHover={{ y: -6, borderColor: '#00d2ff', scale: 1.02 }}
-                className="p-5 bg-[#071330]/90 border-2 border-[#00d2ff]/40 shadow-[6px_6px_0px_#000000] flex flex-col justify-between transform -skew-x-3 transition-colors"
+                className="grimoire-card rounded-2xl p-6 sm:p-7 border border-[#d4af37]/40 shadow-lg flex flex-col justify-between gap-4"
               >
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2.5">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs font-black text-[#ff184c] italic">
-                      /{cert.code}
+                    <span className="font-serif text-xs font-bold text-[#d4af37] flex items-center gap-1">
+                      <Scroll className="w-3.5 h-3.5" /> {cert.code}
                     </span>
-                    <span className="px-2.5 py-0.5 text-[10px] font-mono font-bold bg-[#ffcc00] text-[#020713]">
+                    <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-[#14352e] text-[#fef08a] border border-[#d4af37]/35">
                       {cert.badge}
                     </span>
                   </div>
 
-                  <h3 className="text-lg font-black italic text-white leading-tight">
+                  <h3 className="text-xl font-serif font-bold text-white leading-tight">
                     {cert.title}
                   </h3>
 
-                  <div className="text-xs font-bold text-[#00d2ff]">
+                  <div className="text-xs font-bold text-[#38bdf8]">
                     {cert.issuer}
                   </div>
 
@@ -804,87 +665,78 @@ export default function App() {
                     {cert.period}
                   </div>
 
-                  <p className="text-xs text-gray-300 mt-1">
-                    <strong className="text-gray-400 font-mono text-[10px] block">BIDANG KOMPETENSI:</strong>
+                  <div className="p-3 rounded-lg bg-[#081715]/70 border border-[#d4af37]/20 text-xs text-gray-300 mt-1">
+                    <strong className="text-[#fef08a] font-serif text-[11px] block mb-0.5">BIDANG KOMPETENSI RESMI:</strong>
                     {cert.skills}
-                  </p>
+                  </div>
                 </div>
 
-                <div className="pt-3 mt-4 border-t border-white/10 flex items-center justify-between text-xs font-mono">
-                  <span className="text-emerald-400 flex items-center gap-1 font-bold">
-                    <CheckCircle2 className="w-3.5 h-3.5" /> Kredensial Valid
+                <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-serif">
+                  <span className="text-emerald-400 flex items-center gap-1.5 font-bold">
+                    <CheckCircle2 className="w-4 h-4" /> Kredensial Valid & Terverifikasi
                   </span>
-                  <span className="text-gray-400">
-                    STATUS: {cert.status}
+                  <span className="text-gray-400 font-mono text-[11px]">
+                    {cert.status}
                   </span>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
-        </motion.section>
+
+        </section>
 
 
         {/* ============================================================== */}
-        {/* 7. CONTACT & WHATSAPP CTA (Ketentuan 3: CTA WhatsApp Resmi)  */}
+        {/* 7. SECTION: POS BURUNG MERPATI & HUBUNGI SAYA VIA WHATSAPP      */}
         {/* ============================================================== */}
-        <motion.section
-          id="contact"
-          initial={{ opacity: 0, y: 60 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.15 }}
-          transition={{ duration: 0.7 }}
-          className="relative flex flex-col gap-6 scroll-mt-20 pb-12"
-        >
+        <section id="contact" className="relative flex flex-col gap-6 scroll-mt-24 pb-12">
 
           <div className="flex items-center gap-3">
-            <motion.div
-              whileHover={{ scale: 1.03 }}
-              className="px-5 py-1.5 bg-[#ff184c] text-white font-black italic text-lg md:text-xl tracking-wider uppercase transform -skew-x-12 border-l-4 border-white shadow-[4px_4px_0px_#000000]"
-            >
-              <span className="inline-block transform skew-x-12">HUBUNGI SAYA // EVOKER COMMAND CTA</span>
-            </motion.div>
-            <div className="flex-1 h-[2px] bg-gradient-to-r from-[#ff184c]/60 to-transparent" />
+            <div className="w-8 h-8 rounded-full bg-[#102b25] border border-[#d4af37]/50 flex items-center justify-center text-[#d4af37]">
+              <Mail className="w-4 h-4" />
+            </div>
+            <h2 className="text-xl sm:text-2xl font-serif font-bold text-white tracking-wide">
+              STASIUN POS BURUNG MERPATI // HUBUNGI SAYA
+            </h2>
+            <div className="flex-1 h-[1px] bg-gradient-to-r from-[#d4af37]/40 to-transparent" />
           </div>
 
-          {/* CTA Box with Persona Red & Blue contrast */}
-          <div className="relative p-6 sm:p-10 bg-gradient-to-br from-[#071330] via-[#050e24] to-[#020713] border-2 border-[#00d2ff] shadow-[10px_10px_0px_#000000] flex flex-col gap-8">
+          <div className="grimoire-card rounded-2xl p-6 sm:p-10 border-2 border-[#d4af37]/40 shadow-2xl flex flex-col gap-7">
 
             {/* Header copy */}
             <div className="flex flex-col gap-2">
-              <span className="text-xs font-mono text-[#00d2ff] tracking-widest uppercase font-bold">
-                DIRECT WHATSAPP COMMUNICATION
+              <span className="text-xs font-serif text-[#d4af37] tracking-widest uppercase font-bold flex items-center gap-1.5">
+                ✦ TAUTAN KOMUNIKASI LANGSUNG
               </span>
-              <h2 className="text-2xl sm:text-4xl md:text-5xl font-black italic uppercase tracking-tighter text-white">
-                Siap Berkolaborasi atau Diskusi Proyek?
-              </h2>
-              <p className="text-gray-200 text-sm md:text-base max-w-2xl leading-relaxed">
-                Klik tombol di bawah untuk langsung membuka chat WhatsApp resmi saya. Anda bisa memilih template pesan instan atau menulis pesan kustom langsung dari sini.
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-white">
+                Siap Berkolaborasi atau Mendiskusikan Proyek?
+              </h3>
+              <p className="text-gray-300 text-sm md:text-base leading-relaxed max-w-2xl">
+                Kirim pesan langsung melalui tautan WhatsApp resmi saya. Anda bisa memilih template pesan instan di bawah atau menuliskan pesan kustom sendiri.
               </p>
             </div>
 
-            {/* Quick Template Chips */}
+            {/* Quick Templates */}
             <div className="flex flex-col gap-2">
-              <span className="text-xs font-mono text-gray-400">PILIH TEMPLATE PESAN INSTAN:</span>
+              <span className="text-xs font-serif text-[#fef08a] font-bold">PILIH TEMPLATE PESAN INSTAN:</span>
               <div className="flex flex-wrap gap-2">
                 {quickMessages.map((item, idx) => (
-                  <motion.button
+                  <button
                     key={idx}
                     type="button"
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
                     onClick={() => setCustomMsg(item.text)}
-                    className="px-3.5 py-2 text-xs font-bold bg-[#071330] text-gray-200 border border-[#00d2ff]/40 hover:border-[#ff184c] hover:bg-[#ff184c] hover:text-white transform -skew-x-6 transition-all shadow-[2px_2px_0px_#000000]"
+                    className="px-3.5 py-2 text-xs font-serif rounded-lg bg-[#091b18] text-gray-200 border border-[#d4af37]/30 hover:border-[#fef08a] hover:bg-[#123029] hover:text-white transition-all text-left"
                   >
-                    {item.label}
-                  </motion.button>
+                    ✦ {item.label}
+                  </button>
                 ))}
               </div>
             </div>
 
-            {/* Interactive Message Preview Input */}
+            {/* Message Preview Input */}
             <div className="flex flex-col gap-2">
-              <label htmlFor="custom-msg" className="text-xs font-mono text-[#00d2ff] font-bold">
-                PRATINJAU PESAN (AKAN DIKIRIM KE WHATSAPP):
+              <label htmlFor="custom-msg" className="text-xs font-serif text-[#fef08a] font-bold">
+                PRATINJAU PESAN (AKAN TERKIRIM LANGSUNG KE WHATSAPP):
               </label>
               <textarea
                 id="custom-msg"
@@ -892,89 +744,77 @@ export default function App() {
                 value={customMsg}
                 onChange={(e) => setCustomMsg(e.target.value)}
                 placeholder="Tulis pesan Anda di sini..."
-                className="w-full p-3.5 bg-[#020713] border-2 border-white/20 focus:border-[#00d2ff] text-white text-sm font-medium focus:outline-none transition-colors shadow-inner"
+                className="w-full p-4 rounded-xl bg-[#071513] border border-[#d4af37]/40 focus:border-[#fef08a] text-white text-sm font-sans focus:outline-none transition-colors shadow-inner"
               />
             </div>
 
-            {/* BIG PROMINENT WHATSAPP CTA BUTTON */}
+            {/* Prominent WhatsApp Dispatch Button */}
             <div className="flex flex-col sm:flex-row items-center gap-4 pt-2">
-              <motion.a
-                whileHover={{ scale: 1.05, skewX: -12 }}
-                whileTap={{ scale: 0.96 }}
+              <a
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto px-9 py-4 bg-[#ff184c] text-white font-black italic text-base md:text-lg tracking-wider uppercase transform -skew-x-12 border-2 border-white shadow-[6px_6px_0px_#000000] hover:bg-white hover:text-[#020713] hover:border-[#ff184c] transition-all duration-150 flex items-center justify-center gap-3 group"
+                className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-[#d4af37] via-[#e5c98c] to-[#bca16d] text-[#081614] font-serif font-bold text-base md:text-lg tracking-wide rounded-xl shadow-[0_0_24px_rgba(212,175,55,0.4)] hover:brightness-110 transition-all flex items-center justify-center gap-3 group"
               >
-                <span className="inline-block transform skew-x-12 flex items-center gap-3">
-                  <MessageCircle className="w-6 h-6 text-white group-hover:text-[#020713] animate-bounce" />
-                  Hubungi Saya via WhatsApp
-                </span>
-              </motion.a>
+                <MessageCircle className="w-6 h-6 text-[#081614] group-hover:scale-110 transition-transform" />
+                Hubungi Saya via WhatsApp
+              </a>
 
-              {/* Verified WhatsApp Tag */}
               <div className="flex items-center gap-2 text-xs font-mono text-gray-300">
-                <span className="w-3 h-3 rounded-full bg-emerald-400 animate-ping inline-block" />
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping inline-block" />
                 <span className="font-bold text-white">Tautan Resmi Terverifikasi:</span>
-                <span className="text-[#00d2ff]">wa.me/{contact.whatsappNumber}</span>
+                <span className="text-[#38bdf8]">wa.me/{contact.whatsappNumber}</span>
               </div>
             </div>
 
-            {/* Secondary Direct Channels */}
-            <div className="pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-gray-400">
+            {/* Social & Channel Links */}
+            <div className="pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs font-serif text-gray-400">
               <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-[#00d2ff]" />
-                <span className="text-gray-300">{contact.email}</span>
+                <Mail className="w-4 h-4 text-[#d4af37]" />
+                <span className="text-gray-300 font-mono">{contact.email}</span>
               </div>
               <div className="flex items-center gap-3">
-                <motion.a
-                  whileHover={{ scale: 1.05 }}
+                <a
                   href={contact.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3 py-1 bg-[#020713] border border-[#00d2ff]/40 text-[#00d2ff] hover:border-[#ff184c] hover:text-white transition-all transform -skew-x-6 flex items-center gap-1.5"
+                  className="px-3.5 py-1.5 rounded-lg bg-[#091a18] border border-[#d4af37]/30 text-[#fef08a] hover:border-[#fef08a] hover:text-white transition-all flex items-center gap-1.5"
                 >
                   <ArrowUpRight className="w-3.5 h-3.5" /> GitHub (Bima565)
-                </motion.a>
-                <motion.a
-                  whileHover={{ scale: 1.05 }}
+                </a>
+                <a
                   href={contact.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3 py-1 bg-[#020713] border border-[#00d2ff]/40 text-[#00d2ff] hover:border-[#ff184c] hover:text-white transition-all transform -skew-x-6 flex items-center gap-1.5"
+                  className="px-3.5 py-1.5 rounded-lg bg-[#091a18] border border-[#d4af37]/30 text-[#fef08a] hover:border-[#fef08a] hover:text-white transition-all flex items-center gap-1.5"
                 >
                   <ArrowUpRight className="w-3.5 h-3.5" /> LinkedIn
-                </motion.a>
+                </a>
               </div>
             </div>
 
           </div>
-        </motion.section>
+
+        </section>
 
       </main>
 
-      {/* FLOATING ACTION: SCROLL TO TOP WITH KINETIC HOVER */}
-      <motion.a
+      {/* Floating Scroll to Top */}
+      <a
         href="#hero"
-        whileHover={{ scale: 1.15, rotate: -5 }}
-        whileTap={{ scale: 0.9 }}
-        className="fixed bottom-6 right-6 z-40 w-11 h-11 bg-[#071330] border-2 border-[#00d2ff] text-[#00d2ff] flex items-center justify-center transform -skew-x-12 shadow-[4px_4px_0px_#000000] hover:bg-[#ff184c] hover:text-white hover:border-white transition-colors"
-        title="Kembali ke Atas"
+        className="fixed bottom-6 right-6 z-40 w-11 h-11 rounded-full bg-[#102b25] border border-[#d4af37] text-[#fef08a] flex items-center justify-center shadow-lg hover:bg-[#d4af37] hover:text-[#081614] transition-all"
+        title="Kembali ke Puncak Jurnal"
       >
-        <ChevronUp className="w-5 h-5 transform skew-x-12" />
-      </motion.a>
+        <ChevronUp className="w-5 h-5" />
+      </a>
 
-      {/* ============================================================== */}
-      {/* FOOTER / P3R CONTROLLER COMMAND GUIDE                         */}
-      {/* ============================================================== */}
-      <footer className="border-t border-[#00d2ff]/30 bg-[#01040d] py-5 px-4 sm:px-8 lg:px-12 xl:px-16 text-center font-mono text-xs text-gray-400 w-full">
-        <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-3">
-          <span>TUGAS INDIVIDU PEMBUATAN LANDING PAGE PROFIL // D3 TEKNOLOGI INFORMASI</span>
-          <div className="flex flex-wrap items-center justify-center gap-4 text-[11px] text-[#00d2ff] font-bold">
-            <span className="hover:text-white transition-colors">(A) INSPECT</span>
-            <span className="hover:text-white transition-colors">(B) WHATSAPP</span>
-            <span className="hover:text-white transition-colors">(X) DIAGNOSTICS</span>
-            <a href="#hero" className="hover:text-[#ff184c] transition-colors">(Y) TOP</a>
+      {/* Footer */}
+      <footer className="border-t border-[#d4af37]/20 bg-[#05100e] py-6 px-4 sm:px-8 text-center font-serif text-xs text-gray-400 w-full">
+        <div className="w-full max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+          <span>CATATAN PERJALANAN // BIMA PRAWIRA DHARMA : D3 TEKNOLOGI INFORMASI</span>
+          <div className="flex items-center gap-3 text-xs text-[#d4af37]">
+            <span>✦ KELAS 5B</span>
+            <span>✦ TRANQUIL REALM ARCHIVE</span>
           </div>
         </div>
       </footer>

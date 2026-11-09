@@ -1,95 +1,103 @@
 import myPhoto from '../assets/foto_me.jpg'
 
 export const portfolioData = {
-  // 1. Informasi Profil Utama
+  // 1. Informasi Profil Utama (Adventurer License / First-Class Mage Status)
   profile: {
     fullName: "Bima Prawira Dharma",
     nim: "243307039",
     classGroup: "Kelas 5B",
+    title: "First-Class Software Mage & System Craftsman",
     nickname: "Adaptive Problem Solver & Continuous Learner",
-    bio: "Mahasiswa D3 Teknologi Informasi semester 5 yang adaptif, komunikatif, dan memiliki dedikasi tinggi dalam belajar. Terbiasa berpikir terstruktur, berkolaborasi dengan empati dalam tim, serta konsisten menyelesaikan setiap tantangan secara tuntas dan bertanggung jawab.",
+    bio: "Mahasiswa D3 Teknologi Informasi semester 5 yang adaptif, komunikatif, dan memiliki dedikasi tinggi dalam belajar. Terbiasa berpikir terstruktur, berkolaborasi dengan empati dalam tim, serta konsisten menuntaskan setiap tantangan dengan penuh tanggung jawab.",
     avatar: myPhoto,
-    academicStatus: "D3 Teknologi Informasi — Semester 5",
-    level: "Lv. 24",
+    academicStatus: "D3 Teknologi Informasi : Semester 5",
+    level: "Lv. 58",
+    vision: "Electro / Logic Catalyst",
+    guildRank: "First-Class Mage / Rank S Adventurer",
   },
 
-  // 2. Tentang Saya (About Me & Nilai Tambah Otentik)
+  // 2. Tentang Saya (Grimoire Philosophy & Values)
   about: {
-    dialogue: "Bagi saya, setiap tantangan adalah kesempatan berharga untuk belajar dan berproses. Saya percaya bahwa rasa ingin tahu yang tulus, cara berpikir yang terstruktur, dan komunikasi yang terbuka adalah kunci utama dalam membangun kolaborasi yang solid. Kepuasan terbesar saya adalah ketika sebuah ide dapat diwujudkan bersama menjadi dampak positif yang nyata dan dirasakan langsung oleh orang lain.",
+    dialogue: "Bagi saya, setiap tantangan adalah kesempatan berharga untuk berproses. Rasa ingin tahu yang tulus, cara berpikir terstruktur, dan komunikasi terbuka adalah kunci utama membangun kolaborasi solid. Kepuasan terbesar saya adalah ketika sebuah baris logika dan kode dapat diwujudkan menjadi dampak nyata yang dirasakan langsung oleh banyak orang.",
     pillars: [
       {
         badge: "KOLABORASI",
+        element: "Hydro",
         title: "Komunikatif & Solutif",
-        desc: "Mengutamakan komunikasi dua arah yang terbuka, aktif mendengarkan perspektif tim, dan fokus mencari solusi bersama tanpa ego pribadi.",
+        desc: "Mengutamakan komunikasi dua arah yang terbuka, aktif mendengarkan perspektif rekan tim, dan fokus mencari solusi bersama tanpa ego pribadi.",
       },
       {
-        badge: "BERPIKIR KRITIS",
+        badge: "LOGIKA",
+        element: "Electro",
         title: "Kritis & Terstruktur",
-        desc: "Melihat persoalan dari gambaran besar hingga ke akar masalah secara tenang, logis, dan tidak mudah panik dalam situasi yang serba cepat.",
+        desc: "Menganalisis persoalan dari gambaran besar hingga ke akar masalah secara tenang, logis, dan tidak mudah goyah dalam situasi dinamis.",
       },
       {
         badge: "KREATIF",
+        element: "Anemo",
         title: "Eksploratif & Inovatif",
-        desc: "Senang mengeksplorasi ide-ide baru di luar kebiasaan, memadukan ketelitian proses dengan daya imajinasi untuk hasil yang segar.",
+        desc: "Senang mengeksplorasi ide-ide baru, memadukan ketelitian proses teknis dengan daya kreasi untuk menghasilkan karya yang segar.",
       },
       {
-        badge: "DAYA TAHAN",
+        badge: "KETAHANAN",
+        element: "Geo",
         title: "Disiplin & Tangguh",
-        desc: "Memiliki komitmen jangka panjang, konsisten menjaga fokus dan ritme kerja, serta pantang menyerah sebelum tujuan tercapai.",
+        desc: "Memiliki komitmen jangka panjang, konsisten menjaga ritme kerja, serta pantang menyerah sebelum tujuan terwujud sempurna.",
       },
     ],
     education: [
       {
         institution: "D3 Teknologi Informasi",
         degree: "Mahasiswa Aktif Semester 5",
-        period: "2024 — Sekarang (Kelas 5B)",
-        detail: "Membangun fondasi logika berpikir terstruktur, manajemen proyek kelompok, serta etika profesional di dunia teknologi.",
+        period: "2024 s.d. Sekarang (Kelas 5B)",
+        detail: "Membangun fondasi logika berpikir terstruktur, arsitektur perangkat lunak, dan manajemen proyek kolaboratif.",
       },
       {
         institution: "PT. Smart Building Innovasi",
-        degree: "Internship — Web EMS Developer",
+        degree: "Internship: Web EMS Developer",
         period: "Magang Industri",
-        detail: "Belajar beradaptasi dengan budaya kerja profesional, koordinasi lintas divisi, serta penyampaian ide solusi yang mudah dipahami rekan kerja.",
+        detail: "Beradaptasi dengan standar industri modern, integrasi telemetri IoT real-time, dan koordinasi lintas divisi.",
       },
     ],
     interests: [
-      "Eksplorasi Hal Baru & Belajar Cepat",
+      "Eksplorasi Teknologi Baru & Belajar Cepat",
       "Komunikasi & Kerja Sama Tim",
       "Pemecahan Masalah Kolaboratif",
       "Manajemen Waktu & Produktivitas",
-      "Desain Pengalaman & Estetika Visual",
+      "Desain Antarmuka & Estetika Visual",
       "Disiplin Diri & Kebugaran Mental",
-      "Gaming Strategi & Narasi Mendalam",
+      "Game RPG Strategis & Narasi Mendalam",
     ],
   },
 
-
-  // 4. Keahlian Riil & Persona Stat Gauges
+  // 3. Keahlian & Grimoire Spell Talents
   skills: [
-    { name: "React, Vite & Modern Web", category: "Frontend", level: 92, stat: "St", desc: "Komponen reaktif, hook modular, integrasi ECharts & Tailwind" },
-    { name: "Troubleshooting & Hardware Diagnostic", category: "Diagnostics", level: 95, stat: "En", desc: "WinDbg dump analysis, thermal management, hardware modding" },
-    { name: "C# & Hardware Interface", category: "Software Eng", level: 88, stat: "Ma", desc: "DirectInput, XInput API, automation tools, JSON configuration" },
-    { name: "Industrial IoT & REST API", category: "Backend / IoT", level: 90, stat: "St", desc: "Ewon Flexy 205 gateway, telemetri real-time, API consumption" },
-    { name: "MySQL & Database Architecture", category: "Database", level: 86, stat: "Ag", desc: "Skema relasional, optimasi query, auto-retention data log" },
-    { name: "Linux Environment & Shell Scripting", category: "DevOps & OS", level: 88, stat: "Ma", desc: "NyArch/CachyOS, Bash, PowerShell automation, Proton runner" },
-    { name: "3D Rigging & Unity Pipeline", category: "3D & Assets", level: 83, stat: "Lu", desc: "Blender modeling, FBX export, Bone End chain, DynamicBone" },
-    { name: "AI MCP & Creative Tooling", category: "AI Workflows", level: 87, stat: "Ag", desc: "Model Context Protocol untuk Figma, Penpot, Blender & LLM" },
+    { name: "React, Vite & Modern Web", category: "Frontend", level: 92, element: "Anemo", desc: "Komponen reaktif, hook modular, integrasi ECharts dan Tailwind" },
+    { name: "Troubleshooting & Hardware Diagnostic", category: "Diagnostics", level: 95, element: "Electro", desc: "Analisis dump WinDbg, manajemen termal, modifikasi hardware" },
+    { name: "C# & Hardware Interface", category: "Software Eng", level: 88, element: "Geo", desc: "DirectInput, XInput API, otomasi perangkat, konfigurasi JSON" },
+    { name: "Industrial IoT & REST API", category: "Backend / IoT", level: 90, element: "Electro", desc: "Gateway IIoT Ewon Flexy 205, telemetri real-time, konsumsi API" },
+    { name: "MySQL & Database Architecture", category: "Database", level: 86, element: "Geo", desc: "Skema relasional, optimasi kueri, auto-retention data log" },
+    { name: "Linux Environment & Shell Scripting", category: "DevOps & OS", level: 88, element: "Cryo", desc: "NyArch/CachyOS, Bash, otomasi PowerShell, runtime Proton" },
+    { name: "3D Rigging & Unity Pipeline", category: "3D & Assets", level: 83, element: "Dendro", desc: "Modeling Blender, ekspor FBX, rantai Bone End, DynamicBone" },
+    { name: "AI MCP & Creative Tooling", category: "AI Workflows", level: 87, element: "Arcane", desc: "Model Context Protocol untuk Figma, Penpot, Blender dan LLM" },
   ],
 
-  // 5. Portofolio & Proyek (P3R Quest Board Format)
+  // 4. Portofolio Proyek (Guild Commission Board)
   projects: [
     {
       id: "01",
+      rank: "Rank S Quest",
       title: "Web EMS Ewon (Industrial Energy Management System)",
-      category: "Industrial IoT & Web Dashboard",
+      category: "Industrial IoT & Realtime Dashboard",
       status: "Done",
       description: "Sistem monitoring daya listrik real-time tiap 15 detik dari gateway IIoT Ewon Flexy 205 (Power Meter PM139). Menyimpan log terstruktur ke MySQL, menghitung estimasi biaya listrik dan emisi CO2, serta menyediakan grafik visual interaktif via ECharts dengan fitur ekspor Excel.",
       tech: ["React", "MySQL", "REST API", "ECharts", "Ewon Flexy 205", "Tailwind"],
       link: "#",
-      impact: "Monitoring 24/7 dengan polling 15s & data retention otomatis",
+      impact: "Monitoring 24/7 dengan polling 15s dan data retention otomatis",
     },
     {
       id: "02",
+      rank: "Rank A Quest",
       title: "Custom DirectInput to XInput Controller Mapper",
       category: "C# / Hardware Bridge Tool",
       status: "Done",
@@ -100,62 +108,65 @@ export const portfolioData = {
     },
     {
       id: "03",
-      title: "Persona 3 Reload UI Kinetic Portfolio",
+      rank: "Rank S Quest",
+      title: "Interactive Web Portfolio Experience",
       category: "Frontend Web & Motion Engineering",
       status: "Done",
-      description: "Landing page profil interaktif berkecepatan tinggi terinspirasi estetika Atlus Persona 3 Reload: pergerakan ambient air samudra, skewed ribbons, dialog Velvet Room asimetris, dan tombol CTA WhatsApp Click-to-Chat resmi.",
-      tech: ["React", "Vite", "Tailwind CSS v4", "Motion", "Lucide"],
+      description: "Halaman profil interaktif berperforma tinggi dengan tema fantasi Isekai (Genshin Impact & Frieren): kanvas Three.js partikel mana starlight, tata letak grimoire elegan, dan CTA komunikasi WhatsApp resmi yang responsif.",
+      tech: ["React", "Vite", "Tailwind CSS v4", "Motion", "Three.js", "Lucide"],
       link: "#",
-      impact: "Performa render 60 FPS, responsif, dan zero-bloat",
+      impact: "Animasi mulus 60 FPS, responsif di semua perangkat, zero bloat",
     },
     {
       id: "04",
+      rank: "Rank A Quest",
       title: "3D Character Rigging & Dynamic Bone Physics",
       category: "3D Pipeline & Game Modding",
       status: "Done",
-      description: "Alur kerja pembuatan aset pakaian dan karakter 3D dari Blender ke Unity Editor. Meliputi pemodelan mesh, FBX export, penambahan rantai Bone End, konfigurasi physics DynamicBone/HSPE2, dan pengujian di runtime game engine.",
+      description: "Alur kerja pembuatan aset pakaian dan karakter 3D dari Blender ke Unity Editor. Meliputi pemodelan mesh, ekspor FBX, penambahan rantai Bone End, konfigurasi physics DynamicBone/HSPE2, dan pengujian runtime game engine.",
       tech: ["Blender", "Unity Engine", "DynamicBone", "FBX Pipeline"],
       link: "#",
       impact: "Fisika cloth/bone stabil tanpa glitch clipping mesh",
     },
     {
       id: "05",
+      rank: "Rank B Quest",
       title: "Wi-Fi 5GHz & Network Interface Automator",
       category: "PowerShell & System Automation",
       status: "Done",
       description: "Skrip diagnostik dan otomasi PowerShell satu klik untuk mendeteksi drop koneksi Wi-Fi 5GHz, me-reset interface card tanpa reboot PC, dan mengoptimalkan channel width adapter.",
       tech: ["PowerShell", "Windows Networking", "Batch Scripting"],
       link: "#",
-      impact: "Solusi instan 1-klik untuk koneksi stabil saat kerja remote",
+      impact: "Solusi instan 1-klik untuk koneksi stabil saat bekerja remote",
     },
   ],
 
-  // 6. Sertifikasi Kompetensi Resmi (Sesuai Ketentuan Tugas)
+  // 5. Sertifikasi Kompetensi Resmi (Guild Licenses)
   certifications: [
     {
-      code: "CERT-01",
+      code: "GUILD-01",
       title: "Junior Web Developer",
       issuer: "Badan Nasional Sertifikasi Profesi (BNSP)",
       period: "Diterbitkan Jul 2024 · Berlaku s.d. Jul 2027",
       skills: "Web Development, Frontend & Standard Architecture",
       badge: "BNSP NASIONAL",
-      status: "ACTIVE",
+      status: "ACTIVE LICENSE",
     },
     {
-      code: "CERT-02",
+      code: "GUILD-02",
       title: "Linux Unhatched",
       issuer: "Cisco Networking Academy",
       period: "Diterbitkan Mei 2024",
-      skills: "Linux CLI, Arch Linux, System Management",
+      skills: "Linux CLI, System Operations & Scripting",
       badge: "CISCO VERIFIED",
-      status: "BADGED",
+      status: "CERTIFIED",
     },
   ],
 
-  // 7. Kontak & WhatsApp Call to Action
+  // 6. Kontak & WhatsApp Call to Action
   contact: {
     whatsappNumber: "6283831911459",
-    defaultMessage: "Halo Bima, saya melihat portofolio Persona 3 Anda dan tertarik mendiskusikan peluang proyek/kolaborasi.",
+    defaultMessage: "Halo Bima, saya tertarik dengan portofolio Anda dan ingin mendiskusikan peluang proyek atau kolaborasi.",
     email: "bima.prawira@example.com",
     github: "https://github.com/Bima565",
     linkedin: "https://www.linkedin.com/in/bima-prawira-dharma-0a2493328/",

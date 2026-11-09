@@ -8,7 +8,7 @@ export default function TurbulentWaterCanvas() {
     const container = mountRef.current
     if (!container) return
 
-    // Scene & Camera
+    // Scene & Perspective Camera
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(
       45,
@@ -16,7 +16,7 @@ export default function TurbulentWaterCanvas() {
       0.1,
       100
     )
-    camera.position.set(0, 0, 20)
+    camera.position.set(0, 0, 18)
 
     // WebGL Renderer
     const renderer = new THREE.WebGLRenderer({
@@ -28,81 +28,73 @@ export default function TurbulentWaterCanvas() {
     renderer.setSize(window.innerWidth, window.innerHeight)
     container.appendChild(renderer.domElement)
 
-    // Dynamic Lighting
-    const ambientLight = new THREE.AmbientLight(0x061530, 2.0)
+    // Atmospheric Nature Lighting (Warm Sun + Soft Sky Ambient)
+    const ambientLight = new THREE.AmbientLight(0x163024, 2.8)
     scene.add(ambientLight)
 
-    const dirLight1 = new THREE.DirectionalLight(0x00d2ff, 4.0)
-    dirLight1.position.set(12, 14, 10)
-    scene.add(dirLight1)
+    const sunLight = new THREE.DirectionalLight(0xfff5d6, 3.5)
+    sunLight.position.set(12, 16, 10)
+    scene.add(sunLight)
 
-    const dirLight2 = new THREE.DirectionalLight(0xff184c, 3.0)
-    dirLight2.position.set(-12, -10, 8)
-    scene.add(dirLight2)
+    const skyLight = new THREE.DirectionalLight(0x93c5fd, 1.8)
+    skyLight.position.set(-10, -6, 6)
+    scene.add(skyLight)
 
-    const pointLightCenter = new THREE.PointLight(0x00d2ff, 2.5, 30)
-    pointLightCenter.position.set(0, 0, 5)
-    scene.add(pointLightCenter)
+    // 1. Procedural Organic Leaf Shape
+    const leafShape = new THREE.Shape()
+    leafShape.moveTo(0, -0.6)
+    leafShape.bezierCurveTo(0.4, -0.2, 0.45, 0.3, 0, 0.7)
+    leafShape.bezierCurveTo(-0.45, 0.3, -0.4, -0.2, 0, -0.6)
+    const leafGeometry = new THREE.ShapeGeometry(leafShape, 8)
+    leafGeometry.center()
 
-    // Persona 3 Reload Signature Colors
-    const palette = [
-      { color: 0xff184c, emissive: 0x4a0010 }, // SEES Crimson
-      { color: 0x00d2ff, emissive: 0x002c40 }, // Electric Cyan
-      { color: 0xffcc00, emissive: 0x3d3000 }, // Stat Gold
-      { color: 0x0055ff, emissive: 0x001040 }, // Royal Atlus Blue
-      { color: 0xffffff, emissive: 0x112233 }, // Glass White
-      { color: 0x00ffcc, emissive: 0x003322 }, // Neon Mint
+    // 2. Frieren Blue Flower Petal Shape
+    const petalShape = new THREE.Shape()
+    petalShape.moveTo(0, -0.4)
+    petalShape.bezierCurveTo(0.32, -0.1, 0.36, 0.3, 0, 0.52)
+    petalShape.bezierCurveTo(-0.36, 0.3, -0.32, -0.1, 0, -0.4)
+    const petalGeometry = new THREE.ShapeGeometry(petalShape, 6)
+    petalGeometry.center()
+
+    // Foliage & Petal Colors (Frieren Blue Petals, Fresh Green, Sunlit Gold Leaves)
+    const leafPalettes = [
+      { color: 0x38bdf8, emissive: 0x022e3d }, // Mirre Blue Petal
+      { color: 0x7dd3fc, emissive: 0x082b4a }, // Soft Sky Petal
+      { color: 0x34d399, emissive: 0x043020 }, // Emerald Leaf
+      { color: 0x10b981, emissive: 0x022617 }, // Forest Green Leaf
+      { color: 0xfbbf24, emissive: 0x3b2400 }, // Golden Autumn Leaf
+      { color: 0xf59e0b, emissive: 0x3b1b02 }, // Warm Amber Leaf
+      { color: 0xa7f3d0, emissive: 0x063a26 }, // Pale Meadow Sprout
     ]
 
-    // Varied Geometry Types: Tarot Cards, Polyhedrons, Torus Diamonds, Shards
-    const geometries = {
-      card: new THREE.BoxGeometry(0.7, 1.2, 0.04), // Tarot / Status Card
-      tetra: new THREE.TetrahedronGeometry(0.55, 0), // Sharp Prism
-      octa: new THREE.OctahedronGeometry(0.5, 0), // Diamond Crystal
-      icosa: new THREE.IcosahedronGeometry(0.45, 0), // Polyhedral Gem
-      ring: new THREE.TorusGeometry(0.4, 0.06, 4, 4), // Angular Diamond Ring
-      shard: new THREE.ConeGeometry(0.35, 1.1, 3), // Slanted Ribbon Shard
-    }
+    const leafObjects = []
+    const totalLeaves = 80
 
-    const geoKeys = Object.keys(geometries)
+    for (let i = 0; i < totalLeaves; i++) {
+      const isPetal = i % 3 === 0
+      const geo = isPetal ? petalGeometry : leafGeometry
+      const theme = leafPalettes[Math.floor(Math.random() * leafPalettes.length)]
 
-    // Distribute objects: DENSE ON LEFT & RIGHT, light & deep in center
-    const objects = []
-    const totalCount = 80
-
-    for (let i = 0; i < totalCount; i++) {
-      const geoType = geoKeys[i % geoKeys.length]
-      const geo = geometries[geoType]
-      const theme = palette[Math.floor(Math.random() * palette.length)]
-
-      const mat = new THREE.MeshStandardMaterial({
+      const material = new THREE.MeshStandardMaterial({
         color: theme.color,
         emissive: theme.emissive,
-        roughness: 0.18,
-        metalness: 0.75,
-        flatShading: true,
-        transparent: true,
-        opacity: Math.random() * 0.4 + 0.55,
+        roughness: 0.3,
+        metalness: 0.08,
         side: THREE.DoubleSide,
+        transparent: true,
+        opacity: Math.random() * 0.35 + 0.6,
       })
 
-      const mesh = new THREE.Mesh(geo, mat)
+      const mesh = new THREE.Mesh(geo, material)
 
-      // Balanced left/right distribution ("Rata Kiri Kanan")
-      const isLeft = i % 2 === 0
-      const side = isLeft ? -1 : 1
+      const startX = (Math.random() - 0.5) * 34
+      const startY = (Math.random() - 0.5) * 26
+      const startZ = (Math.random() - 0.5) * 14
 
-      // X spans outer margins: ±(5 to 16)
-      const x = side * (Math.random() * 11 + 5)
-      // Y spans vertical viewport
-      const y = (Math.random() - 0.5) * 22
-      // Z spans depth layers
-      const z = (Math.random() - 0.5) * 12
+      mesh.position.set(startX, startY, startZ)
 
-      mesh.position.set(x, y, z)
-
-      const scale = Math.random() * 0.7 + 0.5
-      mesh.scale.set(scale, scale, scale)
+      const baseScale = isPetal ? Math.random() * 0.4 + 0.35 : Math.random() * 0.5 + 0.45
+      mesh.scale.set(baseScale, baseScale, baseScale)
 
       mesh.rotation.set(
         Math.random() * Math.PI * 2,
@@ -110,102 +102,122 @@ export default function TurbulentWaterCanvas() {
         Math.random() * Math.PI * 2
       )
 
-      objects.push({
+      leafObjects.push({
         mesh,
-        baseX: x,
-        baseY: y,
-        baseZ: z,
-        rotSpeedX: (Math.random() - 0.5) * 0.016,
-        rotSpeedY: (Math.random() - 0.5) * 0.022,
-        rotSpeedZ: (Math.random() - 0.5) * 0.014,
-        floatFreq: Math.random() * 0.6 + 0.5,
-        floatAmp: Math.random() * 0.5 + 0.3,
+        baseX: startX,
+        baseY: startY,
+        baseZ: startZ,
+        fallSpeed: Math.random() * 0.015 + 0.007,
+        swayFreq: Math.random() * 1.4 + 0.7,
+        swayAmp: Math.random() * 0.65 + 0.35,
+        rotSpeedX: (Math.random() - 0.5) * 0.02,
+        rotSpeedY: (Math.random() - 0.5) * 0.024,
+        rotSpeedZ: (Math.random() - 0.5) * 0.018,
         phase: Math.random() * Math.PI * 2,
-        isLeft,
       })
 
       scene.add(mesh)
     }
 
-    // 10 deep background ambient cards in center for subtle depth
-    for (let j = 0; j < 12; j++) {
-      const mat = new THREE.MeshStandardMaterial({
-        color: 0x00d2ff,
-        emissive: 0x001020,
-        roughness: 0.3,
-        metalness: 0.8,
-        flatShading: true,
+    // 3. Gentle Breeze Wind Trails (Angin Sepoi-sepoi Curves)
+    const windStreaks = []
+    const streakCount = 14
+
+    for (let s = 0; s < streakCount; s++) {
+      const curvePoints = []
+      const length = Math.random() * 6 + 5
+      const segments = 16
+
+      for (let p = 0; p <= segments; p++) {
+        const u = (p / segments) * length
+        const v = Math.sin((p / segments) * Math.PI * 2) * 0.35
+        curvePoints.push(new THREE.Vector3(u, v, 0))
+      }
+
+      const streakGeo = new THREE.BufferGeometry().setFromPoints(curvePoints)
+      const streakMat = new THREE.LineBasicMaterial({
+        color: s % 2 === 0 ? 0xffffff : 0x7dd3fc,
         transparent: true,
-        opacity: 0.22,
+        opacity: Math.random() * 0.15 + 0.08,
+        blending: THREE.AdditiveBlending,
       })
-      const centerCard = new THREE.Mesh(geometries.card, mat)
-      const cx = (Math.random() - 0.5) * 8
-      const cy = (Math.random() - 0.5) * 20
-      const cz = -(Math.random() * 8 + 8) // Deep behind text
 
-      centerCard.position.set(cx, cy, cz)
-      centerCard.scale.set(0.6, 0.6, 0.6)
-      scene.add(centerCard)
+      const streak = new THREE.Line(streakGeo, streakMat)
+      const sx = (Math.random() - 0.5) * 36 - 15
+      const sy = (Math.random() - 0.5) * 24
+      const sz = (Math.random() - 0.5) * 10
 
-      objects.push({
-        mesh: centerCard,
-        baseX: cx,
-        baseY: cy,
-        baseZ: cz,
-        rotSpeedX: (Math.random() - 0.5) * 0.008,
-        rotSpeedY: (Math.random() - 0.5) * 0.01,
-        rotSpeedZ: (Math.random() - 0.5) * 0.006,
-        floatFreq: 0.4,
-        floatAmp: 0.3,
+      streak.position.set(sx, sy, sz)
+      scene.add(streak)
+
+      windStreaks.push({
+        line: streak,
+        geo: streakGeo,
+        speed: Math.random() * 0.04 + 0.025,
+        baseY: sy,
+        baseZ: sz,
+        freq: Math.random() * 1.5 + 0.8,
         phase: Math.random() * Math.PI * 2,
-        isLeft: false,
       })
     }
 
-    // Sparkle Particle Field (Persona Blue, Cyan, Crimson & Gold Sparks)
-    const particleCount = 260
-    const particleGeo = new THREE.BufferGeometry()
-    const posArr = new Float32Array(particleCount * 3)
-    const colArr = new Float32Array(particleCount * 3)
+    // 4. Sunlight Dust & Magic Spores
+    const sporeCount = 220
+    const sporeGeo = new THREE.BufferGeometry()
+    const sporePos = new Float32Array(sporeCount * 3)
+    const sporeCol = new Float32Array(sporeCount * 3)
 
-    const cCyan = new THREE.Color(0x00d2ff)
-    const cRed = new THREE.Color(0xff184c)
-    const cGold = new THREE.Color(0xffcc00)
+    const cSun = new THREE.Color(0xfef08a)
+    const cMana = new THREE.Color(0x38bdf8)
+    const cGreen = new THREE.Color(0x6ee7b7)
 
-    for (let p = 0; p < particleCount; p++) {
-      posArr[p * 3 + 0] = (Math.random() - 0.5) * 32
-      posArr[p * 3 + 1] = (Math.random() - 0.5) * 26
-      posArr[p * 3 + 2] = (Math.random() - 0.5) * 14
+    for (let p = 0; p < sporeCount; p++) {
+      sporePos[p * 3 + 0] = (Math.random() - 0.5) * 34
+      sporePos[p * 3 + 1] = (Math.random() - 0.5) * 28
+      sporePos[p * 3 + 2] = (Math.random() - 0.5) * 16
 
-      const randCol = p % 3 === 0 ? cRed : p % 3 === 1 ? cCyan : cGold
-      colArr[p * 3 + 0] = randCol.r
-      colArr[p * 3 + 1] = randCol.g
-      colArr[p * 3 + 2] = randCol.b
+      const colChoice = p % 3 === 0 ? cSun : p % 3 === 1 ? cMana : cGreen
+      sporeCol[p * 3 + 0] = colChoice.r
+      sporeCol[p * 3 + 1] = colChoice.g
+      sporeCol[p * 3 + 2] = colChoice.b
     }
 
-    particleGeo.setAttribute('position', new THREE.BufferAttribute(posArr, 3))
-    particleGeo.setAttribute('color', new THREE.BufferAttribute(colArr, 3))
+    sporeGeo.setAttribute('position', new THREE.BufferAttribute(sporePos, 3))
+    sporeGeo.setAttribute('color', new THREE.BufferAttribute(sporeCol, 3))
 
-    const particleMat = new THREE.PointsMaterial({
+    const sporeMat = new THREE.PointsMaterial({
       size: 0.08,
       vertexColors: true,
       transparent: true,
-      opacity: 0.8,
+      opacity: 0.85,
       blending: THREE.AdditiveBlending,
     })
-    const particles = new THREE.Points(particleGeo, particleMat)
-    scene.add(particles)
+    const spores = new THREE.Points(sporeGeo, sporeMat)
+    scene.add(spores)
 
-    // Mouse Tracking
+    // Interactive Wind Tracking with Mouse
     let targetMouseX = 0
     let targetMouseY = 0
+    let mouseVelocityX = 0
+    let mouseVelocityY = 0
+    let prevMouseX = 0
+    let prevMouseY = 0
+
     const onMouseMove = (e) => {
-      targetMouseX = (e.clientX / window.innerWidth) * 2 - 1
-      targetMouseY = -(e.clientY / window.innerHeight) * 2 + 1
+      const curX = (e.clientX / window.innerWidth) * 2 - 1
+      const curY = -(e.clientY / window.innerHeight) * 2 + 1
+
+      mouseVelocityX = curX - prevMouseX
+      mouseVelocityY = curY - prevMouseY
+      prevMouseX = curX
+      prevMouseY = curY
+
+      targetMouseX = curX
+      targetMouseY = curY
     }
     window.addEventListener('mousemove', onMouseMove, { passive: true })
 
-    // Window Resize
+    // Responsive Resize Handler
     const onResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight
       camera.updateProjectionMatrix()
@@ -213,9 +225,9 @@ export default function TurbulentWaterCanvas() {
     }
     window.addEventListener('resize', onResize)
 
-    // Animation Loop with Scroll & Parallax
+    // Continuous Animation Loop
     let lastScrollY = window.scrollY
-    let scrollVelocity = 0
+    let scrollWind = 0
     let reqId
     const clock = new THREE.Clock()
 
@@ -227,63 +239,64 @@ export default function TurbulentWaterCanvas() {
       const deltaScroll = Math.abs(currentScrollY - lastScrollY)
       lastScrollY = currentScrollY
 
-      scrollVelocity = THREE.MathUtils.lerp(
-        scrollVelocity,
-        deltaScroll * 0.018,
-        0.08
-      )
+      scrollWind = THREE.MathUtils.lerp(scrollWind, deltaScroll * 0.02, 0.06)
 
-      // Camera responds smoothly to mouse and scroll depth
-      camera.position.x = THREE.MathUtils.lerp(camera.position.x, targetMouseX * 1.8, 0.04)
+      camera.position.x = THREE.MathUtils.lerp(camera.position.x, targetMouseX * 1.1, 0.03)
       camera.position.y = THREE.MathUtils.lerp(
         camera.position.y,
-        targetMouseY * 1.4 - (currentScrollY * 0.0022),
-        0.04
+        targetMouseY * 0.8 - (currentScrollY * 0.0015),
+        0.03
       )
 
-      // Lusion-style Mouse World Target for interactive repulsion
-      const mouseWorldX = targetMouseX * 13
-      const mouseWorldY = targetMouseY * 9.5
+      // Natural gentle breeze gust (sepoi-sepoi)
+      const breezeGust = Math.sin(elapsed * 0.8) * 0.015 + 0.012
+      const totalWindX = breezeGust + (mouseVelocityX * 0.7) + (scrollWind * 0.03)
 
-      // Animate floating items
-      for (let k = 0; k < objects.length; k++) {
-        const item = objects[k]
+      mouseVelocityX *= 0.93
+      mouseVelocityY *= 0.93
 
-        // Rotation spins faster during scroll
-        item.mesh.rotation.x += item.rotSpeedX * (1 + scrollVelocity * 2.5)
-        item.mesh.rotation.y += item.rotSpeedY * (1 + scrollVelocity * 2.5)
-        item.mesh.rotation.z += item.rotSpeedZ
+      // Animate Falling Leaves & Petals
+      for (let k = 0; k < leafObjects.length; k++) {
+        const leaf = leafObjects[k]
 
-        // Harmonic Floating
-        const floatY = Math.sin(elapsed * item.floatFreq + item.phase) * item.floatAmp
-        const floatX = Math.cos(elapsed * 0.6 + item.phase) * 0.25
+        leaf.baseY -= leaf.fallSpeed + (scrollWind * 0.03)
+        leaf.baseX += totalWindX
 
-        // Continuous subtle upward drift
-        item.baseY += 0.004 + (scrollVelocity * 0.02)
-        if (item.baseY > 14) item.baseY = -14
-
-        // Lusion.co Cursor Repulsion Physics (shards scatter gently when cursor approaches)
-        let pushX = 0
-        let pushY = 0
-        const currentTargetX = item.baseX + floatX
-        const currentTargetY = item.baseY + floatY
-        const dx = currentTargetX - mouseWorldX
-        const dy = currentTargetY - mouseWorldY
-        const dist = Math.sqrt(dx * dx + dy * dy)
-
-        if (dist < 4.8 && dist > 0.01) {
-          const force = (1 - dist / 4.8) * 2.0
-          pushX = (dx / dist) * force
-          pushY = (dy / dist) * force
+        if (leaf.baseY < -14) {
+          leaf.baseY = 14
+          leaf.baseX = (Math.random() - 0.5) * 32
         }
+        if (leaf.baseX > 19) leaf.baseX = -19
+        if (leaf.baseX < -19) leaf.baseX = 19
 
-        item.mesh.position.x = THREE.MathUtils.lerp(item.mesh.position.x, currentTargetX + pushX, 0.08)
-        item.mesh.position.y = THREE.MathUtils.lerp(item.mesh.position.y, currentTargetY + pushY, 0.08)
+        const sway = Math.sin(elapsed * leaf.swayFreq + leaf.phase) * leaf.swayAmp
+        const flutter = Math.cos(elapsed * leaf.swayFreq * 1.4 + leaf.phase) * (leaf.swayAmp * 0.35)
+
+        leaf.mesh.position.x = leaf.baseX + sway
+        leaf.mesh.position.y = leaf.baseY + flutter
+        leaf.mesh.position.z = leaf.baseZ
+
+        leaf.mesh.rotation.x += leaf.rotSpeedX + (sway * 0.01)
+        leaf.mesh.rotation.y += leaf.rotSpeedY + (totalWindX * 0.6)
+        leaf.mesh.rotation.z += leaf.rotSpeedZ + (flutter * 0.01)
       }
 
-      // Rotate particle dust cloud
-      particles.rotation.y = elapsed * 0.025
-      particles.rotation.x = elapsed * 0.015
+      // Animate Wind Trails (Angin Sepoi-sepoi Melayang Horisontal)
+      for (let w = 0; w < windStreaks.length; w++) {
+        const streak = windStreaks[w]
+        streak.line.position.x += streak.speed + totalWindX * 0.8
+        streak.line.position.y = streak.baseY + Math.sin(elapsed * streak.freq + streak.phase) * 0.4
+
+        if (streak.line.position.x > 22) {
+          streak.line.position.x = -24
+          streak.line.position.y = (Math.random() - 0.5) * 24
+          streak.baseY = streak.line.position.y
+        }
+      }
+
+      // Rotate spores
+      spores.rotation.y = elapsed * 0.014
+      spores.rotation.x = elapsed * 0.007
 
       renderer.render(scene, camera)
     }
@@ -297,9 +310,14 @@ export default function TurbulentWaterCanvas() {
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement)
       }
-      Object.values(geometries).forEach((g) => g.dispose())
-      particleGeo.dispose()
-      particleMat.dispose()
+      leafGeometry.dispose()
+      petalGeometry.dispose()
+      sporeGeo.dispose()
+      sporeMat.dispose()
+      windStreaks.forEach((s) => {
+        s.geo.dispose()
+        s.line.material.dispose()
+      })
       renderer.dispose()
     }
   }, [])

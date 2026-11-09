@@ -2,12 +2,16 @@
 
 @layer base {
   :root {
-    --p3r-bg-deep: #020713;
-    --p3r-bg-surface: #071330;
-    --p3r-blue-main: #0048d0;
-    --p3r-cyan: #00d2ff;
-    --p3r-red: #ff184c;
-    --p3r-yellow: #ffcc00;
+    --isekai-forest-deep: #081614;
+    --isekai-forest-mid: #0e2723;
+    --isekai-sky-haze: #133330;
+    --isekai-parchment: #f7f3e8;
+    --isekai-card-bg: rgba(14, 38, 34, 0.88);
+    --isekai-gold: #d4af37;
+    --isekai-gold-soft: #e2c875;
+    --isekai-gold-dark: #8c6f23;
+    --isekai-mirre-blue: #38bdf8;
+    --isekai-leaf-green: #34d399;
   }
 
   * {
@@ -17,154 +21,112 @@
   body {
     margin: 0;
     padding: 0;
-    background-color: var(--p3r-bg-deep);
-    color: #ffffff;
-    font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+    background-color: var(--isekai-forest-deep);
+    color: #f1f5f9;
+    font-family: 'Cinzel Decorative', 'Cinzel', 'Georgia', 'Cambria', serif, system-ui, sans-serif;
     overflow-x: hidden;
     min-height: 100vh;
   }
 }
 
-/* Persona 3 Reload Custom Utilities */
-.p3r-skew {
-  transform: skewX(-10deg);
+/* Frieren Tranquil Forest & Sky Atmosphere */
+.frieren-landscape-bg {
+  background:
+    /* Morning Sunbeam from top-right */
+    radial-gradient(circle at 80% 0%, rgba(254, 240, 138, 0.15) 0%, transparent 45%),
+    /* Mirre Blue Flower Meadow Glow from bottom-left */
+    radial-gradient(circle at 15% 90%, rgba(56, 189, 248, 0.12) 0%, transparent 50%),
+    /* Forest Canopy Green Glow */
+    radial-gradient(circle at 50% 30%, rgba(16, 185, 129, 0.1) 0%, transparent 60%),
+    /* Deep Forest Layer Base */
+    linear-gradient(180deg, #091a18 0%, #0d2824 35%, #0b2320 70%, #061412 100%);
+  background-attachment: fixed;
 }
 
-.p3r-skew-reverse {
-  transform: skewX(10deg);
+/* Ancient Grimoire Parchment Style */
+.grimoire-card {
+  background: radial-gradient(circle at 50% 0%, rgba(20, 48, 43, 0.92) 0%, rgba(10, 26, 23, 0.95) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), inset 0 0 20px rgba(212, 175, 55, 0.04);
+  backdrop-filter: blur(12px);
 }
 
-.p3r-clip-dialog {
-  clip-path: polygon(0 0, 98% 0, 100% 20%, 97% 100%, 2% 98%, 0 70%);
+.grimoire-card-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.grimoire-card-hover:hover {
+  border-color: rgba(226, 200, 117, 0.7);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55), 0 0 20px rgba(212, 175, 55, 0.2);
+  transform: translateY(-3px);
 }
 
-.p3r-clip-badge {
-  clip-path: polygon(15px 0%, 100% 0%, calc(100% - 15px) 100%, 0% 100%);
+/* Wax Seal & Guild Stamp Badge */
+.guild-wax-seal {
+  background: radial-gradient(circle, #b91c1c 0%, #7f1d1d 80%, #450a0a 100%);
+  box-shadow: 0 4px 12px rgba(185, 28, 28, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  border: 1.5px solid rgba(239, 68, 68, 0.6);
 }
 
-.p3r-clip-tag {
-  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 100%, 0 100%);
+/* Gold Filigree Border Utility */
+.filigree-gold {
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  position: relative;
 }
 
-/* Diagonal Stripes Pattern */
-.p3r-stripes {
-  background: repeating-linear-gradient(
-    -45deg,
-    rgba(0, 210, 255, 0.08),
-    rgba(0, 210, 255, 0.08) 10px,
-    transparent 10px,
-    transparent 20px
-  );
-  background-size: 200% 200%;
-  animation: stripeMove 20s linear infinite;
+.filigree-gold::before,
+.filigree-gold::after {
+  content: '✦';
+  position: absolute;
+  font-size: 10px;
+  color: #d4af37;
+  line-height: 1;
 }
 
-@keyframes stripeMove {
-  0% { background-position: 0 0; }
-  100% { background-position: 100px 100px; }
+.filigree-gold::before {
+  top: -6px;
+  left: -5px;
 }
 
-/* Animated Water Ambient Background */
-@keyframes waterWave {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+.filigree-gold::after {
+  bottom: -6px;
+  right: -5px;
 }
 
-.p3r-water-bg {
-  background: radial-gradient(circle at 85% 15%, rgba(0, 210, 255, 0.18) 0%, transparent 45%),
-              radial-gradient(circle at 15% 75%, rgba(0, 72, 208, 0.28) 0%, transparent 55%),
-              radial-gradient(circle at 50% 50%, rgba(5, 14, 36, 0.95) 0%, #020713 100%);
-  background-size: 150% 150%;
-  animation: waterWave 14s ease-in-out infinite;
+/* Soft Sunlight Glimmer */
+@keyframes sunGlimmer {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.75; transform: scale(1.05); }
 }
 
-/* Floating Shards / Particles */
-@keyframes floatSlow {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-16px) rotate(6deg);
-  }
+.animate-sun-glimmer {
+  animation: sunGlimmer 6s ease-in-out infinite;
 }
 
-@keyframes floatFast {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-24px) rotate(-8deg);
-  }
-}
-
-.animate-float-slow {
-  animation: floatSlow 6s ease-in-out infinite;
-}
-
-.animate-float-fast {
-  animation: floatFast 4.5s ease-in-out infinite;
-}
-
-/* Shimmer Progress Sweep */
-@keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(200%); }
-}
-
-.animate-shimmer {
-  animation: shimmer 2.5s infinite;
-}
-
-/* Subtle Scanlines */
-.p3r-scanlines {
-  background: linear-gradient(
-    rgba(18, 16, 16, 0) 50%,
-    rgba(0, 0, 0, 0.25) 50%
-  ), linear-gradient(
-    90deg,
-    rgba(255, 0, 0, 0.02),
-    rgba(0, 255, 0, 0.01),
-    rgba(0, 0, 255, 0.02)
-  );
-  background-size: 100% 3px, 6px 100%;
-}
-
-/* Custom Scrollbar */
+/* Custom Scrollbar in Forest Gold */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #020713;
+  background: #081614;
 }
 ::-webkit-scrollbar-thumb {
-  background: #00d2ff;
-  border-radius: 2px;
+  background: #785e1b;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #ff184c;
+  background: #d4af37;
 }
 
-/* Lenis Smooth Scrolling (Turbulent.ca Inertia) */
+/* Lenis Smooth Scroll */
 html.lenis, html.lenis body {
   height: auto;
 }
-
 .lenis.lenis-smooth {
   scroll-behavior: auto !important;
 }
-
 .lenis.lenis-smooth [data-lenis-prevent] {
   overscroll-behavior: contain;
 }
-
 .lenis.lenis-stopped {
   overflow: hidden;
 }
-
