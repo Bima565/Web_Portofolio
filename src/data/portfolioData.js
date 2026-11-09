@@ -9,7 +9,7 @@ export const portfolioData = {
     nickname: "Adaptive Problem Solver & Continuous Learner",
     bio: "Mahasiswa D3 Teknologi Informasi semester 5 yang adaptif, komunikatif, dan memiliki dedikasi tinggi dalam belajar. Terbiasa berpikir terstruktur, berkolaborasi dengan empati dalam tim, serta konsisten menyelesaikan setiap tantangan secara tuntas dan bertanggung jawab.",
     avatar: myPhoto,
-    academicStatus: "D3 Teknologi Informasi — Semester 5",
+    academicStatus: "D3 Teknologi Informasi",
     level: "Lv. 24",
   },
 
@@ -72,7 +72,6 @@ export const portfolioData = {
     { name: "Industrial IoT & REST API", category: "Backend / IoT", level: 90, stat: "St", desc: "Ewon Flexy 205 gateway, telemetri real-time, API consumption" },
     { name: "MySQL & Database Architecture", category: "Database", level: 86, stat: "Ag", desc: "Skema relasional, optimasi query, auto-retention data log" },
     { name: "Linux Environment & Shell Scripting", category: "DevOps & OS", level: 88, stat: "Ma", desc: "NyArch/CachyOS, Bash, PowerShell automation, Proton runner" },
-    { name: "3D Rigging & Unity Pipeline", category: "3D & Assets", level: 83, stat: "Lu", desc: "Blender modeling, FBX export, Bone End chain, DynamicBone" },
     { name: "AI MCP & Creative Tooling", category: "AI Workflows", level: 87, stat: "Ag", desc: "Model Context Protocol untuk Figma, Penpot, Blender & LLM" },
   ],
 
@@ -110,16 +109,6 @@ export const portfolioData = {
     },
     {
       id: "04",
-      title: "3D Character Rigging & Dynamic Bone Physics",
-      category: "3D Pipeline & Game Modding",
-      status: "Done",
-      description: "Alur kerja pembuatan aset pakaian dan karakter 3D dari Blender ke Unity Editor. Meliputi pemodelan mesh, FBX export, penambahan rantai Bone End, konfigurasi physics DynamicBone/HSPE2, dan pengujian di runtime game engine.",
-      tech: ["Blender", "Unity Engine", "DynamicBone", "FBX Pipeline"],
-      link: "#",
-      impact: "Fisika cloth/bone stabil tanpa glitch clipping mesh",
-    },
-    {
-      id: "05",
       title: "Wi-Fi 5GHz & Network Interface Automator",
       category: "PowerShell & System Automation",
       status: "Done",
