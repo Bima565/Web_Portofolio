@@ -23,6 +23,15 @@
     overflow-x: hidden;
     min-height: 100vh;
   }
+
+  /* Hide default cursor on mouse devices because CustomCursor is active */
+  @media (pointer: fine) {
+    *,
+    *::before,
+    *::after {
+      cursor: none !important;
+    }
+  }
 }
 
 /* Persona 3 Reload Custom Utilities */
