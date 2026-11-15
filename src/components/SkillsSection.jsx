@@ -16,6 +16,7 @@ import {
   SiBlender,
   SiPostman,
   SiGnubash,
+  SiKotlin,
 } from 'react-icons/si'
 import { FaCss3Alt, FaLinux } from 'react-icons/fa6'
 import { TbBrandCSharp, TbBrandPowershell, TbBrandVscode } from 'react-icons/tb'
@@ -31,6 +32,7 @@ const iconMap = {
   firebase: SiFirebase,
   archlinux: SiArchlinux,
   linux: FaLinux,
+  kotlin: SiKotlin,
   csharp: TbBrandCSharp,
   dotnet: SiDotnet,
   powershell: TbBrandPowershell,

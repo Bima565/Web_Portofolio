@@ -2,8 +2,11 @@ import { motion } from 'motion/react'
 
 export default function AboutSection({ profile, about }) {
   const sectionTitle = about?.sectionTitle || "TENTANG SAYA"
-  const educationTitle = about?.educationTitle || "Latar Belakang & Pembelajaran"
-  const interestsTitle = about?.interestsTitle || "Minat & Eksplorasi"
+  const experienceTitle = about?.experienceTitle || "PENGALAMAN & MAGANG"
+  const educationTitle = about?.educationTitle || "PENDIDIKAN"
+  const interestsTitle = about?.interestsTitle || "MINAT & EKSPLORASI"
+
+  const hasExperience = Boolean(about?.experience && about.experience.length > 0)
 
   return (
     <motion.section
@@ -69,27 +72,91 @@ export default function AboutSection({ profile, about }) {
           ))}
         </div>
 
-        {/* Education & Interests Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+        {/* Experience, Education & Interests Grid */}
+        <div className={`grid grid-cols-1 ${hasExperience ? 'lg:grid-cols-3' : 'md:grid-cols-2'} gap-6 pt-2`}>
+          {/* Experience Card */}
+          {hasExperience && (
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: false }}
+              transition={{ duration: 0.5 }}
+              className="p-5 bg-[#020713]/80 border border-[#00d2ff]/30 transform -skew-x-3 shadow-[4px_4px_0px_#000000] flex flex-col justify-between"
+            >
+              <div>
+                <span className="block font-black italic text-xs tracking-wider uppercase text-[#00d2ff] mb-4">
+                  {experienceTitle}
+                </span>
+                <div className="flex flex-col gap-4">
+                  {about.experience.map((exp, idx) => (
+                    <div key={idx} className="flex flex-col gap-1 border-l-2 border-[#00d2ff]/40 pl-3">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="font-bold text-white text-sm">{exp.role}</span>
+                        {exp.type && (
+                          <span className="px-1.5 py-0.5 text-[9px] font-mono font-bold bg-[#0048d0] text-white">
+                            {exp.type}
+                          </span>
+                        )}
+                      </div>
+                      <span className="text-xs text-[#00d2ff] font-mono">
+                        {exp.company}
+                      </span>
+                      <span className="text-[11px] text-gray-400 font-mono">
+                        {exp.period} {exp.location ? `· ${exp.location}` : ''}
+                      </span>
+                      <p className="text-xs text-gray-300 mt-1 leading-relaxed">{exp.detail}</p>
+                      {exp.skills && (
+                        <div className="flex flex-wrap gap-1.5 mt-2">
+                          {exp.skills.map((s, sIdx) => (
+                            <span
+                              key={sIdx}
+                              className="px-2 py-0.5 text-[10px] font-mono bg-[#071330] text-[#00d2ff] border border-[#00d2ff]/30 transform -skew-x-3"
+                            >
+                              {s}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          )}
+
           {/* Education Card */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false }}
             transition={{ duration: 0.5 }}
-            className="p-5 bg-[#020713]/80 border border-[#00d2ff]/30 transform -skew-x-3 shadow-[4px_4px_0px_#000000]"
+            className="p-5 bg-[#020713]/80 border border-[#00d2ff]/30 transform -skew-x-3 shadow-[4px_4px_0px_#000000] flex flex-col justify-between"
           >
-            <span className="block font-black italic text-xs tracking-wider uppercase text-[#00d2ff] mb-4">
-              {educationTitle}
-            </span>
-            <div className="flex flex-col gap-4">
-              {about.education.map((edu, idx) => (
-                <div key={idx} className="flex flex-col gap-1 border-l-2 border-[#00d2ff]/40 pl-3">
-                  <span className="font-bold text-white text-sm">{edu.degree}</span>
-                  <span className="text-xs text-[#00d2ff] font-mono">{edu.institution} ({edu.period})</span>
-                  <p className="text-xs text-gray-300 mt-0.5">{edu.detail}</p>
-                </div>
-              ))}
+            <div>
+              <span className="block font-black italic text-xs tracking-wider uppercase text-[#00d2ff] mb-4">
+                {educationTitle}
+              </span>
+              <div className="flex flex-col gap-4">
+                {about.education.map((edu, idx) => (
+                  <div key={idx} className="flex flex-col gap-1 border-l-2 border-[#00d2ff]/40 pl-3">
+                    <span className="font-bold text-white text-sm">{edu.degree}</span>
+                    <span className="text-xs text-[#00d2ff] font-mono">{edu.institution} ({edu.period})</span>
+                    <p className="text-xs text-gray-300 mt-1 leading-relaxed">{edu.detail}</p>
+                    {edu.skills && (
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        {edu.skills.map((s, sIdx) => (
+                          <span
+                            key={sIdx}
+                            className="px-2 py-0.5 text-[10px] font-mono bg-[#071330] text-[#00d2ff] border border-[#00d2ff]/30 transform -skew-x-3"
+                          >
+                            {s}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           </motion.div>
 
