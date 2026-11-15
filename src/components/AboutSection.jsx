@@ -1,6 +1,10 @@
 import { motion } from 'motion/react'
 
 export default function AboutSection({ profile, about }) {
+  const sectionTitle = about?.sectionTitle || "TENTANG SAYA"
+  const educationTitle = about?.educationTitle || "Latar Belakang & Pembelajaran"
+  const interestsTitle = about?.interestsTitle || "Minat & Eksplorasi"
+
   return (
     <motion.section
       id="about"
@@ -16,7 +20,7 @@ export default function AboutSection({ profile, about }) {
           whileHover={{ scale: 1.03 }}
           className="px-5 py-1.5 bg-[#0048d0] text-white font-black italic text-lg md:text-xl tracking-wider uppercase transform -skew-x-12 border-l-4 border-[#00d2ff] shadow-[4px_4px_0px_#000000]"
         >
-          <span className="inline-block transform skew-x-12">TENTANG SAYA</span>
+          <span className="inline-block transform skew-x-12">{sectionTitle}</span>
         </motion.div>
         <div className="flex-1 h-[2px] bg-gradient-to-r from-[#00d2ff]/50 to-transparent" />
       </div>
@@ -33,14 +37,14 @@ export default function AboutSection({ profile, about }) {
         <div className="flex flex-col gap-2 border-l-4 border-[#ff184c] pl-5 py-2 bg-gradient-to-r from-[#020713]/70 to-transparent">
           <div className="flex items-center gap-2 text-xs font-mono text-[#00d2ff]">
             <span className="font-bold text-white text-sm">{profile.fullName}</span>
-            <span>[{profile.academicStatus} - {profile.classGroup}]</span>
+            <span>[{profile.title}]</span>
           </div>
           <p className="text-gray-100 text-sm md:text-base leading-relaxed">
             {about.statement}
           </p>
         </div>
 
-        {/* 4 Pillars of Work Ethic with Staggered Entrance */}
+        {/* 4 Pillars with Staggered Entrance */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {about.pillars.map((pil, idx) => (
             <motion.div
@@ -76,7 +80,7 @@ export default function AboutSection({ profile, about }) {
             className="p-5 bg-[#020713]/80 border border-[#00d2ff]/30 transform -skew-x-3 shadow-[4px_4px_0px_#000000]"
           >
             <span className="block font-black italic text-xs tracking-wider uppercase text-[#00d2ff] mb-4">
-              Pendidikan & Pengalaman Industri
+              {educationTitle}
             </span>
             <div className="flex flex-col gap-4">
               {about.education.map((edu, idx) => (
@@ -95,11 +99,11 @@ export default function AboutSection({ profile, about }) {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false }}
             transition={{ duration: 0.5 }}
-            className="p-5 bg-[#020713]/80 border border-[#00d2ff]/30 transform -skew-x-3 shadow-[4px_4px_0px_#000000] flex flex-col justify-between"
+            className="p-5 bg-[#020713]/80 border border-[#00d2ff]/30 transform -skew-x-3 shadow-[4px_4px_0px_#000000] flex flex-col justify-start gap-4"
           >
             <div>
               <span className="block font-black italic text-xs tracking-wider uppercase text-[#ffcc00] mb-4">
-                Fokus & Minat Teknis
+                {interestsTitle}
               </span>
               <div className="flex flex-wrap gap-2">
                 {about.interests.map((item, idx) => (
@@ -112,9 +116,6 @@ export default function AboutSection({ profile, about }) {
                   </motion.span>
                 ))}
               </div>
-            </div>
-            <div className="pt-4 mt-4 border-t border-white/10 text-xs font-mono text-gray-400">
-              Status: Terbuka untuk magang dan proyek pengembangan web & IoT
             </div>
           </motion.div>
         </div>

@@ -1,7 +1,28 @@
 import { motion, AnimatePresence } from 'motion/react'
 import { CheckCircle2, ArrowUpRight } from 'lucide-react'
 
-export default function ProjectsSection({ projects, selectedProject, setSelectedProject }) {
+export default function ProjectsSection({
+  projectsSection,
+  projects,
+  selectedProject,
+  setSelectedProject,
+}) {
+  const sectionTitle = projectsSection?.sectionTitle || "PORTOFOLIO PROYEK"
+  const totalLabel = projectsSection?.totalLabel || "TOTAL:"
+  const projectWord = projectsSection?.projectWord || "PROYEK"
+  const tableHeaders = projectsSection?.tableHeaders || {
+    no: "NO.",
+    title: "NAMA PROYEK",
+    status: "STATUS",
+  }
+  const detailLabels = projectsSection?.detailLabels || {
+    detail: "DETAIL PROYEK",
+    impact: "HASIL & DAMPAK:",
+    tech: "TEKNOLOGI DIGUNAKAN:",
+    verified: "Terverifikasi",
+    githubBtn: "Repositori GitHub",
+  }
+
   return (
     <motion.section
       id="projects"
@@ -17,12 +38,12 @@ export default function ProjectsSection({ projects, selectedProject, setSelected
             whileHover={{ scale: 1.03 }}
             className="px-5 py-1.5 bg-[#0048d0] text-white font-black italic text-lg md:text-xl tracking-wider uppercase transform -skew-x-12 border-l-4 border-[#ff184c] shadow-[4px_4px_0px_#000000]"
           >
-            <span className="inline-block transform skew-x-12">PORTOFOLIO PROYEK</span>
+            <span className="inline-block transform skew-x-12">{sectionTitle}</span>
           </motion.div>
           <div className="hidden sm:block flex-1 h-[2px] bg-gradient-to-r from-[#00d2ff]/40 to-transparent" />
         </div>
         <span className="text-xs font-mono text-[#00d2ff] tracking-widest">
-          TOTAL: {projects.length} PROYEK
+          {totalLabel} {projects.length} {projectWord}
         </span>
       </div>
 
@@ -36,9 +57,9 @@ export default function ProjectsSection({ projects, selectedProject, setSelected
         {/* Left: Project List Table */}
         <div className="lg:col-span-7 flex flex-col gap-2">
           <div className="grid grid-cols-12 text-[11px] font-mono text-gray-400 pb-2 border-b border-white/10 px-3">
-            <span className="col-span-2">NO.</span>
-            <span className="col-span-7">NAMA PROYEK</span>
-            <span className="col-span-3 text-right">STATUS</span>
+            <span className="col-span-2">{tableHeaders.no}</span>
+            <span className="col-span-7">{tableHeaders.title}</span>
+            <span className="col-span-3 text-right">{tableHeaders.status}</span>
           </div>
 
           <div className="flex flex-col gap-2 mt-1">
@@ -96,7 +117,7 @@ export default function ProjectsSection({ projects, selectedProject, setSelected
             >
               <div className="flex items-center justify-between border-b border-white/10 pb-2">
                 <span className="text-xs font-mono text-[#00d2ff] font-bold">
-                  DETAIL PROYEK /{selectedProject.id}
+                  {detailLabels.detail} /{selectedProject.id}
                 </span>
                 <span className="text-[10px] font-mono px-2 py-0.5 bg-[#0048d0] text-white font-bold">
                   {selectedProject.category}
@@ -112,13 +133,15 @@ export default function ProjectsSection({ projects, selectedProject, setSelected
               </p>
 
               <div className="p-2.5 bg-[#071330] border-l-2 border-[#ffcc00] text-[11px] text-gray-300">
-                <span className="text-[#ffcc00] font-bold font-mono block">HASIL & DAMPAK:</span>
+                <span className="text-[#ffcc00] font-bold font-mono block">
+                  {detailLabels.impact}
+                </span>
                 {selectedProject.impact}
               </div>
 
               <div className="mt-1">
                 <span className="block text-[10px] font-mono text-gray-400 mb-1">
-                  TEKNOLOGI DIGUNAKAN:
+                  {detailLabels.tech}
                 </span>
                 <div className="flex flex-wrap gap-1.5">
                   {selectedProject.tech.map((t, idx) => (
@@ -136,7 +159,7 @@ export default function ProjectsSection({ projects, selectedProject, setSelected
 
           <div className="pt-4 border-t border-white/10 mt-4 flex items-center justify-between">
             <span className="text-[10px] font-mono text-gray-400 flex items-center gap-1">
-              <CheckCircle2 className="w-3.5 h-3.5 text-[#00d2ff]" /> Terverifikasi
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#00d2ff]" /> {detailLabels.verified}
             </span>
             <motion.a
               whileHover={{ scale: 1.05 }}
@@ -147,7 +170,7 @@ export default function ProjectsSection({ projects, selectedProject, setSelected
               className="px-4 py-1.5 bg-[#00d2ff] text-[#020713] font-black italic text-xs tracking-wider uppercase transform -skew-x-12 hover:bg-[#ff184c] hover:text-white transition-colors flex items-center gap-1 shadow-[2px_2px_0px_#000000]"
             >
               <span className="inline-block transform skew-x-12 flex items-center gap-1">
-                Repositori GitHub <ArrowUpRight className="w-3.5 h-3.5" />
+                {detailLabels.githubBtn} <ArrowUpRight className="w-3.5 h-3.5" />
               </span>
             </motion.a>
           </div>

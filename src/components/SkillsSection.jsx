@@ -1,7 +1,52 @@
 import { motion, AnimatePresence } from 'motion/react'
+import {
+  SiHtml5,
+  SiJavascript,
+  SiReact,
+  SiTailwindcss,
+  SiVite,
+  SiMysql,
+  SiFirebase,
+  SiArchlinux,
+  SiDotnet,
+  SiGit,
+  SiGithub,
+  SiPython,
+  SiFigma,
+  SiBlender,
+  SiPostman,
+  SiGnubash,
+} from 'react-icons/si'
+import { FaCss3Alt, FaLinux } from 'react-icons/fa6'
+import { TbBrandCSharp, TbBrandPowershell, TbBrandVscode } from 'react-icons/tb'
 
-export default function SkillsSection({ filteredSkills, skillFilter, setSkillFilter }) {
-  const tabs = ['SEMUA', 'FRONTEND', 'IOT', 'SISTEM', 'DATABASE']
+const iconMap = {
+  html5: SiHtml5,
+  css3: FaCss3Alt,
+  javascript: SiJavascript,
+  react: SiReact,
+  tailwindcss: SiTailwindcss,
+  vite: SiVite,
+  mysql: SiMysql,
+  firebase: SiFirebase,
+  archlinux: SiArchlinux,
+  linux: FaLinux,
+  csharp: TbBrandCSharp,
+  dotnet: SiDotnet,
+  powershell: TbBrandPowershell,
+  bash: SiGnubash,
+  git: SiGit,
+  github: SiGithub,
+  vscode: TbBrandVscode,
+  python: SiPython,
+  figma: SiFigma,
+  blender: SiBlender,
+  postman: SiPostman,
+}
+
+export default function SkillsSection({ skillsSection, filteredSkills, skillFilter, setSkillFilter }) {
+  const sectionTitle = skillsSection?.sectionTitle || "TOOLS & TEKNOLOGI"
+  const tabs = skillsSection?.tabs || ['SEMUA', 'FRONTEND', 'DATABASE', 'SISTEM', 'TOOLS']
 
   return (
     <motion.section
@@ -18,7 +63,7 @@ export default function SkillsSection({ filteredSkills, skillFilter, setSkillFil
             whileHover={{ scale: 1.03 }}
             className="px-5 py-1.5 bg-[#0048d0] text-white font-black italic text-lg md:text-xl tracking-wider uppercase transform -skew-x-12 border-l-4 border-[#00d2ff] shadow-[4px_4px_0px_#000000]"
           >
-            <span className="inline-block transform skew-x-12">KEAHLIAN TEKNIS</span>
+            <span className="inline-block transform skew-x-12">{sectionTitle}</span>
           </motion.div>
           <div className="hidden sm:block flex-1 h-[2px] bg-gradient-to-r from-[#00d2ff]/40 to-transparent" />
         </div>
@@ -53,59 +98,44 @@ export default function SkillsSection({ filteredSkills, skillFilter, setSkillFil
         transition={{ duration: 0.5 }}
         className="p-6 bg-[#071330]/85 border-2 border-[#00d2ff]/60 shadow-[8px_8px_0px_#000000] backdrop-blur-md"
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <motion.div layout className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3 sm:gap-4">
           <AnimatePresence>
-            {filteredSkills.map((skill, index) => (
-              <motion.div
-                key={skill.name}
-                layout
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ delay: index * 0.05, duration: 0.3 }}
-                whileHover={{ y: -6, borderColor: '#ff184c', scale: 1.02 }}
-                className="p-4 bg-[#020713]/85 border-2 border-[#00d2ff]/40 transform -skew-x-3 shadow-[4px_4px_0px_#000000] flex flex-col justify-between transition-colors cursor-default"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <span className="w-6 h-6 flex items-center justify-center bg-[#0048d0] text-[#00d2ff] font-black text-xs italic border border-[#00d2ff]">
-                        {skill.stat}
-                      </span>
-                      <h3 className="font-bold text-sm tracking-wide text-white">
-                        {skill.name}
-                      </h3>
-                    </div>
-                    <span className="text-xs font-mono font-bold text-[#ffcc00]">
-                      {skill.level}%
-                    </span>
+            {filteredSkills.map((tool, index) => {
+              const IconComp = iconMap[tool.icon]
+              return (
+                <motion.div
+                  key={tool.name}
+                  layout
+                  initial={{ opacity: 0, scale: 0.85, y: 15 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.85 }}
+                  transition={{ delay: index * 0.02, duration: 0.25 }}
+                  whileHover={{ y: -6, scale: 1.04, borderColor: '#00d2ff' }}
+                  className="group relative p-4 bg-[#020713]/85 border-2 border-[#00d2ff]/30 transform -skew-x-3 shadow-[4px_4px_0px_#000000] hover:shadow-[4px_4px_0px_#ff184c] flex flex-col items-center justify-center gap-2.5 transition-all cursor-default"
+                >
+                  <div className="w-12 h-12 flex items-center justify-center rounded transition-transform group-hover:scale-110">
+                    {IconComp ? (
+                      <IconComp
+                        className="text-4xl transition-colors drop-shadow-[0_0_8px_rgba(0,210,255,0.2)]"
+                        style={{ color: tool.color }}
+                      />
+                    ) : (
+                      <span className="font-mono text-xs text-[#00d2ff]">{tool.name}</span>
+                    )}
                   </div>
 
-                  <p className="text-[11px] text-gray-300 leading-snug mb-3">
-                    {skill.desc}
-                  </p>
-                </div>
+                  <span className="font-bold text-xs text-center text-white tracking-wide group-hover:text-[#00d2ff] transition-colors line-clamp-1">
+                    {tool.name}
+                  </span>
 
-                <div>
-                  <div className="w-full h-2 bg-[#020713] border border-white/20 p-0.5 relative overflow-hidden">
-                    <motion.div
-                      className="h-full bg-gradient-to-r from-[#0048d0] via-[#00d2ff] to-[#ff184c]"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${skill.level}%` }}
-                      viewport={{ once: false }}
-                      transition={{ duration: 0.8, ease: 'easeOut', delay: index * 0.04 }}
-                    />
-                  </div>
-
-                  <div className="flex justify-between items-center mt-2 text-[10px] font-mono text-gray-400">
-                    <span>Kategori: {skill.category}</span>
-                    <span className="text-[#00d2ff] font-bold">Teruji</span>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+                  <span className="px-1.5 py-0.5 text-[9px] font-mono uppercase tracking-wider text-gray-400 bg-[#071330] border border-white/10 group-hover:border-[#00d2ff]/40">
+                    {tool.category}
+                  </span>
+                </motion.div>
+              )
+            })}
           </AnimatePresence>
-        </div>
+        </motion.div>
       </motion.div>
     </motion.section>
   )

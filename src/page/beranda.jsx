@@ -14,7 +14,19 @@ import ScrollToTop from '../components/ScrollToTop'
 import { portfolioData } from '../data/portfolioData'
 
 export default function Beranda() {
-  const { profile, about, skills, projects, certifications, contact } = portfolioData
+  const {
+    navbar,
+    profile,
+    about,
+    skillsSection,
+    skills,
+    projectsSection,
+    projects,
+    certificationsSection,
+    certifications,
+    contact,
+  } = portfolioData
+
   const [selectedProject, setSelectedProject] = useState(projects[0])
   const [customMsg, setCustomMsg] = useState(contact.defaultMessage)
   const [skillFilter, setSkillFilter] = useState('SEMUA')
@@ -53,10 +65,10 @@ export default function Beranda() {
   // Filter skills
   const filteredSkills = useMemo(() => {
     if (skillFilter === 'SEMUA') return skills
-    if (skillFilter === 'FRONTEND') return skills.filter((s) => s.category.includes('Frontend'))
-    if (skillFilter === 'IOT') return skills.filter((s) => s.category.includes('IoT'))
-    if (skillFilter === 'SISTEM') return skills.filter((s) => s.category.includes('Sistem'))
-    if (skillFilter === 'DATABASE') return skills.filter((s) => s.category.includes('Database'))
+    if (skillFilter === 'FRONTEND') return skills.filter((s) => s.category === 'Frontend')
+    if (skillFilter === 'DATABASE') return skills.filter((s) => s.category === 'Database')
+    if (skillFilter === 'SISTEM') return skills.filter((s) => s.category === 'Sistem')
+    if (skillFilter === 'TOOLS') return skills.filter((s) => s.category === 'Tools')
     return skills
   }, [skills, skillFilter])
 
@@ -66,20 +78,7 @@ export default function Beranda() {
     return `https://wa.me/${contact.whatsappNumber}?text=${encoded}`
   }, [contact.whatsappNumber, contact.defaultMessage, customMsg])
 
-  const quickMessages = [
-    {
-      label: 'Tanya Pembuatan Web / Dashboard',
-      text: 'Halo Bima, saya ingin berdiskusi mengenai kebutuhan pembuatan aplikasi web atau dashboard interaktif.',
-    },
-    {
-      label: 'Diskusi Integrasi IoT & Sistem',
-      text: 'Halo Bima, saya ingin berdiskusi mengenai implementasi IoT atau integrasi sistem perangkat lunak.',
-    },
-    {
-      label: 'Peluang Magang & Kolaborasi',
-      text: 'Halo Bima, saya tertarik berdiskusi mengenai peluang kolaborasi teknis bersama Anda.',
-    },
-  ]
+  const quickMessages = contact.quickMessages || []
 
   return (
     <div className="relative min-h-screen bg-[#020713] text-white overflow-x-hidden selection:bg-[#ff184c] selection:text-white p3r-water-bg flex flex-col justify-between">
@@ -93,23 +92,28 @@ export default function Beranda() {
       />
 
       {/* Header Navigation */}
-      <Navbar profile={profile} whatsappUrl={whatsappUrl} />
+      <Navbar navbar={navbar} profile={profile} whatsappUrl={whatsappUrl} />
 
       {/* Main Content Area */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 py-10 md:py-16 flex flex-col gap-24 md:gap-32 relative z-10 w-full flex-grow">
+      <main className="w-full px-4 sm:px-8 lg:px-12 py-10 md:py-16 flex flex-col gap-24 md:gap-32 relative z-10 flex-grow">
         <HeroSection profile={profile} />
         <AboutSection profile={profile} about={about} />
         <SkillsSection
+          skillsSection={skillsSection}
           filteredSkills={filteredSkills}
           skillFilter={skillFilter}
           setSkillFilter={setSkillFilter}
         />
         <ProjectsSection
+          projectsSection={projectsSection}
           projects={projects}
           selectedProject={selectedProject}
           setSelectedProject={setSelectedProject}
         />
-        <CertificationsSection certifications={certifications} />
+        <CertificationsSection
+          certificationsSection={certificationsSection}
+          certifications={certifications}
+        />
       </main>
 
       {/* Full-width Hoyoverse Style Footer & Contact */}

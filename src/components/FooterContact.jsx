@@ -8,11 +8,27 @@ export default function FooterContact({
   setCustomMsg,
   quickMessages,
 }) {
+  const sectionTag = contact?.sectionTag || "KONTAK & DISKUSI"
+  const title = contact?.title || "Hubungi Saya untuk Diskusi Proyek"
+  const desc = contact?.desc || "Terbuka untuk kolaborasi pembuatan aplikasi web dan utilitas perangkat lunak. Silakan pilih topik atau tulis pesan untuk langsung terhubung via WhatsApp."
+  const inputPlaceholder = contact?.inputPlaceholder || "Tulis pesan Anda untuk WhatsApp..."
+  const sendButtonText = contact?.sendButton || "Kirim WhatsApp"
+  const footerNavLinks = contact?.footerNavLinks || [
+    { href: "#hero", label: "Profil" },
+    { href: "#about", label: "Tentang Saya" },
+    { href: "#skills", label: "Keahlian Teknis" },
+    { href: "#projects", label: "Portofolio Proyek" },
+    { href: "#certifications", label: "Sertifikasi" },
+    { href: "#contact", label: "Kontak WhatsApp" },
+  ]
+  const footerTagline = contact?.footerTagline || "Portofolio Pribadi - Pengembangan Web & Rekayasa Perangkat Lunak"
+  const copyrightText = contact?.copyright || "Seluruh hak cipta dilindungi."
+
   return (
     <footer id="contact" className="w-full relative z-20 mt-16 scroll-mt-10">
       {/* 1. TOP SOCIAL ICONS ROW */}
       <div className="w-full bg-[#02050e] border-t border-b border-white/10 py-4 px-4 sm:px-8">
-        <div className="max-w-7xl mx-auto flex items-center justify-center gap-6 sm:gap-8 text-gray-400">
+        <div className="w-full flex items-center justify-center gap-6 sm:gap-8 text-gray-400">
           <a
             href={whatsappUrl}
             target="_blank"
@@ -67,16 +83,16 @@ export default function FooterContact({
 
       {/* 2. MAIN CONTACT ROW */}
       <div className="w-full bg-[#040816] py-12 px-4 sm:px-8 lg:px-12 border-b border-white/10">
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 lg:gap-16">
+        <div className="w-full flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 lg:gap-16">
           <div className="flex-1 flex flex-col gap-2 max-w-xl">
             <span className="text-xs font-mono text-[#00d2ff] font-bold tracking-widest uppercase">
-              KOMUNIKASI LANGSUNG RESMI
+              {sectionTag}
             </span>
             <h2 className="text-2xl sm:text-3xl font-black italic uppercase text-white tracking-tight">
-              Hubungi Saya untuk Diskusi Proyek
+              {title}
             </h2>
             <p className="text-gray-300 text-sm leading-relaxed">
-              Terbuka untuk peluang magang, kolaborasi pembuatan aplikasi web, dan integrasi sistem IoT. Silakan pilih topik atau tulis pesan untuk langsung terhubung via WhatsApp resmi.
+              {desc}
             </p>
 
             <div className="flex flex-wrap gap-2 pt-2">
@@ -99,7 +115,7 @@ export default function FooterContact({
                 type="text"
                 value={customMsg}
                 onChange={(e) => setCustomMsg(e.target.value)}
-                placeholder="Tulis pesan Anda untuk WhatsApp..."
+                placeholder={inputPlaceholder}
                 className="flex-1 bg-[#02050e] border border-white/20 focus:border-[#00d2ff] px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none transition-colors"
               />
               <a
@@ -110,7 +126,7 @@ export default function FooterContact({
               >
                 <span className="inline-block transform skew-x-6 flex items-center gap-2">
                   <MessageCircle className="w-4 h-4" />
-                  Kirim WhatsApp
+                  {sendButtonText}
                 </span>
               </a>
             </div>
@@ -125,7 +141,7 @@ export default function FooterContact({
 
       {/* 3. LEGAL, BRANDING & NAVIGATION LINKS */}
       <div className="w-full bg-[#010308] py-8 px-4 sm:px-8 lg:px-12 text-center text-xs text-gray-400">
-        <div className="max-w-7xl mx-auto flex flex-col items-center gap-4">
+        <div className="w-full flex flex-col items-center gap-4">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 bg-[#00d2ff] rotate-45" />
             <span className="font-mono text-sm font-black tracking-widest text-white uppercase">
@@ -134,20 +150,23 @@ export default function FooterContact({
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-6 font-mono text-xs text-gray-300">
-            <a href="#hero" className="hover:text-[#00d2ff] transition-colors">Profil</a>
-            <a href="#about" className="hover:text-[#00d2ff] transition-colors">Tentang Saya</a>
-            <a href="#skills" className="hover:text-[#00d2ff] transition-colors">Keahlian Teknis</a>
-            <a href="#projects" className="hover:text-[#00d2ff] transition-colors">Portofolio Proyek</a>
-            <a href="#certifications" className="hover:text-[#00d2ff] transition-colors">Sertifikasi</a>
-            <a href="#contact" className="hover:text-[#ff184c] transition-colors">Kontak WhatsApp</a>
+            {footerNavLinks.map((item, idx) => (
+              <a
+                key={idx}
+                href={item.href}
+                className="hover:text-[#00d2ff] transition-colors"
+              >
+                {item.label}
+              </a>
+            ))}
           </div>
 
           <p className="text-[11px] text-gray-500 max-w-2xl font-mono leading-relaxed">
-            Tugas Portofolio Individu Mahasiswa - {profile.academicStatus} ({profile.classGroup}) - NIM: {profile.nim}
+            {footerTagline}
           </p>
 
           <div className="text-[11px] text-gray-500 font-mono">
-            Copyright © 2026 {profile.fullName}. Seluruh hak cipta dilindungi.
+            Copyright © {new Date().getFullYear()} {profile.fullName}. {copyrightText}
           </div>
         </div>
       </div>

@@ -1,6 +1,13 @@
 import { motion } from 'motion/react'
 
 export default function HeroSection({ profile }) {
+  const pills = profile?.heroPills || ["WEB DEVELOPER", "FRONTEND & SYSTEM", "PORTFOLIO"]
+  const cta = profile?.ctaButtons || {
+    projects: "Lihat Portofolio Proyek",
+    whatsapp: "Hubungi via WhatsApp",
+  }
+  const photoBadge = profile?.photoBadge || "PORTFOLIO"
+
   return (
     <motion.section
       id="hero"
@@ -17,15 +24,22 @@ export default function HeroSection({ profile }) {
           transition={{ delay: 0.2, duration: 0.5 }}
           className="flex flex-wrap items-center gap-2"
         >
-          <span className="px-3 py-1 bg-[#0048d0] text-[#00d2ff] text-xs font-bold tracking-wider transform -skew-x-12 border border-[#00d2ff]/60 shadow-[2px_2px_0px_#000000]">
-            {profile.academicStatus}
-          </span>
-          <span className="px-3 py-1 bg-[#ff184c] text-white text-xs font-mono font-bold tracking-wider transform -skew-x-12 border border-white/60 shadow-[2px_2px_0px_#000000]">
-            NIM: {profile.nim}
-          </span>
-          <span className="px-3 py-1 bg-[#071330] text-[#ffcc00] text-xs font-mono font-bold tracking-wider transform -skew-x-12 border border-[#ffcc00]/40 shadow-[2px_2px_0px_#000000]">
-            {profile.semester}
-          </span>
+          {pills.map((pill, idx) => {
+            const styles = [
+              "bg-[#0048d0] text-[#00d2ff] border-[#00d2ff]/60",
+              "bg-[#ff184c] text-white border-white/60",
+              "bg-[#071330] text-[#ffcc00] border-[#ffcc00]/40",
+            ]
+            const cls = styles[idx % styles.length]
+            return (
+              <span
+                key={idx}
+                className={`px-3 py-1 text-xs font-mono font-bold tracking-wider transform -skew-x-12 border shadow-[2px_2px_0px_#000000] ${cls}`}
+              >
+                {pill}
+              </span>
+            )
+          })}
         </motion.div>
 
         {/* Name Heading */}
@@ -75,7 +89,7 @@ export default function HeroSection({ profile }) {
             className="px-6 py-3 bg-[#ff184c] text-white font-black italic text-sm tracking-wider uppercase transform -skew-x-12 border-2 border-white hover:bg-white hover:text-[#020713] hover:border-[#ff184c] transition-all shadow-[4px_4px_0px_#000000]"
           >
             <span className="inline-block transform skew-x-12">
-              Lihat Portofolio Proyek
+              {cta.projects}
             </span>
           </motion.a>
 
@@ -86,7 +100,7 @@ export default function HeroSection({ profile }) {
             className="px-6 py-3 bg-[#071330] text-[#00d2ff] font-black italic text-sm tracking-wider uppercase transform -skew-x-12 border-2 border-[#00d2ff]/60 hover:bg-[#00d2ff] hover:text-[#020713] transition-all shadow-[4px_4px_0px_#000000]"
           >
             <span className="inline-block transform skew-x-12">
-              Hubungi via WhatsApp
+              {cta.whatsapp}
             </span>
           </motion.a>
         </motion.div>
@@ -108,7 +122,7 @@ export default function HeroSection({ profile }) {
               className="w-full h-full object-cover object-top filter contrast-110 brightness-105"
             />
             <div className="absolute bottom-0 right-0 bg-[#ff184c] text-white text-[10px] font-mono font-bold tracking-widest px-3 py-1 transform -skew-x-12 border-t-2 border-l-2 border-white">
-              {profile.classGroup}
+              {photoBadge}
             </div>
           </div>
         </div>

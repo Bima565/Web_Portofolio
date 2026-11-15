@@ -1,7 +1,13 @@
 import { motion } from 'motion/react'
 import { CheckCircle2 } from 'lucide-react'
 
-export default function CertificationsSection({ certifications }) {
+export default function CertificationsSection({ certificationsSection, certifications }) {
+  const sectionTitle = certificationsSection?.sectionTitle || "LISENSI & SERTIFIKASI"
+  const badgeLabel = certificationsSection?.badgeLabel || "SERTIFIKASI"
+  const fieldLabel = certificationsSection?.fieldLabel || "BIDANG KOMPETENSI:"
+  const statusLabel = certificationsSection?.statusLabel || "STATUS:"
+  const verifiedText = certificationsSection?.verifiedText || "Sertifikat Valid"
+
   return (
     <motion.section
       id="certifications"
@@ -17,12 +23,12 @@ export default function CertificationsSection({ certifications }) {
             whileHover={{ scale: 1.03 }}
             className="px-5 py-1.5 bg-[#0048d0] text-white font-black italic text-lg md:text-xl tracking-wider uppercase transform -skew-x-12 border-l-4 border-[#ffcc00] shadow-[4px_4px_0px_#000000]"
           >
-            <span className="inline-block transform skew-x-12">LISENSI & SERTIFIKASI</span>
+            <span className="inline-block transform skew-x-12">{sectionTitle}</span>
           </motion.div>
           <div className="hidden sm:block flex-1 h-[2px] bg-gradient-to-r from-[#00d2ff]/40 to-transparent" />
         </div>
         <span className="text-xs font-mono text-[#ffcc00] tracking-widest hidden sm:inline">
-          KREDENSIAL RESMI
+          {badgeLabel}
         </span>
       </div>
 
@@ -67,17 +73,19 @@ export default function CertificationsSection({ certifications }) {
                 </div>
 
                 <p className="text-xs text-gray-300 mt-1">
-                  <strong className="text-gray-400 font-mono text-[10px] block">BIDANG KOMPETENSI:</strong>
+                  <strong className="text-gray-400 font-mono text-[10px] block">
+                    {fieldLabel}
+                  </strong>
                   {cert.skills}
                 </p>
               </div>
 
               <div className="pt-3 mt-4 border-t border-white/10 flex items-center justify-between text-xs font-mono">
                 <span className="text-emerald-400 flex items-center gap-1 font-bold">
-                  <CheckCircle2 className="w-3.5 h-3.5" /> Kredensial Valid
+                  <CheckCircle2 className="w-3.5 h-3.5" /> {verifiedText}
                 </span>
                 <span className="text-gray-400">
-                  STATUS: {cert.status}
+                  {statusLabel} {cert.status}
                 </span>
               </div>
             </motion.div>
