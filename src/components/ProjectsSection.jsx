@@ -92,12 +92,11 @@ export default function ProjectsSection({
     >
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <motion.div
-            whileHover={{ scale: 1.03 }}
-            className="px-5 py-1.5 bg-[#0048d0] text-white font-black italic text-lg md:text-xl tracking-wider uppercase transform -skew-x-12 border-l-4 border-[#ff184c] shadow-[4px_4px_0px_#000000]"
+          <div
+            className="px-5 py-1.5 bg-[#0048d0] text-white font-black italic text-lg md:text-xl tracking-wider uppercase transform -skew-x-12 hover:scale-105 transition-transform duration-150 border-l-4 border-[#ff184c] shadow-[4px_4px_0px_#000000]"
           >
             <span className="inline-block transform skew-x-12">{sectionTitle}</span>
-          </motion.div>
+          </div>
           <div className="hidden sm:block flex-1 h-[2px] bg-gradient-to-r from-[#00d2ff]/40 to-transparent" />
         </div>
         <span className="text-xs font-mono text-[#00d2ff] tracking-widest">
@@ -131,9 +130,8 @@ export default function ProjectsSection({
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: false }}
                   transition={{ delay: idx * 0.05, duration: 0.3 }}
-                  whileHover={{ x: 6 }}
                   onClick={() => setSelectedProject(proj)}
-                  className={`w-full text-left grid grid-cols-12 items-center px-3 py-3 transition-all duration-150 transform -skew-x-6 border-2 ${
+                  className={`w-full text-left grid grid-cols-12 items-center px-3 py-3 transition-all duration-150 transform -skew-x-6 hover:translate-x-1.5 border-2 ${
                     isSelected
                       ? 'bg-white text-[#020713] font-black border-white shadow-[4px_4px_0px_#ff184c]'
                       : 'bg-[#020713]/80 text-gray-200 border-[#00d2ff]/30 hover:border-[#00d2ff] hover:bg-[#0b1736]'
@@ -221,18 +219,16 @@ export default function ProjectsSection({
           </AnimatePresence>
 
           <div className="pt-4 border-t border-white/10 mt-6 flex items-center justify-end">
-            <motion.a
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            <a
               href={currentProject.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-5 py-2 bg-[#00d2ff] text-[#020713] font-black italic text-xs tracking-wider uppercase transform -skew-x-12 hover:bg-[#ff184c] hover:text-white transition-colors flex items-center gap-1.5 shadow-[2px_2px_0px_#000000]"
+              className="px-5 py-2 bg-[#00d2ff] text-[#020713] font-black italic text-xs tracking-wider uppercase transform -skew-x-12 hover:bg-[#ff184c] hover:text-white hover:scale-105 active:scale-95 transition-all duration-150 flex items-center gap-1.5 shadow-[2px_2px_0px_#000000]"
             >
               <span className="inline-block transform skew-x-12 flex items-center gap-1.5">
                 {detailLabels.githubBtn} <ArrowUpRight className="w-3.5 h-3.5" />
               </span>
-            </motion.a>
+            </a>
           </div>
         </div>
       </motion.div>

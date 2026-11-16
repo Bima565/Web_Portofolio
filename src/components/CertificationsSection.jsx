@@ -19,12 +19,11 @@ export default function CertificationsSection({ certificationsSection, certifica
     >
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <motion.div
-            whileHover={{ scale: 1.03 }}
-            className="px-5 py-1.5 bg-[#0048d0] text-white font-black italic text-lg md:text-xl tracking-wider uppercase transform -skew-x-12 border-l-4 border-[#ffcc00] shadow-[4px_4px_0px_#000000]"
+          <div
+            className="px-5 py-1.5 bg-[#0048d0] text-white font-black italic text-lg md:text-xl tracking-wider uppercase transform -skew-x-12 hover:scale-105 transition-transform duration-150 border-l-4 border-[#ffcc00] shadow-[4px_4px_0px_#000000]"
           >
             <span className="inline-block transform skew-x-12">{sectionTitle}</span>
-          </motion.div>
+          </div>
           <div className="hidden sm:block flex-1 h-[2px] bg-gradient-to-r from-[#00d2ff]/40 to-transparent" />
         </div>
         <span className="text-xs font-mono text-[#ffcc00] tracking-widest hidden sm:inline">
@@ -47,8 +46,7 @@ export default function CertificationsSection({ certificationsSection, certifica
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
               transition={{ delay: idx * 0.12, duration: 0.4 }}
-              whileHover={{ y: -6, borderColor: '#00d2ff', scale: 1.02 }}
-              className="p-5 bg-[#020713]/85 border-2 border-[#00d2ff]/40 shadow-[4px_4px_0px_#000000] flex flex-col justify-between transform -skew-x-3 transition-colors cursor-default"
+              className="p-5 bg-[#020713]/85 border-2 border-[#00d2ff]/40 shadow-[4px_4px_0px_#000000] flex flex-col justify-between transform -skew-x-3 hover:-translate-y-1.5 hover:scale-[1.02] hover:border-[#00d2ff] transition-all duration-200 cursor-default"
             >
               <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between">

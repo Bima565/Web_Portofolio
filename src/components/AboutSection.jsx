@@ -19,12 +19,11 @@ export default function AboutSection({ profile, about }) {
     >
       {/* Header Banner */}
       <div className="flex items-center gap-3">
-        <motion.div
-          whileHover={{ scale: 1.03 }}
-          className="px-5 py-1.5 bg-[#0048d0] text-white font-black italic text-lg md:text-xl tracking-wider uppercase transform -skew-x-12 border-l-4 border-[#00d2ff] shadow-[4px_4px_0px_#000000]"
+        <div
+          className="px-5 py-1.5 bg-[#0048d0] text-white font-black italic text-lg md:text-xl tracking-wider uppercase transform -skew-x-12 hover:scale-105 transition-transform duration-150 border-l-4 border-[#00d2ff] shadow-[4px_4px_0px_#000000]"
         >
           <span className="inline-block transform skew-x-12">{sectionTitle}</span>
-        </motion.div>
+        </div>
         <div className="flex-1 h-[2px] bg-gradient-to-r from-[#00d2ff]/50 to-transparent" />
       </div>
 
@@ -56,8 +55,7 @@ export default function AboutSection({ profile, about }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
               transition={{ delay: idx * 0.08, duration: 0.4 }}
-              whileHover={{ y: -6, borderColor: '#00d2ff', scale: 1.02 }}
-              className="p-4 bg-[#020713]/85 border border-white/20 transform -skew-x-3 transition-colors shadow-[4px_4px_0px_#000000] flex flex-col gap-2 cursor-default"
+              className="p-4 bg-[#020713]/85 border border-white/20 transform -skew-x-3 hover:-translate-y-1.5 hover:scale-[1.02] hover:border-[#00d2ff] transition-all duration-200 shadow-[4px_4px_0px_#000000] flex flex-col gap-2 cursor-default"
             >
               <span className="self-start px-2 py-0.5 text-[9px] font-mono font-bold bg-[#0048d0] text-[#00d2ff]">
                 {pil.badge}
@@ -174,13 +172,12 @@ export default function AboutSection({ profile, about }) {
               </span>
               <div className="flex flex-wrap gap-2">
                 {about.interests.map((item, idx) => (
-                  <motion.span
+                  <span
                     key={idx}
-                    whileHover={{ scale: 1.05, borderColor: '#ff184c', color: '#ffffff' }}
-                    className="px-3 py-1 text-xs font-semibold bg-[#071330] text-gray-200 border border-[#00d2ff]/30 transform -skew-x-3 transition-colors cursor-default"
+                    className="px-3 py-1 text-xs font-semibold bg-[#071330] text-gray-200 border border-[#00d2ff]/30 transform -skew-x-3 hover:scale-105 hover:border-[#ff184c] hover:text-white transition-all duration-150 cursor-default"
                   >
                     {item}
-                  </motion.span>
+                  </span>
                 ))}
               </div>
             </div>

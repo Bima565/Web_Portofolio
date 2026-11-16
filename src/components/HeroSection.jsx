@@ -57,8 +57,7 @@ export default function HeroSection({ profile }) {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.4, duration: 0.5 }}
-          whileHover={{ scale: 1.02 }}
-          className="relative inline-block self-start"
+          className="relative inline-block self-start hover:scale-105 transition-transform duration-150"
         >
           <span className="block px-4 py-2 bg-[#00d2ff] text-[#020713] font-black italic text-sm md:text-base tracking-wide transform -skew-x-12 shadow-[4px_4px_0px_#000000] border-2 border-white">
             {profile.title}
@@ -82,27 +81,23 @@ export default function HeroSection({ profile }) {
           transition={{ delay: 0.6, duration: 0.5 }}
           className="flex flex-wrap items-center gap-4 pt-2"
         >
-          <motion.a
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
+          <a
             href="#projects"
-            className="px-6 py-3 bg-[#ff184c] text-white font-black italic text-sm tracking-wider uppercase transform -skew-x-12 border-2 border-white hover:bg-white hover:text-[#020713] hover:border-[#ff184c] transition-all shadow-[4px_4px_0px_#000000]"
+            className="px-6 py-3 bg-[#ff184c] text-white font-black italic text-sm tracking-wider uppercase transform -skew-x-12 border-2 border-white hover:bg-white hover:text-[#020713] hover:border-[#ff184c] hover:scale-105 active:scale-95 transition-all duration-150 shadow-[4px_4px_0px_#000000]"
           >
             <span className="inline-block transform skew-x-12">
               {cta.projects}
             </span>
-          </motion.a>
+          </a>
 
-          <motion.a
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
+          <a
             href="#contact"
-            className="px-6 py-3 bg-[#071330] text-[#00d2ff] font-black italic text-sm tracking-wider uppercase transform -skew-x-12 border-2 border-[#00d2ff]/60 hover:bg-[#00d2ff] hover:text-[#020713] transition-all shadow-[4px_4px_0px_#000000]"
+            className="px-6 py-3 bg-[#071330] text-[#00d2ff] font-black italic text-sm tracking-wider uppercase transform -skew-x-12 border-2 border-[#00d2ff]/60 hover:bg-[#00d2ff] hover:text-[#020713] hover:border-white hover:scale-105 active:scale-95 transition-all duration-150 shadow-[4px_4px_0px_#000000]"
           >
             <span className="inline-block transform skew-x-12">
               {cta.whatsapp}
             </span>
-          </motion.a>
+          </a>
         </motion.div>
       </div>
 
