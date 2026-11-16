@@ -21,7 +21,7 @@ export default function FooterContact({
     { href: "#certifications", label: "Sertifikasi" },
     { href: "#contact", label: "Kontak WhatsApp" },
   ]
-  const footerTagline = contact?.footerTagline || "Portofolio Pribadi - Pengembangan Web & Rekayasa Perangkat Lunak"
+  const footerTagline = contact?.footerTagline || "Portofolio Pribadi - Eksplorasi Kode & Utilitas Sistem"
   const copyrightText = contact?.copyright || "Seluruh hak cipta dilindungi."
 
   return (

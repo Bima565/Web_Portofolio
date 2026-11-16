@@ -1,7 +1,7 @@
 import { motion } from 'motion/react'
 
 export default function HeroSection({ profile }) {
-  const pills = profile?.heroPills || ["WEB DEVELOPER", "FRONTEND & SYSTEM", "PORTFOLIO"]
+  const pills = profile?.heroPills || ["PORTOFOLIO PRIBADI", "EKSPLORASI MANDIRI", "PROYEK KREATIF"]
   const cta = profile?.ctaButtons || {
     projects: "Lihat Portofolio Proyek",
     whatsapp: "Hubungi via WhatsApp",

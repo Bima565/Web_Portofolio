@@ -22,7 +22,9 @@ import {
   SiGradle,
 } from 'react-icons/si'
 import { FaCss3Alt, FaWindows, FaGamepad, FaMicrochip } from 'react-icons/fa6'
-import { TbBrandCSharp, TbApi } from 'react-icons/tb'
+import { TbApi } from 'react-icons/tb'
+import csharpImg from '../assets/lcon/csharp.png'
+import cppImg from '../assets/lcon/ISO_C++_Logo.svg'
 
 const techIcons = {
   'React': { icon: SiReact, color: '#61DAFB' },
@@ -32,7 +34,8 @@ const techIcons = {
   'Three.js': { icon: SiThreedotjs, color: '#FFFFFF' },
   'JavaScript': { icon: SiJavascript, color: '#F7DF1E' },
   'TypeScript': { icon: SiTypescript, color: '#3178C6' },
-  'C#': { icon: TbBrandCSharp, color: '#9B4F96' },
+  'C#': { image: csharpImg, color: '#9B4F96' },
+  'C++': { image: cppImg, color: '#00599C' },
   '.NET': { icon: SiDotnet, color: '#512BD4' },
   'SDL2': { icon: FaGamepad, color: '#1793D1' },
   'ViGEmBus': { icon: FaGamepad, color: '#00d2ff' },
@@ -200,12 +203,14 @@ export default function ProjectsSection({
                         key={idx}
                         className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#071330] text-gray-200 text-xs font-mono border border-[#00d2ff]/30 shadow-[2px_2px_0px_#000000] hover:border-[#00d2ff] transition-colors"
                       >
-                        {IconComp && (
+                        {item?.image ? (
+                          <img src={item.image} alt={t} className="w-3.5 h-3.5 object-contain flex-shrink-0" />
+                        ) : IconComp ? (
                           <IconComp
                             className="text-sm flex-shrink-0"
                             style={{ color: item.color }}
                           />
-                        )}
+                        ) : null}
                         <span>{t}</span>
                       </span>
                     )

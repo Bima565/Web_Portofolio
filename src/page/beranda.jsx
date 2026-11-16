@@ -65,11 +65,8 @@ export default function Beranda() {
   // Filter skills
   const filteredSkills = useMemo(() => {
     if (skillFilter === 'SEMUA') return skills
-    if (skillFilter === 'FRONTEND') return skills.filter((s) => s.category === 'Frontend')
-    if (skillFilter === 'DATABASE') return skills.filter((s) => s.category === 'Database')
-    if (skillFilter === 'SISTEM') return skills.filter((s) => s.category === 'Sistem')
-    if (skillFilter === 'TOOLS') return skills.filter((s) => s.category === 'Tools')
-    return skills
+    const q = skillFilter.toLowerCase()
+    return skills.filter((s) => s.category.toLowerCase().includes(q))
   }, [skills, skillFilter])
 
   // Click-to-Chat WhatsApp URL
