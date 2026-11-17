@@ -285,7 +285,7 @@ export const portfolioData = {
     github: "https://github.com/Bima565",
     linkedin: "https://www.linkedin.com/in/bima-prawira-dharma-0a2493328/",
     sectionTag: "KONTAK & DISKUSI",
-    title: "Hubungi Saya untuk Diskusi Proyek",
+    title: "Hubungi Saya untuk Diskusi",
     desc: "Terbuka untuk kolaborasi pembuatan aplikasi web dan utilitas perangkat lunak. Silakan pilih topik atau tulis pesan untuk langsung terhubung via WhatsApp.",
     inputPlaceholder: "Tulis pesan Anda untuk WhatsApp...",
     sendButton: "Kirim WhatsApp",
