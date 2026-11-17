@@ -23,7 +23,7 @@ export const portfolioData = {
   // 2. Informasi Profil Utama & Hero
   profile: {
     fullName: "Bima Prawira Dharma",
-    title: "Portofolio Pribadi",
+    title: "IT Technician & Full-Stack Enthusiast",
     bio: "Senang mengulik hal baru, bereksperimen, dan mencari tahu cara kerja sesuatu dari nol. Terbiasa belajar mandiri lewat praktik langsung dan mencari solusi praktis ketika menemui kendala.",
     avatar: myPhoto,
     heroPills: ["PORTOFOLIO PRIBADI", "EKSPLORASI MANDIRI", "PROYEK KREATIF"],
