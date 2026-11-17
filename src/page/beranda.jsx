@@ -29,7 +29,7 @@ export default function Beranda() {
 
   const [selectedProject, setSelectedProject] = useState(projects[0])
   const [customMsg, setCustomMsg] = useState(contact.defaultMessage)
-  const [skillFilter, setSkillFilter] = useState('SEMUA')
+  const [skillFilter, setSkillFilter] = useState('WEB DEVELOPMENT')
 
   // Scroll Progress
   const { scrollYProgress } = useScroll()
@@ -64,7 +64,6 @@ export default function Beranda() {
 
   // Filter skills
   const filteredSkills = useMemo(() => {
-    if (skillFilter === 'SEMUA') return skills
     const q = skillFilter.toLowerCase()
     return skills.filter((s) => s.category.toLowerCase().includes(q))
   }, [skills, skillFilter])

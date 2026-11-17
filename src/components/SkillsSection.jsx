@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import {
   SiHtml5,
@@ -98,14 +99,26 @@ const iconMap = {
 }
 
 const getBadgeLabel = (cat = '') => {
-  if (cat.includes('Bahasa')) return 'Language'
-  if (cat.includes('Operating')) return 'OS'
-  return 'Tool'
+  return cat || 'Tool'
 }
 
 export default function SkillsSection({ skillsSection, filteredSkills, skillFilter, setSkillFilter }) {
   const sectionTitle = skillsSection?.sectionTitle || "TOOLS & TEKNOLOGI"
-  const tabs = skillsSection?.tabs || ["SEMUA", "BAHASA PEMROGRAMAN", "OPERATING SYSTEM", "TOOLS"]
+  const rawTabs = skillsSection?.tabs || [
+    "WEB DEVELOPMENT",
+    "NATIVE WINDOWS",
+    "MOBILE & IOT",
+    "DATABASE",
+    "OPERATING SYSTEM",
+    "TOOLS & INFRA",
+  ]
+  const tabs = rawTabs.filter((tab) => tab.toUpperCase() !== "SEMUA")
+
+  useEffect(() => {
+    if ((!skillFilter || skillFilter.toUpperCase() === "SEMUA") && tabs.length > 0) {
+      setSkillFilter(tabs[0])
+    }
+  }, [skillFilter, tabs, setSkillFilter])
 
   return (
     <motion.section
@@ -127,7 +140,7 @@ export default function SkillsSection({ skillsSection, filteredSkills, skillFilt
           <div className="hidden sm:block w-20 h-[2px] bg-gradient-to-r from-[#00d2ff]/60 to-transparent" />
         </div>
 
-        {/* 3 Categories + All Tab Bar */}
+        {/* Category Tab Bar */}
         <div className="flex flex-wrap items-center gap-2 font-mono text-xs">
           {tabs.map((tab) => {
             const isActive = skillFilter === tab
