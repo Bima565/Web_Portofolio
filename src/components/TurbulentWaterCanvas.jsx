@@ -8,17 +8,17 @@ export default function TurbulentWaterCanvas() {
     const container = mountRef.current
     if (!container) return
 
-    // Scene & Camera
+    // Scene & Perspective Camera
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(
       45,
       window.innerWidth / window.innerHeight,
       0.1,
-      100
+      120
     )
     camera.position.set(0, 0, 20)
 
-    // WebGL Renderer
+    // High-performance WebGL Renderer
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
       antialias: true,
@@ -28,182 +28,215 @@ export default function TurbulentWaterCanvas() {
     renderer.setSize(window.innerWidth, window.innerHeight)
     container.appendChild(renderer.domElement)
 
-    // Dynamic Lighting
-    const ambientLight = new THREE.AmbientLight(0x061530, 2.0)
+    // Persona 3 Reload Lighting: Deep Tartarus Ambient + High-Contrast Cyan & Crimson Lights
+    const ambientLight = new THREE.AmbientLight(0x051329, 2.8)
     scene.add(ambientLight)
 
-    const dirLight1 = new THREE.DirectionalLight(0x00d2ff, 4.0)
-    dirLight1.position.set(12, 14, 10)
-    scene.add(dirLight1)
+    const dirLightCyan = new THREE.DirectionalLight(0x00d2ff, 4.5)
+    dirLightCyan.position.set(16, 18, 12)
+    scene.add(dirLightCyan)
 
-    const dirLight2 = new THREE.DirectionalLight(0xff184c, 3.0)
-    dirLight2.position.set(-12, -10, 8)
-    scene.add(dirLight2)
+    const dirLightCrimson = new THREE.DirectionalLight(0xff184c, 3.8)
+    dirLightCrimson.position.set(-16, -12, 10)
+    scene.add(dirLightCrimson)
 
-    const pointLightCenter = new THREE.PointLight(0x00d2ff, 2.5, 30)
-    pointLightCenter.position.set(0, 0, 5)
-    scene.add(pointLightCenter)
+    const centerGlow = new THREE.PointLight(0x00d2ff, 2.0, 35)
+    centerGlow.position.set(0, 0, 8)
+    scene.add(centerGlow)
 
-    // Persona 3 Reload Signature Colors
-    const palette = [
-      { color: 0xff184c, emissive: 0x4a0010 }, // SEES Crimson
-      { color: 0x00d2ff, emissive: 0x002c40 }, // Electric Cyan
-      { color: 0xffcc00, emissive: 0x3d3000 }, // Stat Gold
-      { color: 0x0055ff, emissive: 0x001040 }, // Royal Atlus Blue
-      { color: 0xffffff, emissive: 0x112233 }, // Glass White
-      { color: 0x00ffcc, emissive: 0x003322 }, // Neon Mint
-    ]
+    // --- 1. P3R SUBMERGED WATER CAUSTICS / WAVE MESH (DEEP BACKGROUND) ---
+    const waveGeo = new THREE.PlaneGeometry(65, 45, 36, 26)
+    const waveMat = new THREE.MeshStandardMaterial({
+      color: 0x002b66,
+      emissive: 0x001433,
+      roughness: 0.2,
+      metalness: 0.85,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.16,
+    })
+    const waveMesh = new THREE.Mesh(waveGeo, waveMat)
+    waveMesh.position.set(0, 0, -14)
+    scene.add(waveMesh)
 
-    // Varied Geometry Types: Tarot Cards, Polyhedrons, Torus Diamonds, Shards
-    const geometries = {
-      card: new THREE.BoxGeometry(0.7, 1.2, 0.04), // Tarot / Status Card
-      tetra: new THREE.TetrahedronGeometry(0.55, 0), // Sharp Prism
-      octa: new THREE.OctahedronGeometry(0.5, 0), // Diamond Crystal
-      icosa: new THREE.IcosahedronGeometry(0.45, 0), // Polyhedral Gem
-      ring: new THREE.TorusGeometry(0.4, 0.06, 4, 4), // Angular Diamond Ring
-      shard: new THREE.ConeGeometry(0.35, 1.1, 3), // Slanted Ribbon Shard
+    // Store base wave positions for procedural ripple
+    const wavePosAttr = waveGeo.attributes.position
+    const waveOrigPos = new Float32Array(wavePosAttr.count * 3)
+    for (let w = 0; w < wavePosAttr.count * 3; w++) {
+      waveOrigPos[w] = wavePosAttr.array[w]
     }
 
-    const geoKeys = Object.keys(geometries)
+    // --- 2. HOLOGRAPHIC TAROT CARDS & FLOATING CRYSTAL SHARDS ---
+    const palette = [
+      { color: 0xff184c, emissive: 0x5a0014, line: 0xff4d79 }, // SEES Crimson
+      { color: 0x00d2ff, emissive: 0x003355, line: 0x80e7ff }, // Electric Cyan
+      { color: 0xffcc00, emissive: 0x4a3b00, line: 0xffe680 }, // Stat Gold
+      { color: 0x0048d0, emissive: 0x001855, line: 0x4d88ff }, // Atlus Royal Blue
+      { color: 0xffffff, emissive: 0x1a2636, line: 0xffffff }, // Glass White
+    ]
 
-    // Distribute objects: DENSE ON LEFT & RIGHT, light & deep in center
+    const cardGeo = new THREE.BoxGeometry(0.75, 1.3, 0.04)
+    const cardEdgeGeo = new THREE.EdgesGeometry(cardGeo)
+
+    const tetraGeo = new THREE.TetrahedronGeometry(0.55, 0)
+    const tetraEdgeGeo = new THREE.EdgesGeometry(tetraGeo)
+
+    const octaGeo = new THREE.OctahedronGeometry(0.5, 0)
+    const octaEdgeGeo = new THREE.EdgesGeometry(octaGeo)
+
+    const ringGeo = new THREE.TorusGeometry(0.42, 0.06, 4, 4)
+    const shardGeo = new THREE.ConeGeometry(0.35, 1.2, 3)
+
+    const shardTypes = [
+      { geo: cardGeo, edge: cardEdgeGeo, isCard: true },
+      { geo: tetraGeo, edge: tetraEdgeGeo },
+      { geo: octaGeo, edge: octaEdgeGeo },
+      { geo: ringGeo, edge: null },
+      { geo: shardGeo, edge: null },
+    ]
+
     const objects = []
-    const totalCount = 80
+    const totalShards = 75
 
-    for (let i = 0; i < totalCount; i++) {
-      const geoType = geoKeys[i % geoKeys.length]
-      const geo = geometries[geoType]
+    for (let i = 0; i < totalShards; i++) {
+      const type = shardTypes[i % shardTypes.length]
       const theme = palette[Math.floor(Math.random() * palette.length)]
 
+      // Faceted Shard Material
       const mat = new THREE.MeshStandardMaterial({
         color: theme.color,
         emissive: theme.emissive,
-        roughness: 0.18,
-        metalness: 0.75,
+        roughness: 0.15,
+        metalness: 0.8,
         flatShading: true,
         transparent: true,
-        opacity: Math.random() * 0.4 + 0.55,
+        opacity: Math.random() * 0.35 + 0.6,
         side: THREE.DoubleSide,
       })
 
-      const mesh = new THREE.Mesh(geo, mat)
+      const group = new THREE.Group()
+      const mesh = new THREE.Mesh(type.geo, mat)
+      group.add(mesh)
 
-      // Balanced left/right distribution ("Rata Kiri Kanan")
+      // Add Glowing Holographic Wireframe Edges to Cards and Prisms
+      if (type.edge) {
+        const lineMat = new THREE.LineBasicMaterial({
+          color: theme.line,
+          transparent: true,
+          opacity: 0.85,
+        })
+        const lines = new THREE.LineSegments(type.edge, lineMat)
+        group.add(lines)
+      }
+
+      // Distribute outer margins (balanced left and right, keep center readable)
       const isLeft = i % 2 === 0
       const side = isLeft ? -1 : 1
+      const x = side * (Math.random() * 11 + 5.2)
+      const y = (Math.random() - 0.5) * 24
+      const z = (Math.random() - 0.5) * 11
 
-      // X spans outer margins: ±(5 to 16)
-      const x = side * (Math.random() * 11 + 5)
-      // Y spans vertical viewport
-      const y = (Math.random() - 0.5) * 22
-      // Z spans depth layers
-      const z = (Math.random() - 0.5) * 12
+      group.position.set(x, y, z)
 
-      mesh.position.set(x, y, z)
+      const scale = Math.random() * 0.65 + 0.5
+      group.scale.set(scale, scale, scale)
 
-      const scale = Math.random() * 0.7 + 0.5
-      mesh.scale.set(scale, scale, scale)
-
-      mesh.rotation.set(
+      group.rotation.set(
         Math.random() * Math.PI * 2,
         Math.random() * Math.PI * 2,
         Math.random() * Math.PI * 2
       )
 
       objects.push({
-        mesh,
+        group,
         baseX: x,
         baseY: y,
         baseZ: z,
-        rotSpeedX: (Math.random() - 0.5) * 0.016,
-        rotSpeedY: (Math.random() - 0.5) * 0.022,
-        rotSpeedZ: (Math.random() - 0.5) * 0.014,
-        floatFreq: Math.random() * 0.6 + 0.5,
-        floatAmp: Math.random() * 0.5 + 0.3,
+        rotSpeedX: (Math.random() - 0.5) * 0.018,
+        rotSpeedY: (Math.random() - 0.5) * 0.024,
+        rotSpeedZ: (Math.random() - 0.5) * 0.015,
+        floatFreq: Math.random() * 0.7 + 0.5,
+        floatAmp: Math.random() * 0.55 + 0.3,
         phase: Math.random() * Math.PI * 2,
         isLeft,
       })
 
-      scene.add(mesh)
+      scene.add(group)
     }
 
-    // 10 deep background ambient cards in center for subtle depth
-    for (let j = 0; j < 12; j++) {
-      const mat = new THREE.MeshStandardMaterial({
-        color: 0x00d2ff,
-        emissive: 0x001020,
-        roughness: 0.3,
-        metalness: 0.8,
-        flatShading: true,
-        transparent: true,
-        opacity: 0.22,
-      })
-      const centerCard = new THREE.Mesh(geometries.card, mat)
-      const cx = (Math.random() - 0.5) * 8
-      const cy = (Math.random() - 0.5) * 20
-      const cz = -(Math.random() * 8 + 8) // Deep behind text
+    // --- 3. UNDERWATER BUBBLES / RISING DARK HOUR MOTES ---
+    const bubbleCount = 200
+    const bubbleGeo = new THREE.BufferGeometry()
+    const bubblePos = new Float32Array(bubbleCount * 3)
+    const bubbleColor = new Float32Array(bubbleCount * 3)
+    const bubbleSpeeds = new Float32Array(bubbleCount)
 
-      centerCard.position.set(cx, cy, cz)
-      centerCard.scale.set(0.6, 0.6, 0.6)
-      scene.add(centerCard)
+    const colCyan = new THREE.Color(0x00d2ff)
+    const colRed = new THREE.Color(0xff184c)
+    const colGold = new THREE.Color(0xffcc00)
+    const colWhite = new THREE.Color(0xffffff)
 
-      objects.push({
-        mesh: centerCard,
-        baseX: cx,
-        baseY: cy,
-        baseZ: cz,
-        rotSpeedX: (Math.random() - 0.5) * 0.008,
-        rotSpeedY: (Math.random() - 0.5) * 0.01,
-        rotSpeedZ: (Math.random() - 0.5) * 0.006,
-        floatFreq: 0.4,
-        floatAmp: 0.3,
-        phase: Math.random() * Math.PI * 2,
-        isLeft: false,
-      })
+    for (let b = 0; b < bubbleCount; b++) {
+      bubblePos[b * 3 + 0] = (Math.random() - 0.5) * 36
+      bubblePos[b * 3 + 1] = (Math.random() - 0.5) * 28
+      bubblePos[b * 3 + 2] = (Math.random() - 0.5) * 16
+
+      const colChoice = b % 4 === 0 ? colCyan : b % 4 === 1 ? colRed : b % 4 === 2 ? colGold : colWhite
+      bubbleColor[b * 3 + 0] = colChoice.r
+      bubbleColor[b * 3 + 1] = colChoice.g
+      bubbleColor[b * 3 + 2] = colChoice.b
+
+      bubbleSpeeds[b] = Math.random() * 0.025 + 0.012
     }
 
-    // Sparkle Particle Field (Persona Blue, Cyan, Crimson & Gold Sparks)
-    const particleCount = 260
-    const particleGeo = new THREE.BufferGeometry()
-    const posArr = new Float32Array(particleCount * 3)
-    const colArr = new Float32Array(particleCount * 3)
+    bubbleGeo.setAttribute('position', new THREE.BufferAttribute(bubblePos, 3))
+    bubbleGeo.setAttribute('color', new THREE.BufferAttribute(bubbleColor, 3))
 
-    const cCyan = new THREE.Color(0x00d2ff)
-    const cRed = new THREE.Color(0xff184c)
-    const cGold = new THREE.Color(0xffcc00)
-
-    for (let p = 0; p < particleCount; p++) {
-      posArr[p * 3 + 0] = (Math.random() - 0.5) * 32
-      posArr[p * 3 + 1] = (Math.random() - 0.5) * 26
-      posArr[p * 3 + 2] = (Math.random() - 0.5) * 14
-
-      const randCol = p % 3 === 0 ? cRed : p % 3 === 1 ? cCyan : cGold
-      colArr[p * 3 + 0] = randCol.r
-      colArr[p * 3 + 1] = randCol.g
-      colArr[p * 3 + 2] = randCol.b
-    }
-
-    particleGeo.setAttribute('position', new THREE.BufferAttribute(posArr, 3))
-    particleGeo.setAttribute('color', new THREE.BufferAttribute(colArr, 3))
-
-    const particleMat = new THREE.PointsMaterial({
-      size: 0.08,
+    const bubbleMat = new THREE.PointsMaterial({
+      size: 0.12,
       vertexColors: true,
       transparent: true,
-      opacity: 0.8,
+      opacity: 0.85,
       blending: THREE.AdditiveBlending,
     })
-    const particles = new THREE.Points(particleGeo, particleMat)
-    scene.add(particles)
+    const bubbles = new THREE.Points(bubbleGeo, bubbleMat)
+    scene.add(bubbles)
+
+    // --- 4. CLICK SHOCKWAVE / EXPANDING RIPPLE RING ---
+    const shockwaveGeo = new THREE.RingGeometry(0.1, 0.25, 32)
+    const shockwaveMat = new THREE.MeshBasicMaterial({
+      color: 0x00d2ff,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0,
+      blending: THREE.AdditiveBlending,
+    })
+    const shockwave = new THREE.Mesh(shockwaveGeo, shockwaveMat)
+    shockwave.position.set(0, 0, 5)
+    scene.add(shockwave)
+    let shockwaveScale = 0
+    let shockwaveOpacity = 0
 
     // Mouse Tracking
     let targetMouseX = 0
     let targetMouseY = 0
+
     const onMouseMove = (e) => {
       targetMouseX = (e.clientX / window.innerWidth) * 2 - 1
       targetMouseY = -(e.clientY / window.innerHeight) * 2 + 1
     }
+
+    const onClick = (e) => {
+      // Trigger expanding P3R shockwave at mouse location
+      const rayX = (e.clientX / window.innerWidth) * 2 - 1
+      const rayY = -(e.clientY / window.innerHeight) * 2 + 1
+      shockwave.position.set(rayX * 12, rayY * 8, 4)
+      shockwaveScale = 0.5
+      shockwaveOpacity = 0.95
+    }
+
     window.addEventListener('mousemove', onMouseMove, { passive: true })
+    window.addEventListener('click', onClick, { passive: true })
 
     // Window Resize
     const onResize = () => {
@@ -213,7 +246,7 @@ export default function TurbulentWaterCanvas() {
     }
     window.addEventListener('resize', onResize)
 
-    // Animation Loop with Scroll & Parallax
+    // Animation Loop
     let lastScrollY = window.scrollY
     let scrollVelocity = 0
     let reqId
@@ -229,40 +262,51 @@ export default function TurbulentWaterCanvas() {
 
       scrollVelocity = THREE.MathUtils.lerp(
         scrollVelocity,
-        deltaScroll * 0.018,
+        deltaScroll * 0.02,
         0.08
       )
 
-      // Camera responds smoothly to mouse and scroll depth
-      camera.position.x = THREE.MathUtils.lerp(camera.position.x, targetMouseX * 1.8, 0.04)
+      // Smooth Camera Response to Mouse & Scroll
+      camera.position.x = THREE.MathUtils.lerp(camera.position.x, targetMouseX * 2.0, 0.04)
       camera.position.y = THREE.MathUtils.lerp(
         camera.position.y,
-        targetMouseY * 1.4 - (currentScrollY * 0.0022),
+        targetMouseY * 1.5 - (currentScrollY * 0.0022),
         0.04
       )
 
-      // Lusion-style Mouse World Target for interactive repulsion
+      // --- Wave Caustics Vertex Animation ---
+      const waveArray = wavePosAttr.array
+      for (let idx = 0; idx < wavePosAttr.count; idx++) {
+        const ox = waveOrigPos[idx * 3 + 0]
+        const oy = waveOrigPos[idx * 3 + 1]
+        // Dual undulating sine waves
+        const waveZ = Math.sin(ox * 0.28 + elapsed * 1.1) * 0.75 + Math.cos(oy * 0.35 + elapsed * 0.9) * 0.65
+        waveArray[idx * 3 + 2] = waveZ
+      }
+      wavePosAttr.needsUpdate = true
+
+      // --- Interactive Repulsion Coordinates ---
       const mouseWorldX = targetMouseX * 13
       const mouseWorldY = targetMouseY * 9.5
 
-      // Animate floating items
+      // --- Floating Shards & Cards Animation ---
       for (let k = 0; k < objects.length; k++) {
         const item = objects[k]
 
-        // Rotation spins faster during scroll
-        item.mesh.rotation.x += item.rotSpeedX * (1 + scrollVelocity * 2.5)
-        item.mesh.rotation.y += item.rotSpeedY * (1 + scrollVelocity * 2.5)
-        item.mesh.rotation.z += item.rotSpeedZ
+        // Rotation acceleration on scroll
+        item.group.rotation.x += item.rotSpeedX * (1 + scrollVelocity * 2.8)
+        item.group.rotation.y += item.rotSpeedY * (1 + scrollVelocity * 2.8)
+        item.group.rotation.z += item.rotSpeedZ
 
         // Harmonic Floating
         const floatY = Math.sin(elapsed * item.floatFreq + item.phase) * item.floatAmp
-        const floatX = Math.cos(elapsed * 0.6 + item.phase) * 0.25
+        const floatX = Math.cos(elapsed * 0.65 + item.phase) * 0.3
 
-        // Continuous subtle upward drift
-        item.baseY += 0.004 + (scrollVelocity * 0.02)
-        if (item.baseY > 14) item.baseY = -14
+        // Gentle Continuous Upward Drift
+        item.baseY += 0.005 + (scrollVelocity * 0.02)
+        if (item.baseY > 15) item.baseY = -15
 
-        // Lusion.co Cursor Repulsion Physics (shards scatter gently when cursor approaches)
+        // Cursor Repulsion Physics (shards scatter gently when cursor approaches)
         let pushX = 0
         let pushY = 0
         const currentTargetX = item.baseX + floatX
@@ -271,19 +315,37 @@ export default function TurbulentWaterCanvas() {
         const dy = currentTargetY - mouseWorldY
         const dist = Math.sqrt(dx * dx + dy * dy)
 
-        if (dist < 4.8 && dist > 0.01) {
-          const force = (1 - dist / 4.8) * 2.0
+        if (dist < 5.0 && dist > 0.01) {
+          const force = (1 - dist / 5.0) * 2.2
           pushX = (dx / dist) * force
           pushY = (dy / dist) * force
         }
 
-        item.mesh.position.x = THREE.MathUtils.lerp(item.mesh.position.x, currentTargetX + pushX, 0.08)
-        item.mesh.position.y = THREE.MathUtils.lerp(item.mesh.position.y, currentTargetY + pushY, 0.08)
+        item.group.position.x = THREE.MathUtils.lerp(item.group.position.x, currentTargetX + pushX, 0.08)
+        item.group.position.y = THREE.MathUtils.lerp(item.group.position.y, currentTargetY + pushY, 0.08)
       }
 
-      // Rotate particle dust cloud
-      particles.rotation.y = elapsed * 0.025
-      particles.rotation.x = elapsed * 0.015
+      // --- Rising Bubbles Animation ---
+      const bArray = bubbleGeo.attributes.position.array
+      for (let b = 0; b < bubbleCount; b++) {
+        bArray[b * 3 + 1] += bubbleSpeeds[b] + (scrollVelocity * 0.015)
+        // Sway horizontally like bubbles in water
+        bArray[b * 3 + 0] += Math.sin(elapsed * 1.5 + b) * 0.008
+
+        if (bArray[b * 3 + 1] > 16) {
+          bArray[b * 3 + 1] = -16
+          bArray[b * 3 + 0] = (Math.random() - 0.5) * 36
+        }
+      }
+      bubbleGeo.attributes.position.needsUpdate = true
+
+      // --- Expanding Click Shockwave ---
+      if (shockwaveOpacity > 0.01) {
+        shockwaveScale += 0.4
+        shockwaveOpacity *= 0.92
+        shockwave.scale.set(shockwaveScale, shockwaveScale, 1)
+        shockwaveMat.opacity = shockwaveOpacity
+      }
 
       renderer.render(scene, camera)
     }
@@ -293,13 +355,25 @@ export default function TurbulentWaterCanvas() {
     return () => {
       cancelAnimationFrame(reqId)
       window.removeEventListener('mousemove', onMouseMove)
+      window.removeEventListener('click', onClick)
       window.removeEventListener('resize', onResize)
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement)
       }
-      Object.values(geometries).forEach((g) => g.dispose())
-      particleGeo.dispose()
-      particleMat.dispose()
+      waveGeo.dispose()
+      waveMat.dispose()
+      cardGeo.dispose()
+      cardEdgeGeo.dispose()
+      tetraGeo.dispose()
+      tetraEdgeGeo.dispose()
+      octaGeo.dispose()
+      octaEdgeGeo.dispose()
+      ringGeo.dispose()
+      shardGeo.dispose()
+      bubbleGeo.dispose()
+      bubbleMat.dispose()
+      shockwaveGeo.dispose()
+      shockwaveMat.dispose()
       renderer.dispose()
     }
   }, [])

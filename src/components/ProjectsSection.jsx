@@ -99,8 +99,8 @@ export default function ProjectsSection({
           </div>
           <div className="hidden sm:block flex-1 h-[2px] bg-gradient-to-r from-[#00d2ff]/40 to-transparent" />
         </div>
-        <span className="text-xs font-mono text-[#00d2ff] tracking-widest">
-          {totalLabel} {projects.length} {projectWord}
+        <span className="text-xs font-mono text-[#00d2ff] tracking-widest uppercase">
+          {totalLabel} {projects.length} {projectWord} // LOG 03
         </span>
       </div>
 
@@ -109,11 +109,11 @@ export default function ProjectsSection({
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: false }}
         transition={{ duration: 0.5 }}
-        className="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-[#071330]/85 border-2 border-[#00d2ff]/60 p-4 sm:p-6 backdrop-blur-md shadow-[8px_8px_0px_#000000]"
+        className="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-[#071330]/85 border-2 border-[#00d2ff]/60 p-4 sm:p-6 backdrop-blur-md shadow-[8px_8px_0px_#000000] relative overflow-hidden"
       >
         {/* Left: Project List Table */}
         <div className="lg:col-span-7 flex flex-col gap-2">
-          <div className="grid grid-cols-12 text-[11px] font-mono text-gray-400 pb-2 border-b border-white/10 px-3">
+          <div className="grid grid-cols-12 text-[11px] font-mono text-gray-400 pb-2 border-b border-white/10 px-3 uppercase tracking-wider">
             <span className="col-span-2">{tableHeaders.no}</span>
             <span className="col-span-7">{tableHeaders.title}</span>
             <span className="col-span-3 text-right">{tableHeaders.status}</span>
@@ -131,7 +131,7 @@ export default function ProjectsSection({
                   viewport={{ once: false }}
                   transition={{ delay: idx * 0.05, duration: 0.3 }}
                   onClick={() => setSelectedProject(proj)}
-                  className={`w-full text-left grid grid-cols-12 items-center px-3 py-3 transition-all duration-150 transform -skew-x-6 hover:translate-x-1.5 border-2 ${
+                  className={`w-full text-left grid grid-cols-12 items-center px-3.5 py-3 transition-all duration-150 transform -skew-x-6 hover:translate-x-2 border-2 ${
                     isSelected
                       ? 'bg-white text-[#020713] font-black border-white shadow-[4px_4px_0px_#ff184c]'
                       : 'bg-[#020713]/80 text-gray-200 border-[#00d2ff]/30 hover:border-[#00d2ff] hover:bg-[#0b1736]'
@@ -165,9 +165,9 @@ export default function ProjectsSection({
           <AnimatePresence mode="wait">
             <motion.div
               key={currentProject.id}
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
+              exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.25 }}
               className="flex flex-col gap-4"
             >
@@ -199,37 +199,39 @@ export default function ProjectsSection({
                     return (
                       <span
                         key={idx}
-                        className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#071330] text-gray-200 text-xs font-mono border border-[#00d2ff]/30 shadow-[2px_2px_0px_#000000] hover:border-[#00d2ff] transition-colors"
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-mono font-bold bg-[#071330] text-white border border-white/20 transform -skew-x-6 hover:scale-105 hover:border-[#00d2ff] transition-all"
                       >
                         {item?.image ? (
-                          <img src={item.image} alt={t} className="w-3.5 h-3.5 object-contain flex-shrink-0" />
+                          <img src={item.image} alt={t} className="w-3.5 h-3.5 object-contain" />
                         ) : IconComp ? (
-                          <IconComp
-                            className="text-sm flex-shrink-0"
-                            style={{ color: item.color }}
-                          />
+                          <IconComp className="text-xs" style={{ color: item?.color }} />
                         ) : null}
-                        <span>{t}</span>
+                        <span className="inline-block transform skew-x-6">{t}</span>
                       </span>
                     )
                   })}
                 </div>
               </div>
+
+              {/* GitHub Link Button with P3R Slash Sheen */}
+              {currentProject.link && (
+                <div className="pt-2">
+                  <a
+                    href={currentProject.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative inline-flex items-center gap-2 px-4 py-2 bg-[#0048d0] text-white text-xs font-mono font-bold transform -skew-x-12 border border-[#00d2ff] hover:bg-[#ff184c] hover:border-white hover:scale-105 active:scale-95 transition-all duration-150 shadow-[3px_3px_0px_#000000] overflow-hidden"
+                  >
+                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-500 ease-in-out pointer-events-none" />
+                    <span className="inline-flex items-center gap-1.5 transform skew-x-12">
+                      <span>{detailLabels.githubBtn}</span>
+                      <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    </span>
+                  </a>
+                </div>
+              )}
             </motion.div>
           </AnimatePresence>
-
-          <div className="pt-4 border-t border-white/10 mt-6 flex items-center justify-end">
-            <a
-              href={currentProject.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-5 py-2 bg-[#00d2ff] text-[#020713] font-black italic text-xs tracking-wider uppercase transform -skew-x-12 hover:bg-[#ff184c] hover:text-white hover:scale-105 active:scale-95 transition-all duration-150 flex items-center gap-1.5 shadow-[2px_2px_0px_#000000]"
-            >
-              <span className="inline-block transform skew-x-12 flex items-center gap-1.5">
-                {detailLabels.githubBtn} <ArrowUpRight className="w-3.5 h-3.5" />
-              </span>
-            </a>
-          </div>
         </div>
       </motion.div>
     </motion.section>

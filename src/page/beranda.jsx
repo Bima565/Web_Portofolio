@@ -82,6 +82,21 @@ export default function Beranda() {
       <CustomCursor />
       <TurbulentWaterCanvas />
 
+      {/* Persona 3 Reload Ambient Background Overlays */}
+      <div className="fixed inset-0 pointer-events-none z-[1] overflow-hidden select-none">
+        {/* Subtle Diagonal Scanlines */}
+        <div className="absolute inset-0 bg-[repeating-linear-gradient(-45deg,rgba(0,210,255,0.015)_0px,rgba(0,210,255,0.015)_1px,transparent_1px,transparent_8px)] opacity-60" />
+
+        {/* Ambient Pulsating Light Orbs */}
+        <div className="absolute -top-32 right-1/4 w-96 h-96 bg-[#00d2ff]/10 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute top-1/2 -left-32 w-96 h-96 bg-[#ff184c]/10 rounded-full blur-[140px] animate-pulse" style={{ animationDuration: '6s' }} />
+
+        {/* Big P3R Watermark Typography in Deep Background */}
+        <div className="absolute top-1/3 -right-20 transform -rotate-90 origin-right text-[120px] font-black italic tracking-tighter text-[#00d2ff]/[0.025] uppercase pointer-events-none select-none">
+          RELOAD // 03
+        </div>
+      </div>
+
       {/* Top Scroll Progress Bar */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#0048d0] via-[#00d2ff] to-[#ff184c] origin-left z-[60] shadow-[0_0_10px_#00d2ff]"
@@ -113,7 +128,7 @@ export default function Beranda() {
         />
       </main>
 
-      {/* Full-width Hoyoverse Style Footer & Contact */}
+      {/* Contact & Footer Section */}
       <FooterContact
         profile={profile}
         contact={contact}
@@ -123,7 +138,7 @@ export default function Beranda() {
         quickMessages={quickMessages}
       />
 
-      {/* Floating Scroll-to-Top Button */}
+      {/* Persistent Floating Scroll to Top */}
       <ScrollToTop />
     </div>
   )

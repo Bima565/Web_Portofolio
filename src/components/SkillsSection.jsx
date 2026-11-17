@@ -124,11 +124,11 @@ export default function SkillsSection({ skillsSection, filteredSkills, skillFilt
           >
             <span className="inline-block transform skew-x-12">{sectionTitle}</span>
           </div>
-          <div className="hidden sm:block w-16 h-[2px] bg-gradient-to-r from-[#00d2ff]/60 to-transparent" />
+          <div className="hidden sm:block w-20 h-[2px] bg-gradient-to-r from-[#00d2ff]/60 to-transparent" />
         </div>
 
         {/* 3 Categories + All Tab Bar */}
-        <div className="flex flex-wrap items-center gap-1.5 font-mono text-xs">
+        <div className="flex flex-wrap items-center gap-2 font-mono text-xs">
           {tabs.map((tab) => {
             const isActive = skillFilter === tab
             return (
@@ -136,13 +136,13 @@ export default function SkillsSection({ skillsSection, filteredSkills, skillFilt
                 key={tab}
                 type="button"
                 onClick={() => setSkillFilter(tab)}
-                className={`px-3 py-1 font-bold transform -skew-x-12 border transition-all duration-150 hover:scale-105 active:scale-95 ${
+                className={`relative px-3.5 py-1.5 font-black uppercase tracking-wider transform -skew-x-12 border transition-all duration-150 hover:scale-105 active:scale-95 ${
                   isActive
-                    ? 'bg-[#00d2ff] text-[#020713] border-white shadow-[2px_2px_0px_#000000]'
-                    : 'bg-[#071330] text-gray-300 border-[#00d2ff]/30 hover:border-[#00d2ff] hover:text-white'
+                    ? 'bg-[#00d2ff] text-[#020713] border-white shadow-[3px_3px_0px_#ff184c]'
+                    : 'bg-[#071330] text-gray-300 border-[#00d2ff]/40 hover:border-[#00d2ff] hover:text-white'
                 }`}
               >
-                <span className="inline-block transform skew-x-12 tracking-wide">
+                <span className="inline-block transform skew-x-12">
                   {tab}
                 </span>
               </button>
@@ -157,14 +157,17 @@ export default function SkillsSection({ skillsSection, filteredSkills, skillFilt
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: false }}
         transition={{ duration: 0.4 }}
-        className="p-5 sm:p-6 bg-[#071330]/85 border-2 border-[#00d2ff]/60 shadow-[8px_8px_0px_#000000] backdrop-blur-md"
+        className="p-5 sm:p-6 bg-[#071330]/85 border-2 border-[#00d2ff]/60 shadow-[8px_8px_0px_#000000] backdrop-blur-md relative overflow-hidden"
       >
+        {/* Subtle diagonal grid pattern */}
+        <div className="absolute inset-0 bg-[radial-gradient(#00d2ff_1px,transparent_1px)] [background-size:24px_24px] opacity-10 pointer-events-none" />
+
         <motion.div
           layout
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-3 sm:gap-4"
+          className="relative z-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-3 sm:gap-4"
         >
           <AnimatePresence mode="popLayout">
-            {filteredSkills.map((tool) => {
+            {filteredSkills.map((tool, idx) => {
               const IconComp = iconMap[tool.icon]
               const badge = getBadgeLabel(tool.category)
 
@@ -172,11 +175,11 @@ export default function SkillsSection({ skillsSection, filteredSkills, skillFilt
                 <motion.div
                   key={tool.name}
                   layout
-                  initial={{ opacity: 0, scale: 0.85 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.85 }}
-                  transition={{ duration: 0.2 }}
-                  className="group relative p-3 sm:p-4 bg-[#020713]/90 border-2 border-[#00d2ff]/30 transform -skew-x-3 hover:-translate-y-1.5 hover:scale-[1.03] active:scale-[0.97] shadow-[3px_3px_0px_#000000] hover:border-[#00d2ff] hover:shadow-[0_0_16px_rgba(0,210,255,0.45),4px_4px_0px_#ff184c] flex flex-col items-center justify-between gap-2.5 transition-all duration-150 cursor-pointer overflow-hidden"
+                  initial={{ opacity: 0, scale: 0.8, y: 15 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.25, delay: (idx % 12) * 0.02 }}
+                  className="group relative p-3 sm:p-4 bg-[#020713]/90 border-2 border-[#00d2ff]/30 transform -skew-x-3 hover:-translate-y-1.5 hover:scale-[1.04] active:scale-[0.97] shadow-[3px_3px_0px_#000000] hover:border-[#00d2ff] hover:shadow-[0_0_18px_rgba(0,210,255,0.45),4px_4px_0px_#ff184c] flex flex-col items-center justify-between gap-2.5 transition-all duration-150 cursor-pointer overflow-hidden"
                 >
                   {/* Glowing Top Accent Line */}
                   <div
@@ -190,11 +193,11 @@ export default function SkillsSection({ skillsSection, filteredSkills, skillFilt
                       <img
                         src={tool.image}
                         alt={tool.name}
-                        className="w-9 h-9 sm:w-10 sm:h-10 object-contain drop-shadow-[0_0_8px_rgba(0,210,255,0.3)]"
+                        className="w-9 h-9 sm:w-10 sm:h-10 object-contain drop-shadow-[0_0_8px_rgba(0,210,255,0.3)] group-hover:drop-shadow-[0_0_14px_rgba(0,210,255,0.7)]"
                       />
                     ) : IconComp ? (
                       <IconComp
-                        className="text-3xl sm:text-4xl transition-all duration-200 drop-shadow-[0_0_6px_rgba(0,210,255,0.15)] group-hover:drop-shadow-[0_0_12px_rgba(0,210,255,0.6)]"
+                        className="text-3xl sm:text-4xl transition-all duration-200 drop-shadow-[0_0_6px_rgba(0,210,255,0.15)] group-hover:drop-shadow-[0_0_14px_rgba(0,210,255,0.7)]"
                         style={{ color: tool.color }}
                       />
                     ) : (
