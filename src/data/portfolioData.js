@@ -64,9 +64,9 @@ export const portfolioData = {
     experience: [
       {
         role: "Energy Monitoring System",
-        company: "Smart Building Innovasi",
+        company: "PT.Smart Building Innovasi",
         type: "Magang",
-        period: "Jan 2024 - Sekarang",
+        period: "",
         location: "Sidoarjo, Jawa Timur",
         detail: "Pengembangan antarmuka web monitoring energi dan telemetri perangkat secara real-time terhubung gateway sistem IIoT.",
         skills: ["React.js", "Visual Studio", "REST API", "MySQL"],
@@ -75,9 +75,9 @@ export const portfolioData = {
     educationTitle: "PENDIDIKAN",
     education: [
       {
-        degree: "D3 - Information Technology",
+        degree: "D3 - Teknologi Informasi",
         institution: "Politeknik Negeri Madiun",
-        period: "2024 – 2027",
+        period: "",
         detail: "Mendalami rekayasa perangkat lunak, sistem operasi Linux, jaringan komputer, dan perancangan basis data relasional.",
         skills: ["Arch Linux", "Linux"],
       },
